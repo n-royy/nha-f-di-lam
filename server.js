@@ -138,12 +138,23 @@ function results() {
   const all = [...entries.values()].sort(byRank);
   return { all, top: all.slice(0, 3).map(e => ({ id: e.id, name: e.name, dept: e.dept, score: e.score, sec: e.sec })) };
 }
+// Bảng rút gọn gửi về điện thoại người đã về đích, tránh gửi cả 500 dòng cho 500 máy
+const TOP_ROWS = 30;
+const rowForPhone = e => ({ i: e.id, n: e.name, d: e.dept, s: e.status, p: Math.round(e.progress * 100), c: e.score, t: e.sec });
+function phoneBoard(sorted) {
+  return { total: sorted.length, done: sorted.filter(e => e.sec != null).length, rows: sorted.slice(0, TOP_ROWS).map(rowForPhone) };
+}
+function sortedNow() {
+  const list = [...entries.values()];
+  for (const e of list) if (e.status === 'racing') e.score = liveScore(e);
+  return list.sort(byRank);
+}
 function resultFor(id, cache) {
   const r = cache || results();
   const idx = r.all.findIndex(e => e.id === id);
   if (idx < 0) return null;
   const e = r.all[idx];
-  return { rank: idx + 1, total: r.all.length, score: e.score, sec: e.sec, hits: e.hits, reds: e.reds, winner: r.top[0], isWinner: idx === 0 };
+  return { rank: idx + 1, total: r.all.length, score: e.score, sec: e.sec, hits: e.hits, reds: e.reds, winner: r.top[0], runners: r.top.slice(1, 3), isWinner: idx === 0, board: phoneBoard(r.all) };
 }
 function startContest() {
   if (G.phase !== 'lobby' || entries.size < 1) return;
@@ -178,6 +189,7 @@ function endContest() {
 function newContest(keepPlayers) {
   stopBots();
   const old = [...entries.values()];
+  io.socketsLeave('finishers');
   G = freshGame('lobby');
   entries.clear();
   if (keepPlayers) for (const e of old) if (!e.bot) entries.set(e.id, blankEntry(e));
@@ -262,6 +274,7 @@ setInterval(() => {
   list.forEach((e, i) => {
     if (e.socketId) io.to(e.socketId).volatile.emit('rank', { r: i + 1, t: list.length, c: e.score });
   });
+  io.to('finishers').volatile.emit('cboard', phoneBoard(list));
 }, CFG.RANK_MS);
 
 // Báo số người đăng ký cho điện thoại, gom lại để không gửi dồn dập
@@ -284,10 +297,12 @@ io.on('connection', socket => {
       socket.data.pid = prof.id;
       entry = entries.get(prof.id) || null;
       if (entry) entry.socketId = socket.id;
+      if (entry && entry.status === 'done') socket.join('finishers');
     }
     cb({
       state: publicState(), profile: prof ? { name: prof.name, dept: prof.dept } : null,
       entry: entryView(entry), result: G.phase === 'finished' && entry ? resultFor(prof.id) : null,
+      board: entry && entry.status === 'done' ? phoneBoard(sortedNow()) : null,
     });
   });
 
@@ -354,7 +369,8 @@ io.on('connection', socket => {
     if (typeof cb !== 'function') return;
     const e = entries.get(socket.data.pid);
     if (!e || G.phase !== 'racing' || !d) return cb({ ok: false, error: 'Giải đã kết thúc.' });
-    if (e.status === 'done') return cb({ ok: true, sec: e.sec, score: e.score });
+    socket.join('finishers');
+    if (e.status === 'done') return cb({ ok: true, sec: e.sec, score: e.score, board: phoneBoard(sortedNow()) });
     const elapsed = elapsedNow();
     e.progress = clamp(Math.max(e.progress, +d.p || 0), 0, maxProgress(elapsed));
     e.hits = Math.max(e.hits, int(d.h, 99));
@@ -364,7 +380,7 @@ io.on('connection', socket => {
     markDone(e, arrived ? CLOCK0 + elapsed * RATE : null);
     pushBoard();
     saveSoon();
-    cb({ ok: true, sec: e.sec, score: e.score, rejected: d.arrived === true && !arrived });
+    cb({ ok: true, sec: e.sec, score: e.score, rejected: d.arrived === true && !arrived, board: phoneBoard(sortedNow()) });
   });
 
   // Solo: máy chủ tự tính giờ để kết quả công bằng

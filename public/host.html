@@ -23,6 +23,19 @@ h1{font:italic 700 clamp(2rem,min(4vw,7.5vh),4.4rem)/1 var(--display);margin:0}h
 #lInfo{font-size:1rem;grid-column:1/-1}#lLine{font-weight:800}
 #leader.pop{animation:pop .5s ease-out}@keyframes pop{0%{transform:scale(1.025);background:#ffd9b0}100%{transform:none}}
 #soloTop{font-size:1.05rem;margin:.1rem 0 0;font-weight:600}#soloTop b{color:var(--orange);font-weight:800}
+
+#winOv{position:fixed;inset:0;z-index:8;background:radial-gradient(circle at 50% 42%,#6a3010,#0b1016 66%);display:flex;align-items:center;justify-content:center;padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));overflow:hidden}
+#winOv .card{position:relative;z-index:1;width:100%;max-width:880px;text-align:center;display:grid;gap:clamp(8px,1.8vh,18px);justify-items:center;animation:winIn .6s cubic-bezier(.2,1.4,.4,1) both}
+#winOv .lab{font:italic 700 clamp(22px,5vw,44px)/1.1 var(--display);color:#ffb020}
+#winOv .crown{width:clamp(70px,13vh,130px);height:auto;filter:drop-shadow(0 6px 24px rgba(255,176,32,.7))}
+#winOv .nm{font:italic 700 clamp(46px,min(13vw,15vh),150px)/1.02 var(--display);color:#fff5e6;overflow-wrap:anywhere;text-shadow:0 0 34px rgba(255,176,32,.75),0 4px 0 rgba(0,0,0,.4)}
+#winOv .info{font-size:clamp(17px,3.4vw,30px);font-weight:800;line-height:1.3;color:#fff5e6}
+#winOv .say{font-size:clamp(15px,2.8vw,24px);line-height:1.4;color:#ffe3c9;max-width:40ch;text-wrap:balance}
+#winOv .rest{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:clamp(13px,2.4vw,20px);color:#b9c2c9;font-weight:600}
+#winOv .close{background:var(--orange,#f26f21);color:#180800;border:0;border-radius:9px;min-height:48px;padding:12px 24px;font:italic 700 clamp(18px,3.2vw,26px) var(--display);margin-top:6px;cursor:pointer}
+#winOv i.cf{position:absolute;top:-24px;width:12px;height:20px;border-radius:3px;animation:cfFall linear infinite}
+@keyframes cfFall{to{transform:translateY(112vh) rotate(760deg)}}@keyframes winIn{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#winOv i.cf{display:none}#winOv .card{animation:none}}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;font-variant-numeric:tabular-nums}
 .stat{background:var(--panel);border-radius:.5rem;padding:.6rem .9rem;min-width:0}
 .stat b{display:block;font-size:2.2rem;font-weight:800;line-height:1.1}.stat small{font-size:.85rem;color:var(--muted)}
@@ -131,7 +144,7 @@ function render(){if(!B)return;var b=B,now=performance.now(),rows=$('rows'),coun
     var nm=$('names'),top=nm.scrollTop,real=[],bots=[];b.rows.forEach(function(r){(r.b?bots:real).unshift(r)});nm.innerHTML='';real.concat(bots).forEach(function(r){nm.appendChild(el('span',r.b?'':'real',r.d?r.n+' · '+r.d:r.n))});nm.scrollTop=top;rows.innerHTML='';
   }
   var st=$('soloTop');if(b.phase==='lobby'&&b.soloTop){st.textContent='';st.appendChild(el('b','','Kỷ lục solo: '));st.appendChild(document.createTextNode(b.soloTop.n+' · '+b.soloTop.c+' điểm'));st.hidden=false}else st.hidden=true;
-  renderLeader(b);
+  renderLeader(b);renderWinner(b);
   renderCtl();
   var pod=$('podium');
   if(b.phase==='finished'){
@@ -155,6 +168,22 @@ function renderLeader(b){var box=$('leader'),w=b.rows[0],go=b.phase==='racing'&&
   $('lScore').textContent=w.c;$('lScore').appendChild(el('small','','điểm'));$('lName').textContent=w.n;
   $('lMeta').textContent=(w.d?w.d+' · ':'')+(w.s==='done'&&w.t!=null?'về đích lúc '+fmt(w.t):'đã đi '+w.p+'% đường');
   if(leadKey!==w.n){var first=!leadKey;leadKey=w.n;$('lLine').textContent=LEAD[Math.random()*LEAD.length|0];if(!first&&!matchMedia('(prefers-reduced-motion:reduce)').matches){box.classList.remove('pop');void box.offsetWidth;box.classList.add('pop')}}}
+
+function showWinnerOverlay(w,opts){opts=opts||{};var old=document.getElementById('winOv');if(old)old.remove();
+  var ov=document.createElement('div');ov.id='winOv';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Người thắng cuộc');
+  var cols=['#f26f21','#ffb020','#37b34a','#0a6ebd','#fff5e6','#ff4a3d'];
+  for(var i=0;i<34;i++){var c=document.createElement('i');c.className='cf';c.style.left=(Math.random()*100)+'%';c.style.background=cols[i%6];c.style.animationDuration=(2.4+Math.random()*3)+'s';c.style.animationDelay=(-Math.random()*5)+'s';ov.appendChild(c)}
+  var card=document.createElement('div');card.className='card';
+  card.innerHTML='<svg class="crown" viewBox="0 0 64 44" aria-hidden="true"><path d="M4 40 L0 10 L18 22 L32 2 L46 22 L64 10 L60 40 Z" fill="#ffb020"/><rect x="4" y="36" width="56" height="6" rx="2" fill="#f26f21"/></svg>';
+  function add(cls,t){var d=document.createElement('div');d.className=cls;d.textContent=t;card.appendChild(d);return d}
+  add('lab',opts.me?'BẠN LÀ NGƯỜI THẮNG CUỘC!':'NGƯỜI THẮNG CUỘC');add('nm',w.name);add('info',(w.dept?w.dept+' · ':'')+w.score+' điểm'+(w.sec!=null?' · về đích lúc '+opts.fmt(w.sec):''));if(opts.say)add('say',opts.say);
+  if(opts.rest&&opts.rest.length){var r=add('rest','');opts.rest.forEach(function(x,i){var s=document.createElement('span');s.textContent=(i===0?'Á quân: ':'Hạng ba: ')+x.name+' · '+x.score+' điểm';r.appendChild(s)})}
+  var b=document.createElement('button');b.type='button';b.className='close';b.textContent='Xem bảng xếp hạng';b.addEventListener('click',function(){ov.remove();if(opts.onClose)opts.onClose()});card.appendChild(b);
+  ov.appendChild(card);document.getElementById(opts.root||'app').appendChild(ov);b.focus({preventScroll:true});}
+var winShown='';
+function renderWinner(b){var w=b.rows[0];if(b.phase!=='finished'){var o=document.getElementById('winOv');if(o)o.remove();winShown='';return}
+  var key=b.gameId;if(!w||winShown===key)return;winShown=key;if(!winLine[b.gameId])winLine[b.gameId]=WIN[Math.random()*WIN.length|0];
+  showWinnerOverlay({name:w.n,dept:w.d,score:w.c,sec:w.t},{fmt:fmt,say:winLine[b.gameId],rest:b.rows.slice(1,3).map(function(r){return{name:r.n,score:r.c}}),root:'wrap'})}
 function fitCount(total){var rows=$('rows'),rem=parseFloat(getComputedStyle(document.documentElement).fontSize),ctl=$('ctl'),ctlH=ctl.hidden?0:ctl.offsetHeight;
   var top=rows.getBoundingClientRect().top+scrollY,rowH=2.6*rem,avail=innerHeight-top-ctlH-1.6*rem,cols=Math.max(1,getComputedStyle(rows).gridTemplateColumns.split(' ').length);
   return Math.min(total,Math.max(6,Math.floor(avail/rowH))*cols)}
