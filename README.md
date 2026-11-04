@@ -56,12 +56,12 @@ Máy có nhiều mạng thì mã QR có thể lấy sai IP. Khi đó hãy đặt
 
 ## 4. Cách tổ chức giải
 
-1. Mở `/host`, nhập mật khẩu, nhấn F11 để toàn màn hình. Phím **H** ẩn hoặc hiện thanh điều khiển.
+1. Trên trang chủ bấm **Thi đấu** (hoặc mở `/host`), nhập mật khẩu để tạo game mới, rồi nhấn F11 để toàn màn hình. Phím **H** ẩn hoặc hiện thanh điều khiển.
 2. Mọi người quét QR, bấm **Xem luật chơi** nếu cần, rồi nhập họ tên và đơn vị. Máy chủ chặn đúng ở người thứ 500.
 3. MC bấm **Bắt đầu**. Danh sách được chốt và tất cả máy xuất phát sau 15 giây.
 4. Màn hình lớn hiện người cao điểm nhất và bảng điểm tạm tính, cập nhật mỗi giây. Ai về đích sẽ hiện giờ và điểm chính thức. Mỗi điện thoại thấy hạng của mình kèm một câu hài hước, cập nhật khoảng 3 giây một lần.
 5. Giải tự kết thúc khi mọi người về đích hoặc sau khoảng 108 giây. Màn hình lớn công bố người thắng, còn mỗi điện thoại hiện hạng và câu kết vui.
-6. Bấm **Giải mới, giữ người chơi** để chơi lại, hoặc **Xóa hết người chơi** để đăng ký lại từ đầu.
+6. Bấm **Chơi lại, giữ người chơi** để chơi tiếp, hoặc **Tạo game mới** để mọi người đăng ký lại từ đầu.
 
 Người chơi lỡ tải lại trang hoặc mất mạng trong trận chỉ cần mở lại trang là chạy tiếp từ quãng đường đã đi, đồng hồ không dừng.
 

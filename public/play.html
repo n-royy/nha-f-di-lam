@@ -189,7 +189,7 @@ form{display:grid;gap:14px}
       <div class="col">
         <div class="modes">
           <button id="goSolo" class="mode" type="button"><b>Solo</b><span>Chơi lúc nào cũng được. Mọi lượt đều lên bảng xếp hạng tổng.</span></button>
-          <button id="goContest" class="mode hot" type="button"><b>Thi đấu</b><span>Đăng ký giữ chỗ, tối đa 500 người, xuất phát cùng lúc.</span></button>
+          <button id="goContest" class="mode hot" type="button"><b>Thi đấu</b><span>MC nhập mật khẩu để tạo giải. Người chơi quét QR để vào, tối đa 500 người.</span></button>
         </div>
         <button class="rulesbtn openRules" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>Xem luật chơi</button>
         <div class="links">
@@ -850,8 +850,8 @@ net.on('contest:reset',function(){net.emit('hello',token,function(r){state=r.sta
   if(!$('lobby').hidden){if(myEntry)openLobby();else openEntry('contest')}
   renderCounts()})});
 function renderCounts(){if(!state)return;var c=state.count||0;$('lobbyCount').textContent=c;$('lobbyLeft').textContent=Math.max(0,state.max-c);
-  if(!$('entry').hidden&&play==='contest'){$('entryInfo').textContent=state.phase==='lobby'?'Đã có '+c+' / '+state.max+' người đăng ký.':'Giải đã chốt danh sách. Bạn vẫn có thể chơi Solo.';
-    $('entrySubmit').disabled=state.phase==='lobby'&&c>=state.max&&!myEntry}}
+  if(!$('entry').hidden&&play==='contest'){$('entryInfo').textContent=state.phase==='idle'?'MC chưa tạo giải. Giữ nguyên trang này, giải mở là đăng ký được ngay.':state.phase==='lobby'?'Đã có '+c+' / '+state.max+' người đăng ký.':'Giải đã chốt danh sách. Bạn vẫn có thể chơi Solo.';
+    $('entrySubmit').disabled=state.phase==='idle'||(state.phase==='lobby'&&c>=state.max&&!myEntry)}}
 function bootRoute(r){
   var h=location.hash.replace('#','');
   if(r.entry&&r.state.phase!=='finished'){play='contest';openLobby();return}
@@ -940,7 +940,7 @@ function loadRecord(){fetch('/api/bxh').then(function(r){return r.json()}).then(
 function goHome(){stopLb();stopLobby();mode='menu';reset();show('menu');setHash('trang-chu');loadRecord()}
 loadRecord();
 $('goSolo').addEventListener('click',function(){openEntry('solo')});
-$('goContest').addEventListener('click',function(){if(myEntry&&state&&state.phase!=='finished')openLobby();else openEntry('contest')});
+$('goContest').addEventListener('click',function(){if(myEntry&&state&&state.phase!=='finished')openLobby();else location.href='/host'});
 $('goLb').addEventListener('click',openLb);
 $('lbPlay').addEventListener('click',function(){openEntry('solo')});
 Array.prototype.forEach.call(document.querySelectorAll('.back'),function(b){b.addEventListener('click',function(){

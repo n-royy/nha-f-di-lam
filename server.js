@@ -81,8 +81,9 @@ const maxProgress = elapsed => clamp((elapsed * MAX_SPEED) / CFG.ROUTE + 0.03, 0
 const profiles = new Map(); // token -> { id, token, name, dept }
 const entries = new Map();  // profile id -> người chơi trong giải hiện tại
 let soloRuns = [];          // mọi lượt solo
-let G = freshGame();
-function freshGame() { return { id: newId(), phase: 'lobby', startAt: 0, endAt: 0, endedAt: 0 }; }
+// phase: idle (chưa có giải) | lobby (đang nhận đăng ký) | racing | finished
+let G = freshGame('idle');
+function freshGame(phase) { return { id: newId(), phase, startAt: 0, endAt: 0, endedAt: 0 }; }
 
 function loadData() {
   try {
@@ -90,7 +91,7 @@ function loadData() {
     for (const p of d.profiles || []) profiles.set(p.token, p);
     soloRuns = d.soloRuns || [];
     if (d.game && d.game.phase === 'finished') { G = d.game; for (const e of d.entries || []) entries.set(e.id, e); }
-    else if (d.game && d.game.phase === 'lobby') { G = d.game; for (const e of d.entries || []) if (!e.bot) entries.set(e.id, e); }
+    else if (d.game && d.game.phase === 'lobby') { for (const e of d.entries || []) if (!e.bot) entries.set(e.id, e); if (entries.size) G = d.game; }
   } catch (_) { /* lần đầu chạy, chưa có dữ liệu */ }
 }
 let saveTimer = null;
@@ -177,7 +178,7 @@ function endContest() {
 function newContest(keepPlayers) {
   stopBots();
   const old = [...entries.values()];
-  G = freshGame();
+  G = freshGame('lobby');
   entries.clear();
   if (keepPlayers) for (const e of old) if (!e.bot) entries.set(e.id, blankEntry(e));
   io.to('players').emit('state', publicState());
@@ -322,6 +323,7 @@ io.on('connection', socket => {
       pushBoard();
       return cb({ ok: true, token: prof.token, state: publicState(), entry: entryView(cur) });
     }
+    if (G.phase === 'idle') return cb({ ok: false, token: prof.token, error: 'MC chưa tạo giải. Bạn có thể chơi Solo trong lúc chờ.' });
     if (G.phase !== 'lobby') return cb({ ok: false, token: prof.token, error: 'Giải đã chốt danh sách. Bạn có thể chơi Solo trong lúc chờ giải sau.' });
     if (entries.size >= CFG.MAX_PLAYERS) return cb({ ok: false, token: prof.token, error: `Giải đã đủ ${CFG.MAX_PLAYERS} người. Bạn có thể chơi Solo trong lúc chờ giải sau.` });
     const e = blankEntry({ id: prof.id, name: prof.name, dept: prof.dept, socketId: socket.id });
@@ -398,6 +400,8 @@ io.on('connection', socket => {
     const ok = String(key) === CFG.HOST_KEY;
     socket.data.isHost = ok;
     if (ok) socket.join('board');
+    // Nhập đúng mật khẩu khi chưa có giải thì tạo game mới; giải đang diễn ra được giữ nguyên
+    if (ok && G.phase === 'idle') newContest(false);
     if (typeof cb === 'function') cb({ ok, board: ok ? boardPayload() : null });
   });
   const hostOnly = (ev, fn) => socket.on(ev, (...a) => { if (socket.data.isHost) fn(...a); });

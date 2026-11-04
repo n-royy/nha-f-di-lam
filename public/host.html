@@ -56,7 +56,7 @@ button.main{background:var(--orange);border-color:var(--orange);color:#180800;fo
 button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
 #gate{position:fixed;inset:0;background:var(--ink);display:grid;place-items:center;padding:1rem;z-index:10}
 #gate form{display:grid;gap:.75rem;width:min(26rem,100%)}#gate input{font:inherit;font-size:max(16px,1rem);padding:.8rem;border-radius:.5rem;border:0;background:var(--paper);color:var(--ink);width:100%}
-#gate p{margin:0;min-height:1.3em;color:#ff8a80}
+#gate p{margin:0;min-height:1.3em;color:#ff8a80}#gate p.lead{color:var(--paper);line-height:1.45;font-size:1rem}#gate .alt{color:var(--paper);text-align:center;font-weight:600;padding:.45rem}
 #hint{margin-left:auto;font-size:.8rem;color:var(--muted)}
 #net{position:fixed;right:.8rem;top:.8rem;background:#b42318;color:#fff;font-weight:600;padding:.4rem .75rem;border-radius:.45rem;z-index:9}
 /* Dọc: điện thoại và máy bảng đứng */
@@ -65,11 +65,12 @@ button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px 
 /* Màn hình thấp: laptop nhỏ, điện thoại xoay ngang */
 @media (max-height:480px){html{font-size:14px}.lobbyInfo{max-height:calc(100vh - 8rem)}.names{min-height:3rem}#wrap{gap:.5rem;padding-top:.5rem}.stat b{font-size:1.5rem}.qr{width:clamp(8rem,calc(100vh - 12rem),40vw)}.qr p{font-size:.9rem}.qr small{display:none}.sub{display:none}}
 </style></head><body>
-<div id="gate" hidden><form id="gateForm"><h1>Nhà F <em>Đi Làm</em></h1><label for="key">Mật khẩu MC</label><input id="key" type="password" autocomplete="current-password" required><p id="gateErr" role="alert"></p><button class="main" type="submit">Vào màn hình MC</button></form></div>
+<div id="gate" hidden><form id="gateForm"><h1>Nhà F <em>Đi Làm</em></h1><p class="lead">Nhập mật khẩu MC để tạo giải và mở mã QR cho mọi người đăng ký. Nếu giải đang diễn ra, bạn sẽ quay lại đúng giải đó.</p><label for="key">Mật khẩu MC</label><input id="key" type="password" autocomplete="current-password" required><p id="gateErr" role="alert"></p><button class="main" type="submit">Tạo game mới</button><a class="alt" href="/#thi-dau">Tôi là người chơi, vào đăng ký</a><a class="alt" href="/#trang-chu">Về trang chủ</a></form></div>
 <div id="net" hidden>Mất kết nối với máy chủ</div>
 <div id="wrap">
   <header><div class="titlewrap"><img class="brand" alt="Logo FPT" hidden><div><h1>Nhà F <em>Đi Làm</em></h1><div class="sub" id="sub"></div></div></div>
     <div class="clock" id="clockBox" hidden><small>Giờ trong game · hạn <span id="dl"></span></small><canvas id="clock" width="10" height="10"></canvas></div></header>
+  <section id="idle" hidden><p class="big">Chưa có giải nào đang mở</p><div class="sub">MC vào trang /host và nhập mật khẩu để tạo game mới.</div></section>
   <section id="lobby" hidden>
     <div class="qr"><img src="/qr.svg" alt="Mã QR vào game"><p>Quét để đăng ký</p></div>
     <div class="lobbyInfo"><p class="big" id="lobbyBig"></p><div class="sub" id="lobbySub"></div><p id="soloTop" hidden></p><div class="names" id="names"></div><p class="warn" id="tiltWarn" hidden>Máy chủ đang chạy HTTP nên điện thoại không cho đọc cảm biến. Người chơi sẽ vuốt để lái. Muốn lái bằng nghiêng máy, hãy chạy lại bằng npm run start:https.</p></div>
@@ -88,7 +89,7 @@ button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px 
     <button id="bStart" class="main" type="button">Bắt đầu</button>
     <button id="bBots" type="button">+50 bot thử</button><button id="bClear" type="button">Xóa bot</button>
     <button id="bEnd" type="button">Kết thúc ngay</button>
-    <button id="bNew" class="main" type="button">Giải mới, giữ người chơi</button><button id="bWipe" type="button">Xóa hết người chơi</button>
+    <button id="bNew" class="main" type="button">Tạo game mới</button><button id="bKeep" type="button">Chơi lại, giữ người chơi</button><button id="bWipe" type="button">Xóa hết người chơi</button>
     <span id="hint">Phím H: ẩn hoặc hiện thanh này</span>
   </div>
 </div>
@@ -122,7 +123,7 @@ function auth(k){net.emit('host:auth',k,function(r){authed=r.ok;$('gate').hidden
 $('gateForm').addEventListener('submit',function(e){e.preventDefault();auth($('key').value)});
 function secText(s){return s==null?'Chưa tới':fmt(s)}
 function render(){if(!B)return;var b=B,now=performance.now(),rows=$('rows'),count=b.count;
-  $('lobby').hidden=b.phase!=='lobby';$('stats').hidden=b.phase==='lobby';
+  $('lobby').hidden=b.phase!=='lobby';$('stats').hidden=b.phase==='lobby'||b.phase==='idle';$('idle').hidden=b.phase!=='idle';if(b.phase==='idle'){$('sub').textContent='Chưa có giải nào đang mở';$('rows').innerHTML=''}
   $('sReg').textContent=count;$('sDone').textContent=b.done;$('sLate').textContent=b.late;$('sFine').textContent=b.fineK+'K';
   if(b.phase==='lobby'){
     $('sub').textContent='Đang nhận đăng ký';$('lobbyBig').textContent=count+' / '+b.max+' người';
@@ -161,7 +162,7 @@ function drawRows(list,all){var rows=$('rows');rows.innerHTML='';list.forEach(fu
   x.appendChild(el('span','n',i+1));var w=el('span','who',r.n);if(r.d)w.appendChild(el('small','',r.d));x.appendChild(w);
   var bc=el('span','barc');var br=el('div','bar');var f=el('i');f.style.width=(fin&&r.t!=null?100:r.p)+'%';br.appendChild(f);bc.appendChild(br);x.appendChild(bc);
   x.appendChild(el('span','tm'+(fin&&(r.t==null||r.t>CFG.deadline)?' late':''),fin?secText(r.t):r.p+'%'));x.appendChild(el('span','pts',r.c));rows.appendChild(x)})}
-function renderCtl(){if(!authed||!B)return;var p=B.phase;$('bStart').hidden=p!=='lobby';$('bBots').hidden=p!=='lobby';$('bClear').hidden=p!=='lobby'||!B.bots;$('bEnd').hidden=p!=='racing';$('bNew').hidden=p!=='finished';$('bWipe').hidden=p==='racing';
+function renderCtl(){if(!authed||!B)return;var p=B.phase;$('bStart').hidden=p!=='lobby';$('bBots').hidden=p!=='lobby';$('bClear').hidden=p!=='lobby'||!B.bots;$('bEnd').hidden=p!=='racing';$('bNew').hidden=p!=='finished';$('bKeep').hidden=p!=='finished';$('bWipe').hidden=p!=='lobby';
   $('bStart').textContent='Bắt đầu cho '+B.count+' người';$('bStart').disabled=B.count<1}
 function tick(){if(B&&B.phase==='racing'){var left=startPerf-performance.now();
   if(left>0){$('countdown').hidden=false;ledCanvas($('cdLed'),String(Math.ceil(left/1000)),Math.min(innerWidth*.4,innerHeight*.28),C.amber)}
@@ -172,7 +173,8 @@ function emit(ev,a){net.emit(ev,a)}
 $('bStart').onclick=function(){if(confirm('Chốt danh sách và bắt đầu cho '+B.count+' người?'))emit('host:start')};
 $('bBots').onclick=function(){emit('host:bots')};$('bClear').onclick=function(){emit('host:clearBots')};
 $('bEnd').onclick=function(){if(confirm('Kết thúc giải ngay? Ai chưa về đích sẽ tính theo quãng đường.'))emit('host:end')};
-$('bNew').onclick=function(){emit('host:new',true)};
+$('bNew').onclick=function(){if(confirm('Tạo game mới? Kết quả giải này sẽ bị xóa và mọi người phải đăng ký lại.'))emit('host:new',false)};
+$('bKeep').onclick=function(){emit('host:new',true)};
 $('bWipe').onclick=function(){if(confirm('Xóa hết người chơi trong giải? Bảng xếp hạng solo vẫn giữ nguyên.'))emit('host:new',false)};
 addEventListener('keydown',function(e){if((e.key==='h'||e.key==='H')&&authed&&e.target.tagName!=='INPUT')$('ctl').hidden=!$('ctl').hidden});
 })();
