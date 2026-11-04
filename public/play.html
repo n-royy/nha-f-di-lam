@@ -111,7 +111,6 @@ form{display:grid;gap:14px}
 .scoreline{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 10px;font-weight:800;font-size:15px}
 .scoreline b{font:italic 700 clamp(26px,8vw,34px) var(--display);color:#b64208;white-space:nowrap}
 .acts.three{grid-template-columns:1fr 1fr}.acts.three .go{grid-column:1/-1}
-.record{margin:0;font-size:14px;font-weight:600;line-height:1.4}.record b{color:var(--orange);font-weight:800}
 .rulesbtn{display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,245,230,.12);color:var(--paper);border:1.5px solid var(--orange);border-radius:9px;padding:12px;min-height:46px;font-weight:800;font-size:15px;width:100%}
 .rulesbtn svg{width:20px;height:20px;flex:none}
 #rules{z-index:12;background:var(--ink);padding-block:0}
@@ -184,7 +183,6 @@ form{display:grid;gap:14px}
         <h1>Nhà F <em>Đi Làm</em></h1>
         <p class="tag">Kịp 8:15 hay mất 20K?</p>
         <p class="lede" id="lede"></p>
-        <p class="record" id="record" hidden></p>
       </div>
       <div class="col">
         <div class="modes">
@@ -204,7 +202,6 @@ form{display:grid;gap:14px}
           <button class="chip" type="button" data-c="3" aria-pressed="false">FPT Complex, Đà Nẵng</button>
         </fieldset>
       </div>
-      <p class="note">Game của team, không phải hệ thống chấm công thật. Game không dùng camera và không lưu dữ liệu khuôn mặt.</p>
     </div>
   </section>
 
@@ -936,9 +933,7 @@ $('rGoal').textContent='Xuất phát lúc '+fmt(CLOCK0).slice(0,5)+', lái xe t�
 [['Tới cổng đúng '+dlText,'1.000'],['Mỗi phút đến sớm hơn','+20'],['Mỗi phút đến muộn hơn','−20'],['Mỗi lần va chạm','−20'],['Mỗi lần vượt đèn đỏ','−50'],['Mỗi cà phê hoặc bánh mì','+10'],['Không tới được cổng','Tối đa 500']].forEach(function(r){var t=document.createElement('tr');t.appendChild(el('td','',r[0]));t.appendChild(el('td','',r[1]));$('rScore').appendChild(t)});
 
 /* ===== Điều hướng ===== */
-function loadRecord(){fetch('/api/bxh').then(function(r){return r.json()}).then(function(d){var b=$('record'),x=d.rows&&d.rows[0];if(!x){b.hidden=true;return}b.textContent='';b.appendChild(el('b','','Cao điểm nhất: '));b.appendChild(document.createTextNode(x.name+' · '+x.score+' điểm'));b.hidden=false}).catch(function(){})}
-function goHome(){stopLb();stopLobby();mode='menu';reset();show('menu');setHash('trang-chu');loadRecord()}
-loadRecord();
+function goHome(){stopLb();stopLobby();mode='menu';reset();show('menu');setHash('trang-chu')}
 $('goSolo').addEventListener('click',function(){openEntry('solo')});
 $('goContest').addEventListener('click',function(){if(myEntry&&state&&state.phase!=='finished')openLobby();else location.href='/host'});
 $('goLb').addEventListener('click',openLb);
