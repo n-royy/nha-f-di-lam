@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nha-f-di-lam
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HOST_KEY
+        generateValue: true

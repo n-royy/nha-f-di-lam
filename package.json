@@ -1,0 +1,26 @@
+{
+  "name": "dua-cham-cong",
+  "version": "1.0.0",
+  "description": "Nhà F Đi Làm: game đua xe máy cho tối đa 500 người chơi bằng điện thoại",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:https": "node server.js --https",
+    "test:500": "node test/simulate.js http://localhost:3000 500"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@fontsource/be-vietnam-pro": "^5.2.0",
+    "@fontsource/chakra-petch": "^5.2.0",
+    "express": "^5.1.0",
+    "qrcode": "^1.5.4",
+    "selfsigned": "^2.4.1",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.1"
+  }
+}
