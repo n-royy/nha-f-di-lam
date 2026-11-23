@@ -1,116 +1,72 @@
 # Nhà F Đi Làm
 
-**Kịp 8:15 hay mất 20K?** Game đua xe máy trên điện thoại, tối đa **500 người** cùng chơi. Có 2 chế độ: **Thi đấu** và **Solo**. Người chơi quét mã QR trên màn hình lớn là vào được, không cần cài app hay tạo tài khoản.
+Trò chơi tương tác đa người chơi trên trình duyệt mô phỏng hành trình đến văn phòng trước mốc chấm công **08:15**. Hỗ trợ tối đa **500 cán bộ nhân viên** tham gia đồng thời, tích hợp **4 lộ trình văn phòng đặc trưng**, **2 chế độ chơi với 2 bảng xếp hạng tách biệt**, và **bộ slide thuyết trình 16:9** tại `/slides`.
 
-- **Màn hình MC:** `http://localhost:3000/host`
-- **Bảng điểm chỉ để chiếu:** `http://localhost:3000/bang`
-- **Người chơi:** quét mã QR trên màn hình MC
+## Tính năng nổi bật
 
-## 1. Cài đặt và chạy
+- **2 chế độ chơi & 2 bảng xếp hạng tách biệt hoàn toàn:**
+  - **Thi đấu · Chấm công 8:15** (`/api/bxh-thidau`): MC điều phối trực tiếp, đếm ngược 15 giây xuất phát đồng loạt, lộ trình 17.000 đơn vị với đồng hồ mô phỏng `07:30 → 08:15`, bóng đồng nghiệp xung quanh, bước quét khuôn mặt chấm công cuối chặng, xếp hạng cá nhân & phòng ban, xuất CSV.
+  - **Solo · Thử thách vô tận** (`/api/bxh-solo`): Đường chạy sinh liên tục, tốc độ tăng tiến, dừng lượt sau 1 va chạm (có khiên bảo vệ), tính điểm vượt chướng ngại (+1), lách sát (+2), vật phẩm (+3), 4 hạng huy chương (Đồng 15 · Bạc 35 · Vàng 65 · Bạch Kim 100) và chơi lại tức thì.
+- **4 lộ trình văn phòng với bối cảnh & tình huống riêng biệt:**
+  1. **F-Town (Khu CNC, TP.HCM):** Mưa rào, điểm ngập sâu, cà phê sữa đá & áo mưa.
+  2. **F-Ville (Hòa Lạc):** Sương mù buổi sáng, cầu vượt gió ngang, xe buýt tuyến tốc độ cao.
+  3. **FPT Tower (Cầu Giấy, Hà Nội):** Đô thị giờ cao điểm với 6 ngã tư đèn tín hiệu mật độ cao.
+  4. **FPT Complex (Ngũ Hành Sơn, Đà Nẵng):** Đại lộ ven biển, gió tạt ngang, vùng nắng gắt & dải gió xuôi tăng tốc.
+- **Tối ưu điều khiển trên cả Desktop và Mobile:**
+  - **Desktop:** `←`/`→` hoặc `A`/`D` điều hướng, `↑`/`W`/`Space` tăng ga, `↓`/`S` phanh.
+  - **Mobile:** Vuốt trái/phải hoặc nghiêng máy để điều hướng, kết hợp nút `PHANH` và `TĂNG GA` riêng biệt.
+- **Nhận diện đồng bộ & văn phong doanh nghiệp:** Xe xanh dương, áo cam, mũ xanh lá kèm lá cờ FPT bay phấp phới; khối tòa nhà 2.5D nối liền theo từng văn phòng; toàn bộ thông điệp lịch sự, chuẩn mực sự kiện doanh nghiệp.
+- **Bài thuyết trình 16:9 tích hợp sẵn (`/slides`):** 10 slide trình chiếu dự thi AI Game, hỗ trợ phím mũi tên, toàn màn hình (`F`), tổng quan (`G`), gợi ý lời thuyết trình (`N`) và xuất PDF chuẩn 16:9.
 
-Cần có **Node.js 18 trở lên**. Mở PowerShell trong thư mục này rồi chạy:
+## Khởi chạy nhanh
 
-```powershell
+Yêu cầu **Node.js 18** trở lên.
+
+```bash
 npm install
 npm start
 ```
 
-Cửa sổ sẽ in địa chỉ cho người chơi và màn hình MC. Mật khẩu MC mặc định là `admin`.
+Các đường dẫn chính sau khi khởi chạy:
 
-Lần đầu chạy, nếu Windows Firewall hỏi, hãy bấm **Allow** cho Node.js ở mạng đang dùng. Nếu không, điện thoại sẽ không vào được.
+| Đường dẫn | Mục đích |
+| --- | --- |
+| `/` | Trang người chơi (Mobile & Desktop) |
+| `/host` | Bảng điều phối sự kiện dành cho MC |
+| `/bang` | Màn hình trình chiếu trực tiếp hội trường |
+| `/slides` | Bộ 10 slide thuyết trình 16:9 (hỗ trợ xuất PDF) |
+| `/qr.svg` | Mã QR vào phòng thi đấu |
 
-### Thêm logo
+> **Lưu ý về cảm biến nghiêng máy trên điện thoại:** Chạy `HTTPS=1 npm start` (tự sinh chứng chỉ cho mạng LAN) hoặc triển khai qua máy chủ hỗ trợ HTTPS để mở khóa chế độ lái nghiêng máy trên iOS/Android.
 
-Đặt file logo vào thư mục `public` với tên `logo-fpt.png` (hoặc `logo-fpt.svg`, `.webp`, `.jpg`), rồi tải lại trang. Logo sẽ hiện ở trang chính, phòng chờ, cổng công ty, máy quét mặt, phiếu kết quả và màn hình MC. Chưa có file thì game vẫn chạy bình thường. Hãy xin phép đơn vị quản lý thương hiệu trước khi chiếu logo ở sự kiện.
+## Bảng tính điểm
 
-### Chạy trên Render miễn phí
+### Chế độ Thi đấu (8:15)
 
-Tệp `render.yaml` đã cấu hình sẵn. Render tự tạo mật khẩu `HOST_KEY` trong phần Environment của dịch vụ và tự dùng địa chỉ HTTPS của dịch vụ cho mã QR, nên lái bằng nghiêng máy hoạt động mà không có cảnh báo bảo mật.
+| Hạng mục | Điểm |
+| --- | --- |
+| Tới nơi đúng mốc `08:15:00` | `+1000` |
+| Mỗi phút sớm hơn / muộn hơn `08:15` | `+20` / `-20` |
+| Thu thập vật phẩm hỗ trợ | `+15` |
+| Lách sát an toàn (Near-Miss) | `+5` |
+| Va chạm phương tiện / chướng ngại | `-20` |
+| Vượt đèn đỏ | `-50` |
 
-Gói miễn phí tự ngủ sau 15 phút không có truy cập, lần mở sau mất khoảng một phút. Khi dịch vụ ngủ, khởi động lại hoặc deploy lại, bảng xếp hạng solo và người chơi đã đăng ký sẽ mất. Render khuyên không dùng gói này cho môi trường production, nên hãy thử tải trước khi tổ chức giải đông người.
+### Chế độ Solo (Vô tận)
 
-## 2. Bật lái bằng nghiêng máy
+| Hạng mục | Điểm |
+| --- | --- |
+| Vượt qua mỗi chướng ngại / phương tiện | `+1` |
+| Lách sát an toàn (Near-Miss) | `+2` |
+| Thu thập vật phẩm theo bản đồ | `+3` |
+| Va chạm khi không có khiên bảo vệ | Dừng lượt |
 
-Điện thoại chỉ cho đọc cảm biến nghiêng trên địa chỉ HTTPS. Có 3 cách chạy:
+## Kiểm thử tải & Triển khai
 
-| Cách chạy | Lái bằng | Lưu ý |
-|---|---|---|
-| `npm start` | Vuốt màn hình | Không có cảnh báo trình duyệt |
-| `npm run start:https` | Nghiêng máy | Chứng chỉ tự ký: mỗi máy phải bấm qua cảnh báo bảo mật một lần |
-| Đường hầm HTTPS, hoặc deploy, rồi đặt `PUBLIC_URL` | Nghiêng máy | Không có cảnh báo, nhưng cần Internet và phải kiểm tra giới hạn số kết nối của dịch vụ |
+Kiểm thử đồng thời 500 kết nối giả lập (khi máy chủ đang chạy):
 
-Ví dụ dùng đường hầm trên PowerShell:
-
-```powershell
-ngrok http 3000
-$env:PUBLIC_URL="https://xxxx.ngrok.app"; npm start
+```bash
+npm run test:500
 ```
 
-Trên iPhone, game hỏi quyền chuyển động khi bấm nút Đăng ký hoặc Nổ máy. Từ chối thì vẫn chơi được bằng cách vuốt.
-
-## 3. Mạng cho người chơi
-
-Máy chạy game và điện thoại phải vào **cùng một mạng**. Wi-Fi văn phòng thường có thể nghẽn hoặc chặn các máy nói chuyện với nhau khi 300 đến 500 điện thoại vào cùng lúc. Nên thử trước tại đúng phòng thi. Nếu mạng yếu, hãy deploy lên Internet (Render, Railway, VPS) để mọi người dùng 4G.
-
-Máy có nhiều mạng thì mã QR có thể lấy sai IP. Khi đó hãy đặt `PUBLIC_URL`, ví dụ `$env:PUBLIC_URL="http://192.168.1.25:3000"; npm start`.
-
-## 4. Cách tổ chức giải
-
-1. Trên trang chủ bấm **Thi đấu** (hoặc mở `/host`), nhập mật khẩu để tạo game mới, rồi nhấn F11 để toàn màn hình. Phím **H** ẩn hoặc hiện thanh điều khiển.
-2. Mọi người quét QR, bấm **Xem luật chơi** nếu cần, rồi nhập họ tên và đơn vị. Máy chủ chặn đúng ở người thứ 500.
-3. MC bấm **Bắt đầu**. Danh sách được chốt và tất cả máy xuất phát sau 15 giây.
-4. Màn hình lớn hiện người cao điểm nhất và bảng điểm tạm tính, cập nhật mỗi giây. Ai về đích sẽ hiện giờ và điểm chính thức. Mỗi điện thoại thấy hạng của mình kèm một câu hài hước, cập nhật khoảng 3 giây một lần.
-5. Giải tự kết thúc khi mọi người về đích hoặc sau khoảng 108 giây. Người thắng hiện to giữa màn hình lớn và mọi điện thoại. Người chơi thi xong chỉ thấy bảng xếp hạng trực tiếp cho đến khi MC tạo game mới.
-6. Bấm **Chơi lại, giữ người chơi** để chơi tiếp, hoặc **Tạo game mới** để mọi người đăng ký lại từ đầu.
-
-Người chơi lỡ tải lại trang hoặc mất mạng trong trận chỉ cần mở lại trang là chạy tiếp từ quãng đường đã đi, đồng hồ không dừng.
-
-**Solo:** chọn Solo trên điện thoại. Mọi lượt được lưu vào bảng xếp hạng tổng và vẫn còn sau khi tắt máy chủ.
-
-## 5. Cách tính điểm
-
-| Tình huống | Điểm |
-|---|---|
-| Tới cổng đúng 8:15 | 1.000 |
-| Mỗi phút sớm hơn hoặc muộn hơn | +20 hoặc −20 |
-| Mỗi lần va chạm | −20 |
-| Mỗi lần vượt đèn đỏ | −50 |
-| Mỗi lần nhặt cà phê hoặc bánh mì | +10 |
-| Không tới được cổng | Tối đa 500, theo quãng đường |
-
-Máy chủ tự tính giờ về đích và chặn tốc độ vô lý. Số va chạm do điện thoại gửi lên nên vẫn có thể bị sửa. Với giải thưởng lớn, nên kiểm tra lại top đầu.
-
-## 6. Cấu hình
-
-Sửa `config.js` hoặc đặt biến môi trường, ví dụ `$env:HOST_KEY="matkhaumoi"; npm start`.
-
-| Biến | Mặc định | Ý nghĩa |
-|---|---|---|
-| `HOST_KEY` | admin | Mật khẩu MC. **Nên đổi** |
-| `MAX_PLAYERS` | 500 | Số người tối đa |
-| `PUBLIC_URL` | tự lấy IP LAN | Địa chỉ in lên mã QR |
-| `PORT` / `HTTPS_PORT` | 3000 / 3443 | Cổng chạy |
-| `COUNTDOWN_SECONDS` | 15 | Đếm ngược trước khi xuất phát |
-| `RACE_SECONDS` | 100 | Thời gian tối đa một lượt |
-| `ROUTE` | 17000 | Độ dài đường. Giảm để thử nhanh |
-| `DEADLINE_HOUR` | 8.25 | Hạn chấm công (8.25 là 8:15) |
-| `LATE_FINE_K` | 20 | Mức phạt đi muộn, tính bằng nghìn đồng |
-| `DEPARTMENTS` | FSOFT, FIS, ... | Đơn vị gắn cho bot thử. Người chơi tự nhập đơn vị của mình |
-
-Dữ liệu nằm trong thư mục `data`. Xóa thư mục này khi máy chủ đang tắt để làm mới toàn bộ, gồm cả bảng xếp hạng solo.
-
-## 7. Kiểm tra trước sự kiện
-
-```powershell
-npm start                    # cửa sổ 1
-npm install                  # cửa sổ 2, nếu chưa cài
-node test/simulate.js http://localhost:3000 500    # cửa sổ 2
-```
-
-Bài test xóa người chơi trong giải hiện tại rồi giả lập 500 điện thoại đua đến hết giải, mất khoảng 2 phút. Nó kiểm tra máy chủ, **không** kiểm tra được Wi-Fi của phòng thi.
-
-**Checklist ngày tổ chức:**
-- [ ] Đổi `HOST_KEY`, sửa `DEPARTMENTS`
-- [ ] Thử quét QR bằng iPhone và Android tại đúng phòng thi
-- [ ] Xóa bot trước khi chơi thật
-- [ ] Laptop cắm sạc, tắt chế độ ngủ
+Triển khai trực tuyến qua **Render** (sử dụng tệp `render.yaml` đi kèm) hoặc bất kỳ máy chủ Node.js nào có hỗ trợ WebSocket. Tùy chỉnh mốc chấm công, danh sách phòng ban và tham số 4 lộ trình trong `config.js`.

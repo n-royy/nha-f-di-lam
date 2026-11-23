@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nhà F Đi Làm · Màn hình MC</title>
+<title>Nhà F Đi Làm · Bảng điều khiển MC</title>
 <link rel="stylesheet" href="/fonts/bvp/400.css"><link rel="stylesheet" href="/fonts/bvp/600.css"><link rel="stylesheet" href="/fonts/bvp/800.css"><link rel="stylesheet" href="/fonts/chakra/700-italic.css">
 <style>
 /* Layout: màn hình chiếu nền nhựa đường; mọi cỡ chữ theo rem, rem co giãn theo màn hình để vừa từ điện thoại đến TV 4K. */
@@ -14,6 +14,7 @@ header{display:flex;flex-wrap:wrap;gap:.7rem 1.5rem;align-items:center;justify-c
 h1{font:italic 700 clamp(2rem,min(4vw,7.5vh),4.4rem)/1 var(--display);margin:0}h1 em{font-style:inherit;color:var(--orange);white-space:nowrap}
 .titlewrap{display:flex;align-items:center;gap:1rem;min-width:0}.brand{height:clamp(2.8rem,min(5vw,9vh),5rem);width:auto;max-width:11rem;object-fit:contain;background:#fff;border-radius:.45rem;padding:.3rem .5rem;flex:none}
 .sub{font-size:1.1rem;color:var(--muted);margin-top:.35rem}
+.mapBadge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(242,111,33,.2);border:1px solid rgba(242,111,33,.55);color:var(--paper);border-radius:.4rem;padding:.2rem .6rem;font-size:.88rem;font-weight:700;margin-left:.6rem;vertical-align:middle}
 .clock{background:#05080b;border-radius:.6rem;padding:.6rem .9rem;display:grid;gap:.25rem;justify-items:center}
 .clock small{font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;font-weight:600}
 #leader{background:var(--paper);color:var(--ink);border-radius:.6rem;padding:.6rem 1.1rem;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.1rem 1.4rem;align-items:center}
@@ -22,7 +23,7 @@ h1{font:italic 700 clamp(2rem,min(4vw,7.5vh),4.4rem)/1 var(--display);margin:0}h
 #lScore{font:italic 700 clamp(1.8rem,min(4vw,7.5vh),4.8rem)/1 var(--display);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}#lScore small{font:600 .85rem var(--body);margin-left:.3rem}
 #lInfo{font-size:1rem;grid-column:1/-1}#lLine{font-weight:800}
 #leader.pop{animation:pop .5s ease-out}@keyframes pop{0%{transform:scale(1.025);background:#ffd9b0}100%{transform:none}}
-#soloTop{font-size:1.05rem;margin:.1rem 0 0;font-weight:600}#soloTop b{color:var(--orange);font-weight:800}
+#soloTop{font-size:1.05rem;margin:.2rem 0 0;font-weight:600}#soloTop b{color:var(--orange);font-weight:800}
 
 #winOv{position:fixed;inset:0;z-index:8;background:radial-gradient(circle at 50% 42%,#6a3010,#0b1016 66%);display:flex;align-items:center;justify-content:center;padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));overflow:hidden}
 #winOv .card{position:relative;z-index:1;width:100%;max-width:880px;text-align:center;display:grid;gap:clamp(8px,1.8vh,18px);justify-items:center;animation:winIn .6s cubic-bezier(.2,1.4,.4,1) both}
@@ -36,18 +37,39 @@ h1{font:italic 700 clamp(2rem,min(4vw,7.5vh),4.4rem)/1 var(--display);margin:0}h
 #winOv i.cf{position:absolute;top:-24px;width:12px;height:20px;border-radius:3px;animation:cfFall linear infinite}
 @keyframes cfFall{to{transform:translateY(112vh) rotate(760deg)}}@keyframes winIn{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#winOv i.cf{display:none}#winOv .card{animation:none}}
+
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;font-variant-numeric:tabular-nums}
 .stat{background:var(--panel);border-radius:.5rem;padding:.6rem .9rem;min-width:0}
 .stat b{display:block;font-size:2.2rem;font-weight:800;line-height:1.1}.stat small{font-size:.85rem;color:var(--muted)}
 #lobby{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.5rem;align-items:start;flex:1}
-.qr{background:#fff;color:var(--ink);border-radius:.8rem;padding:.8rem;display:grid;gap:.4rem;width:clamp(11rem,min(36vw,calc(100vh - 17rem)),90vw)}
+.qr{background:#fff;color:var(--ink);border-radius:.8rem;padding:.8rem;display:grid;gap:.4rem;width:clamp(11rem,min(34vw,calc(100vh - 17rem)),90vw)}
 .qr img{width:100%;display:block}.qr p{margin:0;font-weight:800;text-align:center;font-size:1.2rem}
 .qr small{text-align:center;font-size:.8rem;color:#55606a;overflow-wrap:anywhere}
-.big{font:italic 700 clamp(2.4rem,min(5.4vw,11vh),6rem)/1.04 var(--display);margin:0 0 .5rem;text-wrap:balance}
-.lobbyInfo{display:flex;flex-direction:column;min-width:0;min-height:0;max-height:calc(100vh - 14rem);max-height:calc(100dvh - 14rem)}
-.names{display:flex;flex-wrap:wrap;align-content:flex-start;gap:.45rem;margin-top:.8rem;flex:1 1 auto;min-height:5rem;overflow-y:auto;padding-right:.3rem}.names span.real{background:rgba(242,111,33,.3)}
-.names span{background:var(--panel);border-radius:.35rem;padding:.35rem .6rem;font-size:1rem;max-width:100%;overflow-wrap:anywhere}
-.warn{background:rgba(255,176,32,.14);border-radius:.45rem;padding:.6rem .8rem;font-size:.95rem;line-height:1.45;margin:.8rem 0 0}
+.big{font:italic 700 clamp(2.2rem,min(5vw,10vh),5.4rem)/1.04 var(--display);margin:0 0 .35rem;text-wrap:balance}
+.lobbyInfo{display:flex;flex-direction:column;min-width:0;min-height:0;max-height:calc(100vh - 13.5rem);max-height:calc(100dvh - 13.5rem)}
+
+/* Chọn bản đồ thi đấu */
+.mapBox{background:var(--panel);border:1px solid var(--line);border-radius:.6rem;padding:.75rem .9rem;margin-top:.65rem;display:grid;gap:.55rem}
+.mapHead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem}
+.mapHead strong{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+.mapGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem}
+.mapCard{background:#121a22;border:1.5px solid var(--line);border-radius:.45rem;padding:.5rem .6rem;text-align:left;color:var(--paper);display:grid;gap:.2rem;min-height:0;cursor:pointer;transition:border-color .15s,background .15s}
+.mapCard:hover{border-color:rgba(242,111,33,.7)}
+.mapCard.active{background:rgba(242,111,33,.22);border-color:var(--orange)}
+.mapCard b{font:italic 700 1.05rem/1.1 var(--display);color:var(--paper)}
+.mapCard.active b{color:#ffd2b0}
+.mapCard small{font-size:.78rem;line-height:1.28;color:var(--muted)}
+.mapCard.readonly{cursor:default;pointer-events:none}
+.mapSummary{font-size:.92rem;line-height:1.4;color:#e6dfd5;margin:0}
+.mapTags{display:flex;flex-wrap:wrap;gap:.35rem}
+.mapTags span{background:rgba(255,245,230,.1);color:#ffd9b3;border-radius:.3rem;padding:.18rem .48rem;font-size:.78rem;font-weight:600}
+
+.names{display:flex;flex-wrap:wrap;align-content:flex-start;gap:.45rem;margin-top:.75rem;flex:1 1 auto;min-height:4.5rem;overflow-y:auto;padding-right:.3rem}
+.names .tag{display:inline-flex;align-items:center;gap:.35rem;background:var(--panel);border-radius:.35rem;padding:.32rem .6rem;font-size:.96rem;max-width:100%;overflow-wrap:anywhere}
+.names .tag.real{background:rgba(242,111,33,.3)}
+.names .kick{background:rgba(0,0,0,.35);color:#ffd2cf;border:0;border-radius:.25rem;min-height:0;padding:.05rem .38rem;font-size:.85rem;font-weight:800;line-height:1.25;cursor:pointer}
+.names .kick:hover{background:#d92d20;color:#fff}
+.warn{background:rgba(255,176,32,.14);border-radius:.45rem;padding:.6rem .8rem;font-size:.92rem;line-height:1.45;margin:.65rem 0 0}
 #countdown{text-align:center;padding-block:2vh}
 #countdown p{font-size:1.5rem;margin:.7rem 0 0}
 #podium{background:var(--paper);color:var(--ink);border-radius:.6rem;padding:1rem 1.2rem;display:grid;gap:.5rem}
@@ -56,6 +78,10 @@ h1{font:italic 700 clamp(2rem,min(4vw,7.5vh),4.4rem)/1 var(--display);margin:0}h
 #podium p{margin:0;font-size:1.15rem;line-height:1.4}
 #podium .phrase{font-weight:800;background:#ffe3c9;padding:.55rem .75rem;border-radius:.35rem}
 .runner{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}.runner div{background:#f0e4d2;border-radius:.35rem;padding:.45rem .7rem;font-size:1.05rem;overflow-wrap:anywhere}
+#depts{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.5rem}
+.dcard{background:var(--panel);border-left:3px solid var(--orange);border-radius:.4rem;padding:.5rem .75rem;display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;font-variant-numeric:tabular-nums}
+.dcard b{font-size:1.02rem}.dcard small{display:block;font-size:.78rem;color:var(--muted)}.dcard strong{font:italic 700 1.25rem var(--display);color:var(--amber);white-space:nowrap}
+
 #rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,34rem),1fr));gap:.3rem .8rem;align-content:start}
 .more{grid-column:1/-1;font-size:1rem;color:var(--muted);padding-top:.2rem}
 .row{display:grid;grid-template-columns:2.4rem minmax(0,1fr) 5.5rem 5.2rem 3.6rem;gap:.6rem;align-items:center;background:var(--panel);padding:.42rem .7rem;border-radius:.35rem;font-variant-numeric:tabular-nums;font-size:1rem;min-height:2.3rem}
@@ -63,55 +89,80 @@ h1{font:italic 700 clamp(2rem,min(4vw,7.5vh),4.4rem)/1 var(--display);margin:0}h
 .row .n{font-weight:800}.row .who{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row .who small{color:var(--muted);font-size:.82em;margin-left:.4rem}
 .row .tm{text-align:right}.row .pts{text-align:right;font-weight:800}.late{color:#ff8a80}
 .bar{height:.5rem;border-radius:.25rem;background:#0b1015;overflow:hidden}.bar i{display:block;height:100%;background:var(--orange)}
-#ctl{position:sticky;bottom:0;margin:auto calc(-1*max(1rem,2.2vw)) -1rem;background:rgba(5,8,11,.96);padding:.6rem max(1rem,2vw);display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;z-index:5}
-button{font:inherit;font-weight:600;font-size:1rem;color:var(--paper);background:transparent;border:1.5px solid rgba(255,245,230,.45);border-radius:.5rem;padding:.6rem .9rem;min-height:44px;cursor:pointer}
-button.main{background:var(--orange);border-color:var(--orange);color:#180800;font:italic 700 1.25rem var(--display)}
+#ctl{position:sticky;bottom:0;margin:auto calc(-1*max(1rem,2.2vw)) -1rem;background:rgba(5,8,11,.96);padding:.6rem max(1rem,2vw);display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;z-index:5}
+button{font:inherit;font-weight:600;font-size:.96rem;color:var(--paper);background:transparent;border:1.5px solid rgba(255,245,230,.45);border-radius:.5rem;padding:.55rem .85rem;min-height:44px;cursor:pointer}
+button.main{background:var(--orange);border-color:var(--orange);color:#180800;font:italic 700 1.2rem var(--display)}
+button.smallBtn{min-height:32px;padding:.25rem .6rem;font-size:.82rem}
 button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
 #gate{position:fixed;inset:0;background:var(--ink);display:grid;place-items:center;padding:1rem;z-index:10}
 #gate form{display:grid;gap:.75rem;width:min(26rem,100%)}#gate input{font:inherit;font-size:max(16px,1rem);padding:.8rem;border-radius:.5rem;border:0;background:var(--paper);color:var(--ink);width:100%}
 #gate p{margin:0;min-height:1.3em;color:#ff8a80}#gate p.lead{color:var(--paper);line-height:1.45;font-size:1rem}#gate .alt{color:var(--paper);text-align:center;font-weight:600;padding:.45rem}
+#confirmDlg{position:fixed;inset:0;background:rgba(5,8,11,.78);display:grid;place-items:center;padding:1rem;z-index:20}
+#confirmDlg .box{background:var(--panel);border:1.5px solid var(--line);border-radius:.75rem;padding:1.25rem;width:min(28rem,100%);display:grid;gap:1rem;box-shadow:0 20px 50px rgba(0,0,0,.55)}
+#confirmDlg p{margin:0;font-size:1.05rem;line-height:1.45}
+#confirmDlg .acts{display:flex;justify-content:flex-end;gap:.6rem}
 #hint{margin-left:auto;font-size:.8rem;color:var(--muted)}
 #net{position:fixed;right:.8rem;top:.8rem;background:#b42318;color:#fff;font-weight:600;padding:.4rem .75rem;border-radius:.45rem;z-index:9}
 /* Dọc: điện thoại và máy bảng đứng */
-@media (max-aspect-ratio:1/1){html{font-size:clamp(14px,2.1vw,30px)}#lobby{grid-template-columns:minmax(0,1fr)}.lobbyInfo{max-height:none}.names{max-height:38vh}.qr{width:min(90%,42vh);justify-self:center}.big{font-size:clamp(2.2rem,9vw,5rem)}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:clamp(2rem,8vw,4rem)}}
-@media (max-width:760px){.row{grid-template-columns:1.9rem minmax(0,1fr) 5.2rem 2.9rem;gap:.4rem}.row .barc{display:none}.row .who small{display:block;margin-left:0}#hint{display:none}.runner{grid-template-columns:1fr}button{flex:1 1 auto}}
+@media (max-aspect-ratio:1/1){html{font-size:clamp(14px,2.1vw,30px)}#lobby{grid-template-columns:minmax(0,1fr)}.lobbyInfo{max-height:none}.names{max-height:36vh}.qr{width:min(90%,40vh);justify-self:center}.big{font-size:clamp(2.2rem,9vw,4.5rem)}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.mapGrid{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:clamp(2rem,8vw,4rem)}}
+@media (max-width:760px){.row{grid-template-columns:1.9rem minmax(0,1fr) 5.2rem 2.9rem;gap:.4rem}.row .barc{display:none}.row .who small{display:block;margin-left:0}#hint{display:none}.runner{grid-template-columns:1fr}.mapGrid{grid-template-columns:1fr 1fr}#ctl button{flex:1 1 auto}}
 /* Màn hình thấp: laptop nhỏ, điện thoại xoay ngang */
 @media (max-height:480px){html{font-size:14px}.lobbyInfo{max-height:calc(100vh - 8rem)}.names{min-height:3rem}#wrap{gap:.5rem;padding-top:.5rem}.stat b{font-size:1.5rem}.qr{width:clamp(8rem,calc(100vh - 12rem),40vw)}.qr p{font-size:.9rem}.qr small{display:none}.sub{display:none}}
 </style></head><body>
-<div id="gate" hidden><form id="gateForm"><h1>Nhà F <em>Đi Làm</em></h1><p class="lead">Nhập mật khẩu MC để tạo giải và mở mã QR cho mọi người đăng ký. Nếu giải đang diễn ra, bạn sẽ quay lại đúng giải đó.</p><label for="key">Mật khẩu MC</label><input id="key" type="password" autocomplete="current-password" required><p id="gateErr" role="alert"></p><button class="main" type="submit">Tạo game mới</button><a class="alt" href="/#trang-chu">Về trang chủ</a></form></div>
-<div id="net" hidden>Mất kết nối với máy chủ</div>
+<div id="gate" hidden><form id="gateForm"><h1>Nhà F <em>Đi Làm</em></h1><p class="lead">Vui lòng nhập mật khẩu Ban Tổ Chức để khởi tạo vòng thi, lựa chọn lộ trình và mở mã QR đăng ký. Nếu vòng thi đang diễn ra, hệ thống sẽ tự động kết nối lại.</p><label for="key">Mật khẩu Ban Tổ Chức</label><input id="key" type="password" autocomplete="current-password" required><p id="gateErr" role="alert"></p><button class="main" type="submit">Mở phòng thi đấu</button><a class="alt" href="/#trang-chu">Về trang chủ</a></form></div>
+<div id="confirmDlg" role="dialog" aria-modal="true" hidden><div class="box"><p id="confirmMsg"></p><div class="acts"><button id="confirmNo" type="button">Hủy</button><button id="confirmYes" class="main" type="button">Xác nhận</button></div></div></div>
+<div id="net" hidden>Mất kết nối với máy chủ, đang tự động khôi phục...</div>
 <div id="wrap">
-  <header><div class="titlewrap"><img class="brand" alt="Logo FPT" hidden><div><h1>Nhà F <em>Đi Làm</em></h1><div class="sub" id="sub"></div></div></div>
-    <div class="clock" id="clockBox" hidden><small>Giờ trong game · hạn <span id="dl"></span></small><canvas id="clock" width="10" height="10"></canvas></div></header>
-  <section id="idle" hidden><p class="big">Chưa có giải nào đang mở</p><div class="sub">MC vào trang /host và nhập mật khẩu để tạo game mới.</div></section>
+  <header><div class="titlewrap"><img class="brand" alt="Logo FPT" hidden><div><h1>Nhà F <em>Đi Làm</em></h1><div class="sub"><span id="sub"></span><span class="mapBadge" id="hdrMap" hidden></span></div></div></div>
+    <div class="clock" id="clockBox" hidden><small>Thời gian mô phỏng · Mốc <span id="dl"></span></small><canvas id="clock" width="10" height="10"></canvas></div></header>
+  <section id="idle" hidden><p class="big">Hiện chưa có vòng thi nào đang mở</p><div class="sub">Ban Tổ Chức vui lòng truy cập /host và đăng nhập để khởi tạo vòng thi mới.</div></section>
   <section id="lobby" hidden>
-    <div class="qr"><img src="/qr.svg" alt="Mã QR vào game"><p>Quét để đăng ký</p></div>
-    <div class="lobbyInfo"><p class="big" id="lobbyBig"></p><div class="sub" id="lobbySub"></div><p id="soloTop" hidden></p><div class="names" id="names"></div><p class="warn" id="tiltWarn" hidden>Máy chủ đang chạy HTTP nên điện thoại không cho đọc cảm biến. Người chơi sẽ vuốt để lái. Muốn lái bằng nghiêng máy, hãy chạy lại bằng npm run start:https.</p></div>
+    <div class="qr"><img src="/qr.svg" alt="Mã QR tham gia"><p>Quét mã QR để đăng ký</p></div>
+    <div class="lobbyInfo">
+      <p class="big" id="lobbyBig"></p>
+      <div class="sub" id="lobbySub"></div>
+      <p id="soloTop" hidden></p>
+      <div class="mapBox">
+        <div class="mapHead">
+          <strong id="mapLabel">Lộ trình thi đấu</strong>
+          <button id="bRandMap" class="smallBtn" type="button" hidden>Chọn ngẫu nhiên</button>
+        </div>
+        <div class="mapGrid" id="mapGrid"></div>
+        <p class="mapSummary" id="mapSummary"></p>
+        <div class="mapTags" id="mapTags"></div>
+      </div>
+      <div class="names" id="names"></div>
+      <p class="warn" id="tiltWarn" hidden>Hệ thống đang chạy qua giao thức HTTP nên thiết bị di động dùng thao tác trượt cảm ứng. Để kích hoạt điều khiển nghiêng máy, vui lòng khởi chạy bằng lệnh npm run start:https.</p>
+    </div>
   </section>
-  <section id="countdown" hidden><canvas id="cdLed" width="10" height="10" style="margin:auto;display:block"></canvas><p>Cầm chắc điện thoại. Sắp xuất phát!</p></section>
+  <section id="countdown" hidden><canvas id="cdLed" width="10" height="10" style="margin:auto;display:block"></canvas><p id="cdText">Quý anh/chị vui lòng giữ ổn định thiết bị. Vòng thi sắp bắt đầu!</p></section>
   <section id="podium" hidden></section>
-  <section id="leader" aria-live="polite" hidden><div class="lab">Đang cao điểm nhất</div><div id="lName"></div><div id="lScore"></div><div id="lInfo"><span id="lMeta"></span> · <span id="lLine"></span></div></section>
+  <section id="leader" aria-live="polite" hidden><div class="lab">Đang dẫn đầu bảng xếp hạng</div><div id="lName"></div><div id="lScore"></div><div id="lInfo"><span id="lMeta"></span> · <span id="lLine"></span></div></section>
   <div class="stats" id="stats" hidden>
     <div class="stat"><b id="sReg">0</b><small>người tham gia</small></div>
     <div class="stat"><b id="sDone">0</b><small>đã về đích</small></div>
-    <div class="stat"><b id="sLate">0</b><small>đi muộn hoặc chưa tới</small></div>
-    <div class="stat"><b id="sFine">0K</b><small>quỹ phạt đi muộn</small></div>
+    <div class="stat"><b id="sLate">0</b><small>chấm công muộn / chưa tới</small></div>
+    <div class="stat"><b id="sFine">0K</b><small>quỹ đi muộn</small></div>
   </div>
+  <div id="depts" hidden></div>
   <div id="rows"></div>
   <div id="ctl" hidden>
-    <button id="bStart" class="main" type="button">Bắt đầu</button>
-    <button id="bBots" type="button">+50 bot thử</button><button id="bClear" type="button">Xóa bot</button>
-    <button id="bEnd" type="button">Kết thúc ngay</button>
-    <button id="bNew" class="main" type="button">Tạo game mới</button><button id="bKeep" type="button">Chơi lại, giữ người chơi</button><button id="bWipe" type="button">Xóa hết người chơi</button>
-    <span id="hint">Phím H: ẩn hoặc hiện thanh này</span>
+    <button id="bStart" class="main" type="button">Bắt đầu vòng thi</button>
+    <button id="bBots" type="button">+50 người chơi mẫu</button><button id="bClear" type="button">Xóa người chơi mẫu</button>
+    <button id="bEnd" type="button">Kết thúc vòng thi</button>
+    <button id="bNew" class="main" type="button">Khởi tạo vòng mới</button><button id="bKeep" type="button">Thi đấu lại (giữ danh sách)</button>
+    <button id="bCsv" type="button">Xuất báo cáo CSV</button>
+    <button id="bWipe" type="button">Xóa danh sách hiện tại</button>
+    <span id="hint">Phím H: ẩn hoặc hiện thanh điều khiển</span>
   </div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script><script src="/game-config.js"></script>
 <script>
 (function(){'use strict';
-var $=function(i){return document.getElementById(i)},CFG=window.DCC,isHost=location.pathname.replace(/\/$/,'')==='/host';
+var $=function(i){return document.getElementById(i)},CFG=window.DCC,MAPS=CFG.maps||[],isHost=location.pathname.replace(/\/$/,'')==='/host';
 var C={led:'#ff4a3d',amber:'#ffb020',ledG:'#37e05a',off:'#1b1f24'};
+function mapOf(id){return MAPS[id]||MAPS[0]||{id:0,name:'F-TOWN',place:'F-Town, TP.HCM',subtitle:'',summary:'',tags:[]}}
 function fmt(s){s=Math.floor(s);var h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=s%60;return(h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(x<10?'0':'')+x}
 var SEG={0:'abcdef',1:'bc',2:'abged',3:'abgcd',4:'fgbc',5:'afgcd',6:'afgedc',7:'abc',8:'abcdefg',9:'abcdfg'};
 function ledW(str,h){var w=0;for(var i=0;i<str.length;i++)w+=str[i]===':'?h*.3:h*.64;return w}
@@ -123,8 +174,17 @@ function ledCanvas(cn,str,h,color){var w=ledW(str,h)+6,d=Math.min(devicePixelRat
 function el(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n}
 $('dl').textContent=fmt(CFG.deadline).slice(0,5);
 Array.prototype.forEach.call(document.querySelectorAll('.brand'),function(b){b.addEventListener('load',function(){b.hidden=false});b.src='/logo'});
+
+/* Hộp thoại xác nhận tùy chỉnh (tránh dùng window.confirm bị thoát toàn màn hình) */
+var confirmAction=null;
+function askConfirm(msg,fn){confirmAction=fn;$('confirmMsg').textContent=msg;$('confirmDlg').hidden=false;$('confirmYes').focus()}
+function closeConfirm(){$('confirmDlg').hidden=true;confirmAction=null}
+$('confirmNo').onclick=closeConfirm;
+$('confirmYes').onclick=function(){var fn=confirmAction;closeConfirm();if(fn)fn()};
+addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('confirmDlg').hidden)closeConfirm()});
+
 var net=io({transports:['websocket','polling']}),B=null,startPerf=0,authed=false,lastKey='';
-var WIN=['Vô địch giờ cao điểm! Bảo vệ cũng phải đứng dậy chào.','Người đi làm nhanh nhất công ty hôm nay. Được quyền kể chuyện này ở căng tin cả ngày.','Không ai nhanh hơn! Hãy cố gắng phát huy vào sáng mai.'],winLine={};
+var WIN=['Xin chúc mừng Quán quân giờ cao điểm! Thành tích xuất sắc và tác phong đúng giờ đáng ngưỡng mộ.','Vinh danh cán bộ nhân viên về đích ấn tượng nhất hôm nay! Xin gửi lời chúc mừng nồng nhiệt.','Phong độ đỉnh cao và làm chủ lộ trình xuất sắc! Xin chúc mừng nhà vô địch của vòng thi.'],winLine={};
 function sess(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v)}catch(e){return null}}
 function onBoard(b){B=b;if(b.phase==='racing')startPerf=performance.now()+b.startsInMs;render()}
 net.on('board',onBoard);
@@ -132,54 +192,106 @@ net.on('connect',function(){$('net').hidden=true;
   net.emit('board:watch',onBoard);
   if(isHost){var k=sess('dcc-key');if(k)auth(k);else $('gate').hidden=false}});
 net.on('disconnect',function(){$('net').hidden=false});
-function auth(k){net.emit('host:auth',k,function(r){authed=r.ok;$('gate').hidden=r.ok;if(r.ok){sess('dcc-key',k);$('ctl').hidden=false;onBoard(r.board)}else{$('gateErr').textContent='Sai mật khẩu. Mật khẩu được in ở cửa sổ chạy máy chủ.'}})}
+function auth(k){net.emit('host:auth',k,function(r){authed=r.ok;$('gate').hidden=r.ok;if(r.ok){sess('dcc-key',k);$('ctl').hidden=false;onBoard(r.board)}else{$('gateErr').textContent='Mật khẩu chưa chính xác. Vui lòng kiểm tra lại mật khẩu tại cửa sổ máy chủ.'}})}
 $('gateForm').addEventListener('submit',function(e){e.preventDefault();auth($('key').value)});
 function secText(s){return s==null?'Chưa tới':fmt(s)}
-function render(){if(!B)return;var b=B,now=performance.now(),rows=$('rows'),count=b.count;
-  $('lobby').hidden=b.phase!=='lobby';$('stats').hidden=b.phase==='lobby'||b.phase==='idle';$('idle').hidden=b.phase!=='idle';if(b.phase==='idle'){$('sub').textContent='Chưa có giải nào đang mở';$('rows').innerHTML=''}
+
+function renderMapPicker(b){
+  var cur=mapOf(b.mapId),grid=$('mapGrid');
+  $('mapLabel').textContent=authed?'Chọn lộ trình thi đấu ('+cur.place+')':'Lộ trình thi đấu: '+cur.place;
+  $('bRandMap').hidden=!authed;
+  grid.innerHTML='';
+  MAPS.forEach(function(m){
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='mapCard'+(m.id===cur.id?' active':'')+(authed?'':' readonly');
+    btn.appendChild(el('b','',m.place));
+    btn.appendChild(el('small','',m.subtitle));
+    if(authed){btn.onclick=function(){if(m.id!==b.mapId)net.emit('host:setMap',m.id)}}
+    grid.appendChild(btn);
+  });
+  $('mapSummary').textContent=cur.summary;
+  var tg=$('mapTags');tg.innerHTML='';
+  (cur.tags||[]).forEach(function(t){tg.appendChild(el('span','',t))});
+}
+
+function renderDepts(b){
+  var box=$('depts');
+  var show=(b.phase==='finished'||(b.phase==='racing'&&performance.now()>=startPerf))&&b.depts&&b.depts.length>=2;
+  box.hidden=!show;
+  if(!show)return;
+  box.innerHTML='';
+  b.depts.slice(0,4).forEach(function(d,i){
+    var card=el('div','dcard');
+    var left=el('div','');
+    left.appendChild(el('b','',(i+1)+'. '+d.dept));
+    left.appendChild(el('small','',d.count+' người · '+d.done+' về đích'+(d.fineK?' · phạt '+d.fineK+'K':'')));
+    card.appendChild(left);
+    card.appendChild(el('strong','',d.avg+' đ'));
+    box.appendChild(card);
+  });
+}
+
+function render(){if(!B)return;var b=B,now=performance.now(),rows=$('rows'),count=b.count,curMap=mapOf(b.mapId);
+  $('lobby').hidden=b.phase!=='lobby';$('stats').hidden=b.phase==='lobby'||b.phase==='idle';$('idle').hidden=b.phase!=='idle';
+  $('hdrMap').hidden=b.phase==='idle';$('hdrMap').textContent=curMap.place;
+  if(b.phase==='idle'){$('sub').textContent='Hiện chưa có vòng thi nào đang mở';$('rows').innerHTML=''}
   $('sReg').textContent=count;$('sDone').textContent=b.done;$('sLate').textContent=b.late;$('sFine').textContent=b.fineK+'K';
   if(b.phase==='lobby'){
-    $('sub').textContent='Đang nhận đăng ký';$('lobbyBig').textContent=count+' / '+b.max+' người';
-    $('lobbySub').textContent=b.online+' máy đang mở game'+(b.bots?' · '+b.bots+' bot':'');if($('url'))$('url').textContent=b.joinUrl;$('tiltWarn').hidden=b.tilt||!authed;
-    var nm=$('names'),top=nm.scrollTop,real=[],bots=[];b.rows.forEach(function(r){(r.b?bots:real).unshift(r)});nm.innerHTML='';real.concat(bots).forEach(function(r){nm.appendChild(el('span',r.b?'':'real',r.d?r.n+' · '+r.d:r.n))});nm.scrollTop=top;rows.innerHTML='';
+    $('sub').textContent='Đang mở cổng đăng ký';$('lobbyBig').textContent=count+' / '+b.max+' người';
+    $('lobbySub').textContent=b.online+' thiết bị đang kết nối'+(b.bots?' · '+b.bots+' người chơi mẫu':'');$('tiltWarn').hidden=b.tilt||!authed;
+    renderMapPicker(b);
+    var nm=$('names'),top=nm.scrollTop,real=[],bots=[];b.rows.forEach(function(r){(r.b?bots:real).unshift(r)});nm.innerHTML='';
+    real.concat(bots).forEach(function(r){
+      var sp=el('span','tag'+(r.b?'':' real'));
+      sp.appendChild(document.createTextNode(r.d?r.n+' · '+r.d:r.n));
+      if(authed){
+        var kb=document.createElement('button');kb.type='button';kb.className='kick';kb.textContent='×';kb.title='Gỡ '+r.n+' khỏi danh sách đăng ký';kb.setAttribute('aria-label','Gỡ '+r.n);
+        kb.onclick=function(){askConfirm('Xác nhận gỡ "'+r.n+'" khỏi danh sách đăng ký?',function(){net.emit('host:kick',r.i)})};
+        sp.appendChild(kb);
+      }
+      nm.appendChild(sp);
+    });
+    nm.scrollTop=top;rows.innerHTML='';
   }
-  var st=$('soloTop');if(b.phase==='lobby'&&b.soloTop){st.textContent='';st.appendChild(el('b','','Kỷ lục solo: '));st.appendChild(document.createTextNode(b.soloTop.n+' · '+b.soloTop.c+' điểm'));st.hidden=false}else st.hidden=true;
-  renderLeader(b);renderWinner(b);
+  var st=$('soloTop');if(b.phase==='lobby'&&b.soloTop){var sm=mapOf(b.soloTop.m);st.textContent='';st.appendChild(el('b','','Kỷ lục Chế độ Solo ('+sm.name+'): '));st.appendChild(document.createTextNode(b.soloTop.n+' · '+b.soloTop.c+' điểm'));st.hidden=false}else st.hidden=true;
+  renderLeader(b);renderWinner(b);renderDepts(b);
   renderCtl();
   var pod=$('podium');
   if(b.phase==='finished'){
-    $('sub').textContent='Kết thúc giải';var d=b.rows.filter(function(r){return r.t!=null});var w=b.rows[0];pod.hidden=!w;
+    $('sub').textContent='Tổng kết vòng thi · '+curMap.place;var w=b.rows[0];pod.hidden=!w;
     if(w&&lastKey!==b.gameId+b.rows.length+w.n){lastKey=b.gameId+b.rows.length+w.n;pod.innerHTML='';
-      pod.appendChild(el('div','lab','Người thắng cuộc'));pod.appendChild(el('h2','',w.n));
-      pod.appendChild(el('p','',(w.d?w.d+' · ':'')+w.c+' điểm · '+(w.t!=null?'về đích lúc '+fmt(w.t):'chưa tới cổng')));
+      pod.appendChild(el('div','lab','Vinh danh Quán quân · '+curMap.place));pod.appendChild(el('h2','',w.n));
+      pod.appendChild(el('p','',(w.d?w.d+' · ':'')+w.c+' điểm · '+(w.t!=null?'về đích lúc '+fmt(w.t):'chưa hoàn tất lộ trình')));
       if(!winLine[b.gameId])winLine[b.gameId]=WIN[Math.random()*WIN.length|0];pod.appendChild(el('p','phrase',winLine[b.gameId]));
       var rn=el('div','runner');b.rows.slice(1,3).forEach(function(r,i){rn.appendChild(el('div','',(i===0?'Á quân: ':'Hạng ba: ')+r.n+' · '+r.c+' điểm'))});pod.appendChild(rn);
       drawRows(b.rows,true)}
   }else pod.hidden=true;
   if(b.phase==='racing'){
-    var going=now>=startPerf;$('sub').textContent=going?'Đang đua: điểm cập nhật trực tiếp':'Sắp xuất phát';$('countdown').hidden=going;
+    var going=now>=startPerf;$('sub').textContent=going?'Vòng thi đang diễn ra · Cập nhật trực tiếp':'Chuẩn bị xuất phát';$('countdown').hidden=going;
+    $('cdText').textContent='Lộ trình: '+curMap.place+' · '+curMap.subtitle;
     var fit=fitCount(b.rows.length);drawRows(b.rows.slice(0,fit),false);
-    if(b.rows.length>fit)rows.appendChild(el('div','more','Còn '+(b.rows.length-fit)+' người phía sau'));
+    if(b.rows.length>fit)rows.appendChild(el('div','more','Và '+(b.rows.length-fit)+' người tham gia khác đang tiếp tục thi đấu'));
   }else $('countdown').hidden=true;
   $('clockBox').hidden=b.phase!=='racing';
 }
-var LEAD=['Bảo vệ đã mở sẵn cổng chờ người này.','Cả đoàn chỉ còn thấy khói xe.','Đi nhanh thế này, sếp cũng phải nể.','Chỗ để xe đẹp nhất sắp có chủ.','Ly cà phê đầu tiên ở căng tin là của người này.'],leadKey='';
+var LEAD=['Tốc độ bứt phá ấn tượng — đang tiến rất gần đến cổng văn phòng!','Đang duy trì vị trí dẫn đầu toàn đoàn với phong độ rất ổn định.','Khoảng cách dẫn đầu đầy thuyết phục trên đường đua hôm nay!','Tác phong đúng giờ ấn tượng — đang dẫn nhịp toàn bộ bảng xếp hạng!','Màn thể hiện xuất sắc, hứa hẹn sớm hoàn tất chấm công đúng giờ!'],leadKey='';
 function renderLeader(b){var box=$('leader'),w=b.rows[0],go=b.phase==='racing'&&performance.now()>=startPerf&&w&&w.c>0;box.hidden=!go;if(!go){leadKey='';return}
   $('lScore').textContent=w.c;$('lScore').appendChild(el('small','','điểm'));$('lName').textContent=w.n;
-  $('lMeta').textContent=(w.d?w.d+' · ':'')+(w.s==='done'&&w.t!=null?'về đích lúc '+fmt(w.t):'đã đi '+w.p+'% đường');
+  $('lMeta').textContent=(w.d?w.d+' · ':'')+(w.s==='done'&&w.t!=null?'về đích lúc '+fmt(w.t):'hoàn thành '+w.p+'% lộ trình');
   if(leadKey!==w.n){var first=!leadKey;leadKey=w.n;$('lLine').textContent=LEAD[Math.random()*LEAD.length|0];if(!first&&!matchMedia('(prefers-reduced-motion:reduce)').matches){box.classList.remove('pop');void box.offsetWidth;box.classList.add('pop')}}}
 
 function showWinnerOverlay(w,opts){opts=opts||{};var old=document.getElementById('winOv');if(old)old.remove();
-  var ov=document.createElement('div');ov.id='winOv';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Người thắng cuộc');
+  var ov=document.createElement('div');ov.id='winOv';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Vinh danh Quán quân');
   var cols=['#f26f21','#ffb020','#37b34a','#0a6ebd','#fff5e6','#ff4a3d'];
   for(var i=0;i<34;i++){var c=document.createElement('i');c.className='cf';c.style.left=(Math.random()*100)+'%';c.style.background=cols[i%6];c.style.animationDuration=(2.4+Math.random()*3)+'s';c.style.animationDelay=(-Math.random()*5)+'s';ov.appendChild(c)}
   var card=document.createElement('div');card.className='card';
   card.innerHTML='<svg class="crown" viewBox="0 0 64 44" aria-hidden="true"><path d="M4 40 L0 10 L18 22 L32 2 L46 22 L64 10 L60 40 Z" fill="#ffb020"/><rect x="4" y="36" width="56" height="6" rx="2" fill="#f26f21"/></svg>';
   function add(cls,t){var d=document.createElement('div');d.className=cls;d.textContent=t;card.appendChild(d);return d}
-  add('lab',opts.me?'BẠN LÀ NGƯỜI THẮNG CUỘC!':'NGƯỜI THẮNG CUỘC');add('nm',w.name);add('info',(w.dept?w.dept+' · ':'')+w.score+' điểm'+(w.sec!=null?' · về đích lúc '+opts.fmt(w.sec):''));if(opts.say)add('say',opts.say);
+  add('lab',opts.me?'CHÚC MỪNG BẠN LÀ QUÁN QUÂN!':'VINH DANH QUÁN QUÂN');add('nm',w.name);add('info',(w.dept?w.dept+' · ':'')+w.score+' điểm'+(w.sec!=null?' · về đích lúc '+opts.fmt(w.sec):''));if(opts.say)add('say',opts.say);
   if(opts.rest&&opts.rest.length){var r=add('rest','');opts.rest.forEach(function(x,i){var s=document.createElement('span');s.textContent=(i===0?'Á quân: ':'Hạng ba: ')+x.name+' · '+x.score+' điểm';r.appendChild(s)})}
   var b=document.createElement('button');b.type='button';b.className='close';b.textContent='Xem bảng xếp hạng';b.addEventListener('click',function(){ov.remove();if(opts.onClose)opts.onClose()});card.appendChild(b);
-  ov.appendChild(card);document.getElementById(opts.root||'app').appendChild(ov);b.focus({preventScroll:true});}
+  ov.appendChild(card);document.getElementById(opts.root||'wrap').appendChild(ov);b.focus({preventScroll:true});}
 var winShown='';
 function renderWinner(b){var w=b.rows[0];if(b.phase!=='finished'){var o=document.getElementById('winOv');if(o)o.remove();winShown='';return}
   var key=b.gameId;if(!w||winShown===key)return;winShown=key;if(!winLine[b.gameId])winLine[b.gameId]=WIN[Math.random()*WIN.length|0];
@@ -191,20 +303,22 @@ function drawRows(list,all){var rows=$('rows');rows.innerHTML='';list.forEach(fu
   x.appendChild(el('span','n',i+1));var w=el('span','who',r.n);if(r.d)w.appendChild(el('small','',r.d));x.appendChild(w);
   var bc=el('span','barc');var br=el('div','bar');var f=el('i');f.style.width=(fin&&r.t!=null?100:r.p)+'%';br.appendChild(f);bc.appendChild(br);x.appendChild(bc);
   x.appendChild(el('span','tm'+(fin&&(r.t==null||r.t>CFG.deadline)?' late':''),fin?secText(r.t):r.p+'%'));x.appendChild(el('span','pts',r.c));rows.appendChild(x)})}
-function renderCtl(){if(!authed||!B)return;var p=B.phase;$('bStart').hidden=p!=='lobby';$('bBots').hidden=p!=='lobby';$('bClear').hidden=p!=='lobby'||!B.bots;$('bEnd').hidden=p!=='racing';$('bNew').hidden=p!=='finished';$('bKeep').hidden=p!=='finished';$('bWipe').hidden=p!=='lobby';
-  $('bStart').textContent='Bắt đầu cho '+B.count+' người';$('bStart').disabled=B.count<1}
+function renderCtl(){if(!authed||!B)return;var p=B.phase;$('bStart').hidden=p!=='lobby';$('bBots').hidden=p!=='lobby';$('bClear').hidden=p!=='lobby'||!B.bots;$('bEnd').hidden=p!=='racing';$('bNew').hidden=p!=='finished';$('bKeep').hidden=p!=='finished';$('bWipe').hidden=p!=='lobby';$('bCsv').hidden=p!=='finished'||B.count<1;
+  $('bStart').textContent='Bắt đầu vòng thi ('+B.count+' người)';$('bStart').disabled=B.count<1}
 function tick(){if(B&&B.phase==='racing'){var left=startPerf-performance.now();
   if(left>0){$('countdown').hidden=false;ledCanvas($('cdLed'),String(Math.ceil(left/1000)),Math.min(innerWidth*.4,innerHeight*.28),C.amber)}
   else{$('countdown').hidden=true;var s=CFG.clock0+(-left/1000)*CFG.rate;ledCanvas($('clock'),fmt(s),Math.max(26,Math.min(innerWidth*.032,innerHeight*.06)),s>CFG.deadline?C.led:s>CFG.deadline-300?C.amber:C.ledG)}}
   setTimeout(tick,250)}
 tick();
 function emit(ev,a){net.emit(ev,a)}
-$('bStart').onclick=function(){if(confirm('Chốt danh sách và bắt đầu cho '+B.count+' người?'))emit('host:start')};
+$('bRandMap').onclick=function(){if(!B||MAPS.length<2)return;var next=(B.mapId+1+Math.floor(Math.random()*(MAPS.length-1)))%MAPS.length;emit('host:setMap',next)};
+$('bStart').onclick=function(){var m=mapOf(B.mapId);askConfirm('Xác nhận chốt danh sách và bắt đầu vòng thi cho '+B.count+' người trên lộ trình '+m.place+'?',function(){emit('host:start')})};
 $('bBots').onclick=function(){emit('host:bots')};$('bClear').onclick=function(){emit('host:clearBots')};
-$('bEnd').onclick=function(){if(confirm('Kết thúc giải ngay? Ai chưa về đích sẽ tính theo quãng đường.'))emit('host:end')};
-$('bNew').onclick=function(){if(confirm('Tạo game mới? Kết quả giải này sẽ bị xóa và mọi người phải đăng ký lại.'))emit('host:new',false)};
+$('bEnd').onclick=function(){askConfirm('Xác nhận kết thúc vòng thi ngay bây giờ? Người tham gia chưa về đích sẽ được tính điểm theo quãng đường hiện tại.',function(){emit('host:end')})};
+$('bNew').onclick=function(){askConfirm('Xác nhận khởi tạo vòng thi mới? Kết quả vòng trước sẽ được làm mới và người chơi sẽ đăng ký lại.',function(){emit('host:new',false)})};
 $('bKeep').onclick=function(){emit('host:new',true)};
-$('bWipe').onclick=function(){if(confirm('Xóa hết người chơi trong giải? Bảng xếp hạng solo vẫn giữ nguyên.'))emit('host:new',false)};
+$('bWipe').onclick=function(){askConfirm('Xác nhận xóa toàn bộ danh sách đăng ký hiện tại? Bảng xếp hạng Solo vẫn được bảo lưu.',function(){emit('host:new',false)})};
+$('bCsv').onclick=function(){net.emit('host:export',function(r){if(!r||!r.ok)return;var blob=new Blob([r.csv],{type:'text/csv;charset=utf-8;'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=r.filename||'ket-qua.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},2000)})};
 addEventListener('keydown',function(e){if((e.key==='h'||e.key==='H')&&authed&&e.target.tagName!=='INPUT')$('ctl').hidden=!$('ctl').hidden});
 })();
 </script></body></html>

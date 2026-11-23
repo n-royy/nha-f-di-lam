@@ -3,6 +3,53 @@
 const env = process.env;
 const num = (v, d) => (v !== undefined && v !== '' && !isNaN(+v) ? +v : d);
 
+const MAPS = [
+  {
+    id: 0,
+    code: 'ftown',
+    name: 'F-TOWN',
+    place: 'F-Town, TP.HCM',
+    subtitle: 'Khu Công Nghệ Cao · Mùa Triều Cường',
+    summary: 'Mưa rào bất chợt, đoạn đường ngập sâu dễ tắt máy, rào chắn công trình và xe giao hàng chuyển làn đột ngột.',
+    tags: ['Mưa & Triều cường', 'Xe giao hàng chuyển làn', 'Rào chắn công trình'],
+    speedMul: 1.0,
+    maxPicks: 16,
+  },
+  {
+    id: 1,
+    code: 'fville',
+    name: 'F-VILLE',
+    place: 'F-Ville, Hòa Lạc',
+    subtitle: 'Đại Lộ Thăng Long · Cao Tốc Sương Mù',
+    summary: 'Tuyến cao tốc tốc độ cao, ít giao lộ nhưng có sương mù dày, xe tải trọng lớn, xe buýt FPT và gió ngang cầu vượt.',
+    tags: ['Cao tốc +12%', 'Sương mù dày', 'Xe tải & Xe buýt FPT'],
+    speedMul: 1.12,
+    maxPicks: 16,
+  },
+  {
+    id: 2,
+    code: 'tower',
+    name: 'FPT TOWER',
+    place: 'FPT Tower, Cầu Giấy',
+    subtitle: 'Nội Đô Hà Nội · Giờ Cao Điểm',
+    summary: '6 ngã tư đèn tín hiệu liên tiếp, phương tiện chuyển hướng bất ngờ, mật độ giao thông cao và thông báo họp sáng liên tục.',
+    tags: ['6 ngã tư đèn đỏ', 'Chuyển hướng bất ngờ', 'Giờ cao điểm nội đô'],
+    speedMul: 0.98,
+    maxPicks: 16,
+  },
+  {
+    id: 3,
+    code: 'complex',
+    name: 'FPT COMPLEX',
+    place: 'FPT Complex, Đà Nẵng',
+    subtitle: 'Cung Đường Biển · Nắng Gió Miền Trung',
+    summary: 'Gió biển thổi ngang làm lệch tay lái, nắng gắt dễ tăng nhiệt động cơ, làn xe đạp ven biển cùng các dải gió thuận tăng tốc.',
+    tags: ['Gió biển thổi ngang', 'Nắng gắt tăng nhiệt', 'Dải gió thuận'],
+    speedMul: 1.04,
+    maxPicks: 16,
+  },
+];
+
 module.exports = {
   PORT: num(env.PORT, 3000),
   HTTPS_PORT: num(env.HTTPS_PORT, 3443),
@@ -40,4 +87,6 @@ module.exports = {
 
   DEPARTMENTS: (env.DEPARTMENTS || 'FSOFT,FIS,FTEL,FRT,FPT Education,FPT Corporation,Khác')
     .split(',').map(s => s.trim()).filter(Boolean),
+
+  MAPS,
 };

@@ -1,9 +1,10 @@
 // Giả lập N điện thoại nối qua mạng và tự đua đến hết giải.
-// Chạy: node test/simulate.js [URL] [số người] [mật khẩu MC]
+// Chạy: node test/simulate.js [URL] [số người] [mật khẩu MC] [mapId 0-3]
 const { io } = require('socket.io-client');
 const URL = process.argv[2] || 'http://localhost:3000';
 const N = +(process.argv[3] || 500);
 const KEY = process.argv[4] || 'admin';
+const MAP_ID = process.argv[5] !== undefined ? +process.argv[5] : 1;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 (async () => {
@@ -14,7 +15,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   if (!auth.ok) { console.log('Sai mật khẩu MC'); process.exit(1); }
   B = auth.board;
   host.emit('host:new', false);
-  await sleep(500);
+  await sleep(300);
+  host.emit('host:setMap', MAP_ID);
+  await sleep(300);
 
   const clients = [];
   let rankMsgs = 0, joined = 0, rejected = 0, results = 0, wrongWinner = 0, acks = 0, rtts = [];
@@ -30,20 +33,21 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     if (i % 50 === 49) await sleep(50);
   }
   await sleep(2500);
-  console.log(`Đăng ký: ${joined} | Bị từ chối vì vượt giới hạn: ${rejected} | ${Date.now() - t0}ms`);
+  console.log(`Bản đồ: #${B.mapId} | Đăng ký: ${joined} | Bị từ chối vì vượt giới hạn: ${rejected} | ${Date.now() - t0}ms`);
 
   function race(s, delay) {
     const seconds = 40 + Math.random() * 45;
     setTimeout(() => {
-      const start = Date.now(); let hits = 0;
+      const start = Date.now(); let hits = 0; let nm = 0;
       const timer = setInterval(() => {
         const p = Math.min(1, (Date.now() - start) / 1000 / seconds);
         if (Math.random() < 0.05) hits++;
+        if (Math.random() < 0.08) nm++;
         const t1 = Date.now();
         if (p >= 1) {
           clearInterval(timer);
-          s.emit('finish', { arrived: true, p: 1, h: hits, r: 0, b: 1 }, r => { acks++; rtts.push(Date.now() - t1); s._done = r; });
-        } else s.volatile.emit('progress', { p, h: hits, r: 0, b: 1 });
+          s.emit('finish', { arrived: true, p: 1, h: hits, r: 0, b: 2, nm }, r => { acks++; rtts.push(Date.now() - t1); s._done = r; });
+        } else s.volatile.emit('progress', { p, h: hits, r: 0, b: 2, nm });
       }, 2000 + Math.random() * 300);
     }, delay);
   }
@@ -61,10 +65,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     if (B.startsInMs < 0 && ++shown % 3 === 0) console.log(`  đang đua: về đích ${B.done}/${B.count}, dẫn đầu ${B.rows[0].n} ${B.rows[0].c} điểm, ${B.rows[0].p}%`);
   }
   await sleep(1500);
-  const live = B.rows.filter(r => r.c > 0).length;
+  const csvRes = await new Promise(r => host.emit('host:export', r));
   const sorted = rtts.sort((a, b) => a - b);
   console.log(`Kết thúc: ${B.phase}. Về đích ${B.done}/${B.count}, đi muộn ${B.late}, quỹ phạt ${B.fineK}K`);
   console.log(`Người thắng: ${B.rows[0].n}, ${B.rows[0].c} điểm, giờ ${B.rows[0].t}`);
+  console.log(`Xuất CSV: ${csvRes && csvRes.ok ? csvRes.filename + ' (' + csvRes.csv.split('\n').length + ' dòng)' : 'LỖI'}`);
   console.log(`Thứ hạng gửi về điện thoại: ${rankMsgs} lần, ${clients.filter(c => c._rank).length} máy đã nhận`);
   console.log(`Máy nhận kết quả cuối: ${results}/${joined}`);
   console.log(`Gửi điểm về đích: ${acks} lần, thời gian phản hồi trung vị ${sorted[sorted.length >> 1]}ms, chậm nhất ${sorted[sorted.length - 1]}ms`);
