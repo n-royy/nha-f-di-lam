@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nhà F Đi Làm — Slide dự thi Cuộc thi AI Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&family=Chakra+Petch:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#11181f;
+  --ink-2:#2c3742;
+  --muted:#5a6672;
+  --surface:#faf8f4;
+  --card:#ffffff;
+  --line:rgba(17,24,31,.11);
+  --dark:#0f151c;
+  --dark-card:#17202b;
+  --dark-line:rgba(255,248,239,.14);
+  --paper:#fff8ef;
+  --paper-muted:#a9b4bf;
+  --orange:#f26f21;
+  --blue:#0a6ebd;
+  --green:#37b34a;
+  --display:'Chakra Petch','Be Vietnam Pro',system-ui,sans-serif;
+  --body:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0a0e13;color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow:hidden}
+[hidden]{display:none!important}
+
+#stage{position:fixed;inset:0 0 56px 0;display:flex;align-items:center;justify-content:center;padding:18px;overflow:hidden}
+#deck{position:relative;width:1280px;height:720px;transform-origin:center center;box-shadow:0 28px 80px rgba(0,0,0,.55);border-radius:10px;overflow:hidden;background:var(--surface)}
+
+.slide{position:absolute;inset:0;width:1280px;height:720px;padding:52px 66px 48px;display:flex;flex-direction:column;justify-content:space-between;background:var(--surface);color:var(--ink);opacity:0;pointer-events:none;transition:opacity .25s ease;overflow:hidden}
+.slide.active{opacity:1;pointer-events:auto;z-index:2}
+.slide.dark{background:var(--dark);color:var(--paper)}
+
+.meta{font-size:12.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.slide.dark .meta{color:var(--paper-muted)}
+.meta-brand{display:flex;align-items:center;gap:12px}
+.tri{display:inline-flex;gap:4px;align-items:center}
+.tri i{display:block;width:14px;height:4px;border-radius:1px}
+.tri .b{background:var(--blue)}.tri .o{background:var(--orange)}.tri .g{background:var(--green)}
+.accent-text{color:var(--orange)}
+.tnum{font-variant-numeric:tabular-nums}
+
+h1,h2,h3{margin:0;text-wrap:balance}
+.display-xl{font:italic 700 80px/.98 var(--display);letter-spacing:-.015em}
+.display-lg{font:italic 700 42px/1.1 var(--display);letter-spacing:-.01em}
+.display-md{font:italic 700 26px/1.15 var(--display)}
+.lead{font-size:18.5px;line-height:1.52;color:var(--ink-2);max-width:60ch;margin:0}
+.slide.dark .lead{color:#d3dbe3}
+.body-sm{font-size:14.5px;line-height:1.52;color:var(--muted);margin:0}
+.slide.dark .body-sm{color:var(--paper-muted)}
+
+.s-head{display:flex;flex-direction:column;gap:9px}
+.s-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--muted)}
+.slide.dark .s-foot{border-top-color:var(--dark-line);color:var(--paper-muted)}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch}
+.grid-2-wide{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
+.kicker.blue{color:var(--blue)}.kicker.green{color:var(--green)}.kicker.muted{color:var(--muted)}
+
+/* Slide 1 */
+.cover-grid{display:grid;grid-template-columns:1.06fr 1.04fr;gap:42px;align-items:center;flex:1;padding:10px 0}
+.cover-left{display:flex;flex-direction:column;gap:20px}
+.cover-title{font:italic 700 84px/.95 var(--display);color:var(--paper)}
+.cover-title em{font-style:italic;color:var(--orange);display:block}
+.cover-metrics{display:grid;grid-template-columns:repeat(3,auto);gap:28px;padding-top:16px;border-top:1px solid var(--dark-line);width:fit-content}
+.cover-metrics b{font:italic 700 28px/1 var(--display);color:var(--paper);display:block;font-variant-numeric:tabular-nums}
+.cover-metrics span{font-size:12.5px;color:var(--paper-muted);font-weight:600}
+.art-panel{border-radius:12px;overflow:hidden;border:1px solid var(--dark-line);background:linear-gradient(180deg,#15212d 0%,#1f2f3d 100%);height:460px;display:flex;align-items:center;justify-content:center;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+
+/* Slide 2 */
+.problem-item{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--line);align-items:start}
+.problem-item:last-child{border-bottom:1px solid var(--line)}
+.problem-idx{font:italic 700 22px/1.1 var(--display);color:var(--orange);font-variant-numeric:tabular-nums}
+.problem-item h3{font-size:17px;font-weight:800;margin-bottom:5px;color:var(--ink)}
+.insight-panel{background:var(--dark);color:var(--paper);border-radius:12px;padding:34px 36px;display:flex;flex-direction:column;justify-content:space-between;gap:20px}
+.insight-quote{font:italic 700 30px/1.24 var(--display);color:var(--paper);text-wrap:balance}
+.insight-quote em{color:var(--orange);font-style:italic}
+.insight-stats{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-top:18px;border-top:1px solid var(--dark-line)}
+.insight-stats b{font:italic 700 30px/1 var(--display);color:var(--paper);display:block;margin-bottom:5px;font-variant-numeric:tabular-nums}
+.insight-stats span{font-size:13.5px;color:var(--paper-muted);line-height:1.42;display:block}
+
+/* Slide 3 */
+.rider-stage{background:linear-gradient(180deg,#16202a 0%,#22303d 100%);border-radius:12px;padding:24px 28px;display:flex;flex-direction:column;justify-content:space-between;gap:16px;color:var(--paper);height:100%}
+.rider-svg-wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:230px}
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-top:16px;border-top:1px solid var(--dark-line)}
+.swatch{display:flex;align-items:center;gap:10px}
+.swatch i{width:26px;height:26px;border-radius:6px;flex:none}
+.swatch b{display:block;font-size:13px;color:var(--paper)}.swatch small{display:block;font-size:11.5px;color:var(--paper-muted)}
+.pillar-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pillar{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.pillar h3{font-size:16.5px;font-weight:800;color:var(--ink)}
+
+/* Slide 4 */
+.mode-col{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 28px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.mode-col.highlight{background:#121a22;color:var(--paper);border-color:rgba(242,111,33,.35)}
+.mode-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.mode-col.highlight .mode-head{border-bottom-color:var(--dark-line)}
+.mode-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.mode-list li{display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:14.8px;line-height:1.45;color:var(--ink-2)}
+.mode-col.highlight .mode-list li{color:#d5dde5}
+.mode-list li::before{content:'—';color:var(--orange);font-weight:800}
+.mode-col:not(.highlight) .mode-list li::before{color:var(--blue)}
+.mode-foot{padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:12.8px;font-weight:700;color:var(--muted)}
+.mode-col.highlight .mode-foot{border-top-color:var(--dark-line);color:var(--paper-muted)}
+.mode-foot code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--ink);background:rgba(17,24,31,.06);padding:3px 7px;border-radius:4px}
+.mode-col.highlight .mode-foot code{color:#ffd5b5;background:rgba(255,255,255,.08)}
+
+/* Slide 5 */
+.campus-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;height:210px}
+.campus-vis{border-radius:10px;overflow:hidden;border:1px solid var(--line);position:relative}
+.map-col{display:flex;flex-direction:column;gap:6px;padding-top:14px;border-top:2px solid var(--ink)}
+.map-col.c1{border-top-color:var(--blue)}.map-col.c2{border-top-color:#5b738b}.map-col.c3{border-top-color:var(--orange)}.map-col.c4{border-top-color:var(--green)}
+.map-col h3{font:italic 700 22px/1.1 var(--display);color:var(--ink)}
+.map-col .loc{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.map-col p{font-size:13.5px;line-height:1.48;color:var(--ink-2);margin:2px 0 0}
+.map-col .spec{margin-top:auto;padding-top:8px;font-size:12.2px;font-weight:700;color:var(--muted)}
+
+/* Slide 6 */
+.ai-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.ai-num{font:italic 700 32px/1 var(--display);color:var(--orange);font-variant-numeric:tabular-nums}
+.ai-card.b .ai-num{color:var(--blue)}.ai-card.g .ai-num{color:var(--green)}
+.ai-card h3{font-size:18px;font-weight:800;line-height:1.25;color:var(--ink)}
+.ai-pts{list-style:none;margin:4px 0 0;padding:12px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px;font-size:13.8px;line-height:1.45;color:var(--ink-2)}
+.ai-pts li{display:grid;grid-template-columns:12px 1fr;gap:8px}
+.ai-pts li::before{content:'·';font-weight:800;color:var(--orange);font-size:18px;line-height:1.1}
+.ai-card.b .ai-pts li::before{color:var(--blue)}.ai-card.g .ai-pts li::before{color:var(--green)}
+.ai-banner{display:grid;grid-template-columns:1.05fr 2fr;gap:24px;align-items:center;background:#121a22;color:var(--paper);border-radius:10px;padding:18px 26px}
+.ai-banner b{font:italic 700 19px/1.2 var(--display);color:var(--orange)}
+.ai-banner p{margin:0;font-size:14.2px;line-height:1.48;color:#d6dee6}
+
+/* Slide 7 */
+.arch-flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:stretch}
+.arch-node{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:9px}
+.arch-node.center{background:#121a22;color:var(--paper);border-color:rgba(10,110,189,.45)}
+.arch-node h3{font:italic 700 21px/1.15 var(--display)}
+.arch-arrow{display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.arch-list{list-style:none;margin:4px 0 0;padding:10px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px;font-size:13.5px;line-height:1.42;color:var(--ink-2)}
+.arch-node.center .arch-list{border-top-color:var(--dark-line);color:#cfd8e1}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding-top:16px;border-top:1px solid var(--line)}
+.kpi-item b{font:italic 700 32px/1 var(--display);color:var(--ink);display:block;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.kpi-item span{font-size:12.8px;line-height:1.4;color:var(--muted);display:block}
+
+/* Slide 8 */
+.ops-stage{background:linear-gradient(180deg,#121a23 0%,#1c2734 100%);border-radius:12px;padding:22px;color:var(--paper);display:flex;flex-direction:column;gap:14px;height:440px;justify-content:space-between}
+.ops-step{display:grid;grid-template-columns:56px 1fr;gap:14px;padding:15px 0;border-top:1px solid var(--line);align-items:start}
+.ops-step:last-child{border-bottom:1px solid var(--line)}
+.ops-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;font-weight:800;color:var(--blue);padding-top:3px}
+.ops-step h3{font-size:16.5px;font-weight:800;margin-bottom:3px;color:var(--ink)}
+
+/* Slide 9 */
+.road-step{display:grid;grid-template-columns:86px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--line);align-items:start}
+.road-step:last-child{border-bottom:1px solid var(--line)}
+.road-phase{font:italic 700 18px/1.1 var(--display);color:var(--orange)}
+.road-phase.b{color:var(--blue)}.road-phase.g{color:var(--green)}
+.road-step h3{font-size:16.5px;font-weight:800;margin-bottom:4px;color:var(--ink)}
+.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.use-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.use-card h3{font-size:15.5px;font-weight:800;color:var(--ink)}
+
+/* Slide 10 */
+.demo-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:44px;align-items:center;flex:1}
+.demo-steps{display:flex;flex-direction:column;gap:14px;margin:22px 0 24px}
+.demo-step{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:baseline}
+.demo-step b{font:italic 700 22px/1 var(--display);color:var(--orange);font-variant-numeric:tabular-nums}
+.demo-step span{font-size:17px;line-height:1.45;color:#e5ecf3}
+.qr-card{background:#ffffff;color:var(--ink);border-radius:14px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.qr-box{width:210px;height:210px;border:2px dashed #cbd5e1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;color:#475569;font-size:13px;line-height:1.45}
+.qr-card b{font:italic 700 23px/1.1 var(--display);color:var(--ink)}
+.qr-card p{margin:0;font-size:13.2px;line-height:1.45;color:var(--muted);max-width:28ch}
+
+/* Controls */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--orange);width:10%;transition:width .25s ease;z-index:20}
+#toolbar{position:fixed;left:0;right:0;bottom:0;height:56px;background:#11171f;border-top:1px solid rgba(255,255,255,.1);color:#dce4ec;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:16px;z-index:25;user-select:none}
+.tb-group{display:flex;align-items:center;gap:8px}
+.tb-btn{background:rgba(255,255,255,.07);color:#eef3f8;border:1px solid rgba(255,255,255,.13);border-radius:7px;height:34px;padding:0 12px;font:600 13px/1 var(--body);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.tb-btn:hover{background:rgba(255,255,255,.14)}
+.tb-btn.primary{background:var(--orange);color:#180800;border-color:var(--orange);font-weight:800}
+.tb-btn.active{background:rgba(242,111,33,.22);border-color:var(--orange);color:#ffd5b5}
+.tb-counter{font:italic 700 16px/1 var(--display);color:#ffffff;min-width:64px;text-align:center;font-variant-numeric:tabular-nums}
+.tb-title{font-size:13px;color:#98a5b3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:38vw}
+
+#notesDrawer{position:fixed;left:20px;right:20px;bottom:68px;max-width:960px;margin:0 auto;background:rgba(15,21,28,.96);color:#eef3f8;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.55);z-index:24}
+#notesDrawer .n-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+#notesDrawer .n-head b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
+#notesDrawer .n-body{font-size:14.5px;line-height:1.6;color:#dfe6ee;margin:0}
+
+#overview{position:fixed;inset:0 0 56px 0;background:rgba(10,14,19,.95);z-index:23;padding:28px 34px;overflow:auto}
+#overview h2{font:italic 700 28px/1.1 var(--display);color:#fff8ef;margin-bottom:18px}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ov-card{background:#17202b;border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:16px 18px;text-align:left;cursor:pointer;color:#eef3f8;display:flex;flex-direction:column;gap:8px;font-family:var(--body)}
+.ov-card:hover,.ov-card.current{border-color:var(--orange);background:#1f2a37}
+.ov-card span{font:italic 700 14px/1 var(--display);color:var(--orange);font-variant-numeric:tabular-nums}
+.ov-card b{font-size:15.5px;line-height:1.3;color:#ffffff}
+.ov-card small{font-size:12.5px;line-height:1.45;color:#9eb0c0}
+
+@page{size:16in 9in;margin:0}
+@media print{
+  html,body{height:auto;overflow:visible;background:#ffffff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #progress,#toolbar,#notesDrawer,#overview{display:none!important}
+  #stage{position:static;padding:0;display:block;overflow:visible}
+  #deck{width:1280px;height:auto;transform:none!important;box-shadow:none;border-radius:0;overflow:visible;background:transparent}
+  .slide{position:relative;opacity:1!important;pointer-events:auto!important;width:16in;height:9in;padding:0.7in 0.86in 0.62in;page-break-after:always;break-after:page}
+  .slide:last-child{page-break-after:auto;break-after:auto}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<main id="stage" aria-label="Bài thuyết trình Nhà F Đi Làm">
+  <div id="deck">
+
+    <!-- SLIDE 01 -->
+    <section class="slide dark active" data-title="Trang bìa · Nhà F Đi Làm" data-note="Kính chào Ban Giám khảo và quý vị đại biểu. Hôm nay tôi xin giới thiệu trò chơi tương tác doanh nghiệp 'Nhà F Đi Làm' — một trò chơi đa người chơi thời gian thực được thiết kế và hoàn thiện với quy trình phát triển ứng dụng AI, tái hiện hành trình đến văn phòng đúng giờ 8:15 của cán bộ nhân viên.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>Cuộc thi AI Game 2026 · Trò chơi tương tác doanh nghiệp</span></div>
+        <span class="tnum">01 / 10</span>
+      </div>
+      <div class="cover-grid">
+        <div class="cover-left">
+          <div class="kicker">Trải nghiệm đa người chơi thời gian thực</div>
+          <h1 class="cover-title">Nhà F <em>Đi Làm</em></h1>
+          <p class="lead">Biến hành trình đến văn phòng trước mốc 8:15 thành trò chơi tương tác sôi nổi trên trình duyệt — kết hợp quy trình phát triển ứng dụng AI, 4 lộ trình văn phòng đặc trưng và kiến trúc chịu tải 500 người chơi đồng thời.</p>
+          <div class="cover-metrics">
+            <div><b>500</b><span>Người chơi đồng thời</span></div>
+            <div><b>04</b><span>Lộ trình văn phòng</span></div>
+            <div><b>02</b><span>Chế độ &amp; BXH riêng</span></div>
+          </div>
+        </div>
+        <div class="art-panel">
+          <svg viewBox="0 0 540 420" width="100%" height="100%" aria-label="Minh họa đường phố buổi sáng Nhà F Đi Làm">
+            <defs>
+              <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#172536"/><stop offset="100%" stop-color="#223548"/></linearGradient>
+              <linearGradient id="road1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a3642"/><stop offset="100%" stop-color="#3a4754"/></linearGradient>
+            </defs>
+            <rect width="540" height="420" fill="url(#sky1)"/>
+            <!-- Connected 2.5D office blocks left & right -->
+            <rect x="0" y="24" width="112" height="150" fill="#233447"/><rect x="14" y="42" width="84" height="12" rx="2" fill="#0a6ebd" opacity=".7"/>
+            <rect x="14" y="64" width="84" height="10" rx="2" fill="#7aa6cc" opacity=".35"/><rect x="14" y="84" width="84" height="10" rx="2" fill="#7aa6cc" opacity=".35"/>
+            <rect x="0" y="180" width="108" height="220" fill="#1e2d3d"/><rect x="14" y="198" width="80" height="12" rx="2" fill="#f26f21" opacity=".75"/>
+            <rect x="428" y="18" width="112" height="170" fill="#233447"/><rect x="442" y="38" width="84" height="12" rx="2" fill="#37b34a" opacity=".75"/>
+            <rect x="442" y="62" width="84" height="10" rx="2" fill="#7aa6cc" opacity=".35"/><rect x="442" y="84" width="84" height="10" rx="2" fill="#7aa6cc" opacity=".35"/>
+            <rect x="432" y="194" width="108" height="210" fill="#1e2d3d"/><rect x="446" y="212" width="80" height="12" rx="2" fill="#0a6ebd" opacity=".7"/>
+            <!-- Road -->
+            <rect x="116" y="0" width="308" height="420" fill="url(#road1)"/>
+            <line x1="124" y1="0" x2="124" y2="420" stroke="#f26f21" stroke-width="3" opacity=".7"/>
+            <line x1="416" y1="0" x2="416" y2="420" stroke="#f26f21" stroke-width="3" opacity=".7"/>
+            <line x1="218" y1="12" x2="218" y2="420" stroke="#ffffff" stroke-opacity=".35" stroke-width="3" stroke-dasharray="22 20"/>
+            <line x1="322" y1="12" x2="322" y2="420" stroke="#ffffff" stroke-opacity=".35" stroke-width="3" stroke-dasharray="22 20"/>
+            <!-- Finish gate 08:15 -->
+            <rect x="128" y="42" width="284" height="36" rx="6" fill="#0d141c" stroke="#f26f21" stroke-width="2"/>
+            <text x="270" y="66" text-anchor="middle" fill="#fff5e6" font-family="Chakra Petch, sans-serif" font-style="italic" font-weight="700" font-size="19" letter-spacing="2">CỔNG VĂN PHÒNG · 08:15</text>
+            <!-- Other commuters (subtle) -->
+            <rect x="155" y="128" width="38" height="66" rx="10" fill="#526578" opacity=".85"/>
+            <rect x="348" y="156" width="42" height="72" rx="10" fill="#64788c" opacity=".85"/>
+            <!-- Player Hero Bike (Blue bike, Orange shirt, Green helmet, fluttering white FPT flag) -->
+            <g transform="translate(270,270)">
+              <ellipse cx="0" cy="14" rx="26" ry="44" fill="#000" opacity=".28"/>
+              <!-- Headlight beam -->
+              <polygon points="-12,-34 12,-34 38,-120 -38,-120" fill="#ffe7a3" opacity=".16"/>
+              <!-- Blue scooter body -->
+              <rect x="-15" y="-36" width="30" height="68" rx="13" fill="#0a6ebd"/>
+              <rect x="-10" y="-32" width="20" height="16" rx="7" fill="#3597e0"/>
+              <rect x="-20" y="-22" width="40" height="6" rx="3" fill="#18222c"/>
+              <!-- Orange jacket -->
+              <ellipse cx="0" cy="4" rx="18" ry="15" fill="#f26f21"/>
+              <!-- Green helmet -->
+              <circle cx="0" cy="-3" r="13" fill="#37b34a"/>
+              <path d="M-9,-7 Q0,-15 9,-7" fill="none" stroke="#dff8e2" stroke-width="3" stroke-linecap="round"/>
+              <!-- Fluttering slim FPT flag trailing down -->
+              <path d="M0,32 C-9,52 10,74 -3,98 L0,90 L5,98 C16,74 -2,52 6,32 Z" fill="#ffffff" stroke="#d5dde5" stroke-width="1"/>
+              <rect x="-3" y="46" width="7" height="7" rx="1" fill="#0a6ebd"/>
+              <rect x="-2" y="56" width="7" height="7" rx="1" fill="#f26f21"/>
+              <rect x="-3" y="66" width="7" height="7" rx="1" fill="#37b34a"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="s-foot">
+        <span>Không cần cài đặt ứng dụng · Chơi trực tiếp trên Mobile &amp; Desktop</span>
+        <span>Hồ sơ dự thi Cuộc thi AI Game</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 02 -->
+    <section class="slide" data-title="Bài toán & Góc nhìn sản phẩm" data-note="Trong các sự kiện nội bộ hay hội nghị toàn thể hàng trăm nhân sự, hoạt động khuấy động thường gặp ba trở ngại: yêu cầu tải ứng dụng tốn thời gian, khó đồng bộ hàng trăm thiết bị cùng lúc và nội dung chưa gắn với đời sống văn phòng. Từ đó, chúng tôi chọn chất liệu gần gũi nhất: hành trình đi làm đúng giờ 8:15.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>01 · Bối cảnh &amp; Bài toán</span></div>
+        <span class="tnum">02 / 10</span>
+      </div>
+      <div class="s-head">
+        <h2 class="display-lg">Thách thức gắn kết tại các sự kiện quy mô lớn</h2>
+        <p class="lead">Làm sao để 500 người trong cùng hội trường tham gia ngay lập tức, cạnh tranh công bằng và thấy hình ảnh của chính mình trong trò chơi?</p>
+      </div>
+      <div class="grid-2" style="margin:6px 0">
+        <div>
+          <div class="problem-item"><div class="problem-idx">01</div><div><h3>Rào cản tham gia &amp; cài đặt</h3><p class="body-sm">Các trò chơi yêu cầu tải ứng dụng hoặc đăng ký phức tạp làm giảm mạnh tỷ lệ tham gia trong những phút khởi động sự kiện.</p></div></div>
+          <div class="problem-item"><div class="problem-idx">02</div><div><h3>Thiếu kết nối đồng bộ thời gian thực</h3><p class="body-sm">Trò chơi đơn lẻ không tạo được cảm xúc tập thể giữa các phòng ban và thiếu công cụ để MC dẫn dắt sân khấu.</p></div></div>
+          <div class="problem-item"><div class="problem-idx">03</div><div><h3>Khoảng cách văn hóa doanh nghiệp</h3><p class="body-sm">Những mini-game khuôn mẫu thiếu bản sắc địa điểm làm việc, khó duy trì động lực chơi lại sau khi sự kiện kết thúc.</p></div></div>
+        </div>
+        <div class="insight-panel">
+          <div class="kicker">Góc nhìn sản phẩm</div>
+          <div class="insight-quote">“Mốc <em>8:15</em> là nhịp sống chung của mọi nhân sự — đủ quen thuộc để mỉm cười, đủ kịch tính để tranh tài.”</div>
+          <div class="insight-stats">
+            <div><b>&lt; 10 giây</b><span>Từ lúc quét mã QR trên màn hình hội trường đến khi sẵn sàng xuất phát.</span></div>
+            <div><b>2 vòng lặp</b><span>Thi đấu tập thể khuấy động sân khấu; Solo vô tận giữ chân người chơi quay lại nhiều lần.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Bài toán &amp; Góc nhìn</span><span>Thiết kế hướng tới sự kiện nội bộ &amp; gắn kết cộng đồng</span></div>
+    </section>
+
+    <!-- SLIDE 03 -->
+    <section class="slide" data-title="Giải pháp & Nhận diện thương hiệu" data-note="Nhân vật được xây dựng nhất quán theo bộ 3 sắc màu đặc trưng: xe xanh dương, áo cam, mũ xanh lá cùng lá cờ FPT mỏng bay phấp phới phía sau bằng thuật toán sóng mềm. Mọi thông điệp trong trò chơi đều được biên tập theo văn phong lịch sự, chuẩn doanh nghiệp.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>02 · Giải pháp &amp; Nhận diện</span></div>
+        <span class="tnum">03 / 10</span>
+      </div>
+      <div class="s-head"><h2 class="display-lg">Trò chơi trình duyệt mang đậm bản sắc văn hóa</h2></div>
+      <div class="grid-2-wide" style="flex:1;margin:8px 0">
+        <div class="rider-stage">
+          <div class="kicker" style="color:#ffd2b0">Nhận diện nhân vật &amp; Chuyển động vật lý</div>
+          <div class="rider-svg-wrap">
+            <svg viewBox="0 0 420 220" width="380" height="200" aria-label="Nhân vật xe xanh dương áo cam mũ xanh lá và cờ FPT">
+              <defs><linearGradient id="fs" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fff"/><stop offset="45%" stop-color="#eaf0f6"/><stop offset="75%" stop-color="#fff"/><stop offset="100%" stop-color="#dce4ec"/></linearGradient></defs>
+              <line x1="20" y1="92" x2="96" y2="92" stroke="#fff" stroke-opacity=".2" stroke-width="2" stroke-linecap="round"/>
+              <line x1="48" y1="126" x2="112" y2="126" stroke="#f26f21" stroke-opacity=".4" stroke-width="2" stroke-linecap="round"/>
+              <line x1="168" y1="128" x2="168" y2="54" stroke="#d9e2ec" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="168" cy="52" r="3.5" fill="#f26f21"/>
+              <path d="M168,56 C132,48 96,67 54,57 L68,72 L52,85 C96,94 132,76 168,84 Z" fill="url(#fs)" stroke="#cfd8e2" stroke-width="1"/>
+              <g transform="translate(88,63) skewX(-12)">
+                <rect x="0" y="0" width="16" height="15" rx="2.5" fill="#0a6ebd"/><rect x="20" y="0" width="16" height="15" rx="2.5" fill="#f26f21"/><rect x="40" y="0" width="16" height="15" rx="2.5" fill="#37b34a"/>
+                <text x="8" y="11.5" text-anchor="middle" fill="#fff" font-family="Be Vietnam Pro,sans-serif" font-weight="800" font-size="10.5">F</text>
+                <text x="28" y="11.5" text-anchor="middle" fill="#fff" font-family="Be Vietnam Pro,sans-serif" font-weight="800" font-size="10.5">P</text>
+                <text x="48" y="11.5" text-anchor="middle" fill="#fff" font-family="Be Vietnam Pro,sans-serif" font-weight="800" font-size="10.5">T</text>
+              </g>
+              <circle cx="192" cy="146" r="22" fill="#141c24" stroke="#445566" stroke-width="4"/><circle cx="192" cy="146" r="8" fill="#9fb0c0"/>
+              <circle cx="316" cy="146" r="22" fill="#141c24" stroke="#445566" stroke-width="4"/><circle cx="316" cy="146" r="8" fill="#9fb0c0"/>
+              <path d="M174,128 L244,124 L284,102 L322,126 L310,144 L196,144 Z" fill="#0a6ebd"/>
+              <path d="M278,96 L300,82 L314,90 L294,110 Z" fill="#1d85d6"/>
+              <ellipse cx="322" cy="112" rx="7" ry="10" fill="#fff5cc"/>
+              <rect x="190" y="114" width="54" height="12" rx="6" fill="#1b2632"/>
+              <path d="M214,114 C216,84 248,74 268,94 L256,120 L214,120 Z" fill="#f26f21"/>
+              <path d="M244,92 L286,96 L282,106 L242,103 Z" fill="#d95c14"/>
+              <path d="M222,118 L254,132 L248,146 L214,132 Z" fill="#212d3a"/>
+              <circle cx="246" cy="70" r="18" fill="#f0c6a2"/>
+              <path d="M225,70 C225,49 266,47 268,70 C256,64 238,64 225,70 Z" fill="#37b34a"/>
+              <rect x="248" y="64" width="22" height="7" rx="3.5" fill="#dff8e2"/>
+            </svg>
+          </div>
+          <div class="swatches">
+            <div class="swatch"><i style="background:var(--blue)"></i><div><b>Xe xanh dương</b><small>#0A6EBD</small></div></div>
+            <div class="swatch"><i style="background:var(--orange)"></i><div><b>Áo đồng phục cam</b><small>#F26F21</small></div></div>
+            <div class="swatch"><i style="background:var(--green)"></i><div><b>Mũ xanh lá</b><small>#37B34A</small></div></div>
+          </div>
+        </div>
+        <div class="pillar-grid">
+          <div class="pillar"><div class="kicker">01 · Tiếp cận tức thì</div><h3>Không cần cài đặt</h3><p class="body-sm">Vận hành hoàn toàn trên trình duyệt web di động và máy tính, tối ưu giao diện dọc, ngang và màn hình lớn.</p></div>
+          <div class="pillar"><div class="kicker blue">02 · Điều khiển trực quan</div><h3>Tối ưu Mobile &amp; Desktop</h3><p class="body-sm">Điện thoại hỗ trợ vuốt hoặc nghiêng máy kèm nút Phanh – Tăng ga riêng; máy tính hỗ trợ mũi tên, WASD và Space.</p></div>
+          <div class="pillar"><div class="kicker green">03 · Đồ họa sống động</div><h3>Kiến trúc &amp; Hiệu ứng 2.5D</h3><p class="body-sm">Khối tòa nhà nối liền cùng biển hiệu rõ nét theo từng văn phòng, hiệu ứng mưa, sương mù, gió biển và lá cờ bay theo tốc độ.</p></div>
+          <div class="pillar"><div class="kicker muted">04 · Văn phong chuẩn mực</div><h3>Ngôn ngữ doanh nghiệp</h3><p class="body-sm">Toàn bộ thể lệ, thông báo tình huống, bảng xếp hạng và lời bình đều lịch sự, phù hợp mọi quy mô sự kiện công ty.</p></div>
+        </div>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Giải pháp &amp; Nhận diện</span><span>Đồng bộ thị giác giữa màn hình chơi, kiosk chấm công và màn hình chiếu</span></div>
+    </section>
+
+    <!-- SLIDE 04 -->
+    <section class="slide" data-title="Hai chế độ & BXH tách biệt" data-note="Trò chơi được thiết kế theo cấu trúc hai chế độ bổ trợ với hai bảng xếp hạng tách biệt hoàn toàn. Chế độ Thi đấu 8:15 phục vụ hội trường đến 500 người; chế độ Solo áp dụng cơ chế arcade vô tận tạo động lực luyện tập và phá kỷ lục cá nhân liên tục.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>03 · Cơ chế trò chơi</span></div>
+        <span class="tnum">04 / 10</span>
+      </div>
+      <div class="s-head">
+        <h2 class="display-lg">Hai chế độ bổ trợ · Hai bảng xếp hạng tách biệt</h2>
+        <p class="lead">Đáp ứng trọn vẹn cả hai mục tiêu: khuấy động cao trào sân khấu tập thể và duy trì hứng thú trải nghiệm lặp lại của từng cá nhân.</p>
+      </div>
+      <div class="grid-2" style="flex:1;margin:8px 0">
+        <div class="mode-col highlight">
+          <div>
+            <div class="kicker">Chế độ sự kiện hội trường</div>
+            <div class="mode-head"><h3 class="display-md" style="color:var(--paper)">Thi đấu · Chấm công 8:15</h3><span class="tnum" style="color:#ffd2b0;font-weight:800;font-size:14px">Tối đa 500 người</span></div>
+          </div>
+          <ul class="mode-list">
+            <li>MC mở phòng, chọn bản đồ và đếm ngược 15 giây xuất phát đồng loạt cho toàn bộ người tham dự.</li>
+            <li>Lộ trình 17.000 đơn vị cùng đồng hồ mô phỏng 07:30 → 08:15; hiển thị bóng đồng nghiệp xung quanh.</li>
+            <li>Kết thúc bằng bước mô phỏng quét khuôn mặt chấm công (tháo mũ bảo hiểm / khẩu trang / kính râm).</li>
+            <li>Tổng hợp xếp hạng cá nhân, xếp hạng phòng ban và màn hình vinh danh nhà vô địch.</li>
+          </ul>
+          <div class="mode-foot"><span>Giờ tới + Vật phẩm (+15) + Lách sát (+5) − Phạt</span><code>/api/bxh-thidau</code></div>
+        </div>
+        <div class="mode-col">
+          <div>
+            <div class="kicker blue">Chế độ cá nhân thử thách</div>
+            <div class="mode-head"><h3 class="display-md">Solo · Thử thách vô tận</h3><span class="tnum" style="color:var(--blue);font-weight:800;font-size:14px">Chơi lại tức thì</span></div>
+          </div>
+          <ul class="mode-list">
+            <li>Nhịp chơi arcade ngắn gọn: đường chạy sinh liên tục, tốc độ tăng dần theo từng mốc vượt qua.</li>
+            <li>Luật tập trung cao độ: 1 va chạm dừng lượt ngay (trừ khi sở hữu khiên bảo vệ thu thập trên đường).</li>
+            <li>Tích điểm rõ ràng: +1 chướng ngại vượt qua, +2 lách sát an toàn, +3 vật phẩm đặc trưng bản đồ.</li>
+            <li>4 hạng huy chương (Đồng 15 · Bạc 35 · Vàng 65 · Bạch Kim 100) kèm bộ lọc BXH theo từng lộ trình.</li>
+          </ul>
+          <div class="mode-foot"><span>Nhịp chơi nhanh 30–90 giây · Thử lại 1 chạm</span><code>/api/bxh-solo</code></div>
+        </div>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Cơ chế trò chơi</span><span>Phân tách hoàn toàn dữ liệu xếp hạng giữa luyện tập cá nhân và giải đấu chính thức</span></div>
+    </section>
+
+    <!-- SLIDE 05 -->
+    <section class="slide" data-title="Bốn lộ trình · Bốn bối cảnh văn phòng" data-note="Thay vì một con đường lặp lại, trò chơi phát triển 4 bản đồ tương ứng 4 văn phòng tiêu biểu trải dài 3 miền. Mỗi bản đồ có hệ thống tòa nhà 2.5D, điều kiện thời tiết, tình huống giao thông và vật phẩm hỗ trợ hoàn toàn riêng biệt.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>04 · Thiết kế thế giới &amp; Bản đồ</span></div>
+        <span class="tnum">05 / 10</span>
+      </div>
+      <div class="s-head"><h2 class="display-lg">Bốn văn phòng · Bốn bối cảnh &amp; tình huống riêng biệt</h2></div>
+      <div class="campus-strip">
+        <div class="campus-vis" style="background:linear-gradient(180deg,#1a3652,#2d5274)">
+          <svg viewBox="0 0 280 210" width="100%" height="100%"><rect x="22" y="54" width="90" height="156" fill="#1b2d40"/><rect x="130" y="34" width="124" height="176" fill="#21384f"/><rect x="144" y="52" width="96" height="12" fill="#0a6ebd"/><line x1="40" y1="10" x2="26" y2="52" stroke="#9ad0ff" stroke-width="2" opacity=".6"/><line x1="110" y1="8" x2="96" y2="50" stroke="#9ad0ff" stroke-width="2" opacity=".6"/><line x1="210" y1="14" x2="196" y2="56" stroke="#9ad0ff" stroke-width="2" opacity=".6"/><ellipse cx="140" cy="196" rx="108" ry="18" fill="#5aa8e6" opacity=".45"/></svg>
+        </div>
+        <div class="campus-vis" style="background:linear-gradient(180deg,#627789,#9fb1be)">
+          <svg viewBox="0 0 280 210" width="100%" height="100%"><rect x="16" y="78" width="104" height="132" fill="#3a4c5c"/><rect x="140" y="64" width="120" height="146" fill="#465a6b"/><rect x="0" y="138" width="280" height="16" fill="#2c3a47"/><ellipse cx="140" cy="96" rx="150" ry="26" fill="#ffffff" opacity=".45"/><ellipse cx="120" cy="134" rx="140" ry="20" fill="#ffffff" opacity=".32"/></svg>
+        </div>
+        <div class="campus-vis" style="background:linear-gradient(180deg,#263445,#3b4c5e)">
+          <svg viewBox="0 0 280 210" width="100%" height="100%"><rect x="24" y="26" width="84" height="184" fill="#1d2834"/><rect x="122" y="16" width="130" height="194" fill="#273545"/><rect x="136" y="34" width="102" height="12" fill="#f26f21"/><rect x="86" y="114" width="22" height="58" rx="4" fill="#10171f"/><circle cx="97" cy="128" r="6" fill="#ef4444"/><circle cx="97" cy="143" r="6" fill="#f59e0b"/><circle cx="97" cy="158" r="6" fill="#22c55e"/></svg>
+        </div>
+        <div class="campus-vis" style="background:linear-gradient(180deg,#1882b8,#64c7d6)">
+          <svg viewBox="0 0 280 210" width="100%" height="100%"><circle cx="228" cy="46" r="22" fill="#ffd966"/><rect x="20" y="92" width="166" height="118" rx="8" fill="#eaf3f7"/><rect x="34" y="108" width="138" height="10" fill="#37b34a"/><path d="M0,180 Q70,164 140,180 T280,180 L280,210 L0,210 Z" fill="#0a6ebd" opacity=".75"/></svg>
+        </div>
+      </div>
+      <div class="grid-4" style="flex:1">
+        <div class="map-col c1"><span class="loc">01 · TP. Hồ Chí Minh</span><h3>F-Town · Khu CNC</h3><p>Mưa rào bất chợt làm giảm độ bám và xuất hiện các vũng ngập sâu buộc người chơi chọn làn hợp lý.</p><div class="spec">Vật phẩm: Cà phê sữa đá · Áo mưa</div></div>
+        <div class="map-col c2"><span class="loc">02 · Hòa Lạc</span><h3>F-Ville · ĐL Thăng Long</h3><p>Sương mù sáng sớm hạn chế tầm nhìn xa, kết hợp cầu vượt gió ngang và xe tuyến tốc độ cao.</p><div class="spec">Vật phẩm: Trà nóng · Xe buýt tuyến</div></div>
+        <div class="map-col c3"><span class="loc">03 · Hà Nội</span><h3>FPT Tower · Cầu Giấy</h3><p>Đô thị giờ cao điểm với 6 ngã tư đèn tín hiệu mật độ dày, đề cao kỹ năng phanh và canh nhịp vượt.</p><div class="spec">Vật phẩm: Bánh mì sáng · Lối tắt</div></div>
+        <div class="map-col c4"><span class="loc">04 · Đà Nẵng</span><h3>FPT Complex · Ngũ Hành Sơn</h3><p>Đại lộ ven biển thoáng rộng nhưng có gió tạt ngang, vùng nắng gắt và dải gió xuôi giúp bứt tốc.</p><div class="spec">Vật phẩm: Nước dừa mát · Gió xuôi</div></div>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Thiết kế 4 lộ trình</span><span>Khối kiến trúc 2.5D nối liền và biển tên tòa nhà dựng trực tiếp bằng thuật toán trên Canvas</span></div>
+    </section>
+
+    <!-- SLIDE 06 -->
+    <section class="slide" data-title="Ứng dụng AI trong phát triển trò chơi" data-note="Đây là trọng tâm cho tiêu chí của cuộc thi AI Game. AI không chỉ giúp rút ngắn thời gian hiện thực hóa toàn bộ hệ thống từ ý tưởng đến bản phát hành, mà còn đóng vai trò then chốt trong thiết kế thuật toán sinh màn chơi thủ tục, mô phỏng đồ họa vật lý và tối ưu trải nghiệm đa thiết bị.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>05 · Ứng dụng AI &amp; Công nghệ cốt lõi</span></div>
+        <span class="tnum">06 / 10</span>
+      </div>
+      <div class="s-head"><h2 class="display-lg">Vai trò của AI trong thiết kế, kỹ thuật &amp; cân bằng trò chơi</h2></div>
+      <div class="grid-3" style="flex:1;margin:6px 0">
+        <div class="ai-card">
+          <div class="ai-num">01</div>
+          <h3>Tăng tốc xây dựng &amp; Đồ họa thủ tục</h3>
+          <p class="body-sm">Ứng dụng quy trình lập trình hỗ trợ bởi AI để kiến tạo trọn bộ trò chơi gọn nhẹ, không phụ thuộc kho ảnh nặng.</p>
+          <ul class="ai-pts">
+            <li>Thuật toán dựng khối tòa nhà 2.5D nối liền, cửa kính và biển hiệu theo từng văn phòng.</li>
+            <li>Mô phỏng vật lý lá cờ FPT bay phấp phới đa sóng hình sin theo vận tốc xe.</li>
+            <li>Tổng hợp hiệu ứng âm thanh trực tiếp qua Web Audio API.</li>
+          </ul>
+        </div>
+        <div class="ai-card b">
+          <div class="ai-num">02</div>
+          <h3>Sinh màn chơi thủ tục &amp; Độ khó thích ứng</h3>
+          <p class="body-sm">Bộ sinh lộ trình thông minh đảm bảo vừa công bằng khi thi đấu, vừa biến hóa mới mẻ khi chơi Solo.</p>
+          <ul class="ai-pts">
+            <li>Đồng bộ hạt giống (Seed) từ máy chủ giúp 500 người thi đấu trên cùng bố cục chướng ngại.</li>
+            <li>Chế độ Solo tự mở rộng đường chạy vô hạn, điều chỉnh mật độ và tốc độ theo thành tích.</li>
+            <li>Kiểm soát khoảng trống tránh xe, không tạo tình huống bế tắc bất khả thi.</li>
+          </ul>
+        </div>
+        <div class="ai-card g">
+          <div class="ai-num">03</div>
+          <h3>Tối ưu UX đa thiết bị &amp; Nội dung</h3>
+          <p class="body-sm">Liên tục tinh chỉnh luật chơi, điều khiển và thông điệp theo phản hồi thực tế của người dùng.</p>
+          <ul class="ai-pts">
+            <li>Tự động thích ứng cơ chế điều khiển giữa Desktop và Mobile, tránh xung đột cử chỉ.</li>
+            <li>Biên tập đồng bộ văn phong doanh nghiệp lịch sự trên toàn bộ giao diện và lời bình.</li>
+            <li>Tích hợp kịch bản giả lập tải 500 người chơi để kiểm chứng ổn định trước ra mắt.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ai-banner">
+        <b>Hiệu quả thực tiễn từ quy trình AI</b>
+        <p>Rút ngắn chu kỳ lặp thiết kế – lập trình – kiểm thử từ nhiều tuần xuống từng phiên tập trung, vẫn đảm bảo chất lượng vận hành ổn định, mã nguồn gọn nhẹ và sẵn sàng triển khai thực tế.</p>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Ứng dụng AI</span><span>Kết hợp tư duy thiết kế trò chơi với năng lực kỹ thuật tăng tốc bởi AI</span></div>
+    </section>
+
+    <!-- SLIDE 07 -->
+    <section class="slide" data-title="Kiến trúc kỹ thuật & Chịu tải 500 người" data-note="Về mặt kỹ thuật, hệ thống sử dụng HTML5 Canvas 60 FPS ở phía trình duyệt, giao tiếp hai chiều độ trễ thấp qua Socket.IO với máy chủ Node.js. Máy chủ nắm quyền xác thực tiến độ, chống gian lận tốc độ và tự động khôi phục kết nối nếu mạng hội trường chập chờn.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>06 · Kiến trúc hệ thống</span></div>
+        <span class="tnum">07 / 10</span>
+      </div>
+      <div class="s-head"><h2 class="display-lg">Kiến trúc thời gian thực gọn nhẹ, an toàn &amp; chịu tải cao</h2></div>
+      <div class="arch-flow" style="flex:1;margin:8px 0">
+        <div class="arch-node">
+          <div class="kicker blue">Lớp thiết bị người chơi</div>
+          <h3>Client · HTML5 Canvas 2D</h3>
+          <p class="body-sm">Chạy trực tiếp trên Safari, Chrome, Edge mà không cần thư viện đồ họa nặng.</p>
+          <ul class="arch-list">
+            <li>Vòng lặp hiển thị 60 FPS ổn định trên thiết bị di động tầm trung.</li>
+            <li>Phông chữ nội bộ (self-hosted), hoạt động tốt trong mạng LAN sự kiện.</li>
+            <li>Hiển thị ghost racer mượt mà theo dữ liệu nội suy.</li>
+          </ul>
+        </div>
+        <div class="arch-arrow" aria-hidden="true">→</div>
+        <div class="arch-node center">
+          <div class="kicker" style="color:#ffd2b0">Lớp điều phối trung tâm</div>
+          <h3 style="color:var(--paper)">Node.js + Socket.IO</h3>
+          <p class="body-sm">Quản lý vòng đời giải đấu, đồng bộ thời gian thực và kiểm duyệt kết quả.</p>
+          <ul class="arch-list">
+            <li>Chống gian lận phía máy chủ: kiểm tra trần vận tốc &amp; thời gian tối thiểu theo từng bản đồ.</li>
+            <li>Phát sóng bảng xếp hạng tối ưu băng thông cho tối đa 500 kết nối.</li>
+            <li>Tự động khôi phục phiên chơi bằng mã phiên (token) khi rớt mạng.</li>
+          </ul>
+        </div>
+        <div class="arch-arrow" aria-hidden="true">→</div>
+        <div class="arch-node">
+          <div class="kicker green">Lớp lưu trữ &amp; vận hành</div>
+          <h3>Lưu trữ &amp; Màn hình MC</h3>
+          <p class="body-sm">Bảo toàn dữ liệu giải đấu và kết nối trực tiếp tới sân khấu sự kiện.</p>
+          <ul class="arch-list">
+            <li>Ghi đĩa nguyên tử (atomic write) đảm bảo không hỏng dữ liệu BXH.</li>
+            <li>REST API riêng cho Solo, Thi đấu, QR SVG và xuất báo cáo CSV.</li>
+            <li>Tích hợp kịch bản kiểm thử tải tự động 500 kết nối.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="kpi-strip">
+        <div class="kpi-item"><b>500</b><span>Người chơi đồng thời tối đa mỗi lượt thi đấu</span></div>
+        <div class="kpi-item"><b>60 FPS</b><span>Mượt mà trên Canvas 2D thuần, dung lượng tải nhẹ</span></div>
+        <div class="kpi-item"><b>0 CDN</b><span>Hoạt động độc lập cả Internet lẫn mạng nội bộ LAN</span></div>
+        <div class="kpi-item"><b>100%</b><span>Xác thực tiến độ &amp; điểm số phía máy chủ</span></div>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Kiến trúc kỹ thuật</span><span>Node.js · Express 5 · Socket.IO 4 · HTML5 Canvas · Web Audio</span></div>
+    </section>
+
+    <!-- SLIDE 08 -->
+    <section class="slide" data-title="Vận hành sự kiện & Màn hình MC" data-note="Một điểm mạnh thực tế của sản phẩm là sẵn sàng cho công tác tổ chức sự kiện. BTC có màn hình điều phối riêng tại /host để mở phòng, đổi bản đồ, đồng thời trình chiếu bảng xếp hạng và vinh danh trực tiếp tại /bang.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>07 · Trải nghiệm sân khấu &amp; Vận hành</span></div>
+        <span class="tnum">08 / 10</span>
+      </div>
+      <div class="s-head"><h2 class="display-lg">Công cụ điều phối trực tiếp cho Ban Tổ chức &amp; MC</h2></div>
+      <div class="grid-2-wide" style="flex:1;margin:8px 0">
+        <div class="ops-stage">
+          <div class="kicker" style="color:#ffd2b0">Mô phỏng màn hình trình chiếu hội trường (/bang)</div>
+          <div style="display:grid;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:10px">
+              <b style="font:italic 700 22px var(--display);color:#fff">BẢNG XẾP HẠNG TRỰC TIẾP · 08:15</b>
+              <span style="color:#ffd2b0;font-weight:800;font-size:13px">482 người đang chạy</span>
+            </div>
+            <div style="display:grid;gap:8px;font-size:13.5px">
+              <div style="display:grid;grid-template-columns:34px 1fr 110px 64px;align-items:center;background:rgba(242,111,33,.22);padding:9px 12px;border-radius:7px"><b>01</b><span>Nguyễn Minh Anh · FSOFT</span><div style="height:6px;background:rgba(255,255,255,.15);border-radius:3px"><div style="width:94%;height:100%;background:#f26f21;border-radius:3px"></div></div><b style="text-align:right">1.185</b></div>
+              <div style="display:grid;grid-template-columns:34px 1fr 110px 64px;align-items:center;background:rgba(255,255,255,.06);padding:9px 12px;border-radius:7px"><b>02</b><span>Trần Quốc Bảo · FIS</span><div style="height:6px;background:rgba(255,255,255,.15);border-radius:3px"><div style="width:88%;height:100%;background:#0a6ebd;border-radius:3px"></div></div><b style="text-align:right">1.140</b></div>
+              <div style="display:grid;grid-template-columns:34px 1fr 110px 64px;align-items:center;background:rgba(255,255,255,.06);padding:9px 12px;border-radius:7px"><b>03</b><span>Lê Thu Hà · FTEL</span><div style="height:6px;background:rgba(255,255,255,.15);border-radius:3px"><div style="width:83%;height:100%;background:#37b34a;border-radius:3px"></div></div><b style="text-align:right">1.115</b></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px;color:#b8c4d0">
+            <div><b style="display:block;color:#fff;font-size:15px">Top Đơn vị</b>FSOFT · FIS · FTEL</div>
+            <div><b style="display:block;color:#fff;font-size:15px">Bình luận trực tiếp</b>Tự động theo diễn biến</div>
+            <div><b style="display:block;color:#fff;font-size:15px">Màn vinh danh</b>Tự bật khi kết thúc</div>
+          </div>
+        </div>
+        <div>
+          <div class="ops-step"><div class="ops-code">/qr.svg</div><div><h3>Vào phòng tức thì qua mã QR</h3><p class="body-sm">Tự động sinh mã QR sắc nét hiển thị ngay trên màn hình sân khấu để toàn hội trường tham gia trong vài giây.</p></div></div>
+          <div class="ops-step"><div class="ops-code">/host</div><div><h3>Bảng điều khiển dành riêng cho MC</h3><p class="body-sm">Chọn lộ trình trong 4 văn phòng, mở phòng chờ, phát lệnh đếm ngược xuất phát hoặc kết thúc lượt chỉ bằng một chạm.</p></div></div>
+          <div class="ops-step"><div class="ops-code">/bang</div><div><h3>Màn hình trình chiếu trực tiếp hội trường</h3><p class="body-sm">Hiển thị đường đua trực quan, Top cá nhân, Top phòng ban, lời bình trực tiếp và hiệu ứng vinh danh nhà vô địch.</p></div></div>
+          <div class="ops-step"><div class="ops-code">.csv</div><div><h3>Xuất báo cáo kết quả sau sự kiện</h3><p class="body-sm">Tải ngay danh sách thứ hạng, phòng ban, giờ chấm công và điểm số để phục vụ công tác trao thưởng minh bạch.</p></div></div>
+        </div>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Vận hành sự kiện</span><span>Thiết kế trọn gói từ người chơi, MC sân khấu đến hậu kỳ trao giải</span></div>
+    </section>
+
+    <!-- SLIDE 09 -->
+    <section class="slide" data-title="Giá trị ứng dụng & Lộ trình phát triển" data-note="Sản phẩm đã sẵn sàng triển khai thực tế cho hội nghị toàn thể, teambuilding và ngày hội tuyển dụng. Nhờ cấu trúc tách biệt cấu hình qua config.js, trò chơi có thể tùy biến nhanh cho nhiều đơn vị và hướng tới các tính năng AI tương tác sâu hơn ở giai đoạn tiếp theo.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>08 · Giá trị thực tiễn &amp; Mở rộng</span></div>
+        <span class="tnum">09 / 10</span>
+      </div>
+      <div class="s-head"><h2 class="display-lg">Sẵn sàng triển khai thực tế &amp; Lộ trình nâng cấp</h2></div>
+      <div class="grid-2" style="flex:1;margin:8px 0">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="kicker blue">Ứng dụng ngay trong doanh nghiệp</div>
+          <div class="use-grid" style="flex:1">
+            <div class="use-card"><h3>Hội nghị toàn thể &amp; Townhall</h3><p class="body-sm">Khởi động không khí đầu giờ cho hàng trăm nhân sự mà không tốn chi phí thuê thiết bị rời.</p></div>
+            <div class="use-card"><h3>Teambuilding &amp; Gắn kết đơn vị</h3><p class="body-sm">Cơ chế tính điểm trung bình theo phòng ban khuyến khích đồng nghiệp cùng cổ vũ và tham gia.</p></div>
+            <div class="use-card"><h3>Sự kiện tuyển dụng &amp; Tech Day</h3><p class="body-sm">Giới thiệu sinh động 4 cơ sở làm việc hiện đại tới sinh viên và ứng viên qua trải nghiệm trực quan.</p></div>
+            <div class="use-card"><h3>Tùy biến nhanh qua config.js</h3><p class="body-sm">Dễ dàng thay đổi mốc giờ, danh sách đơn vị, bản đồ và nhận diện logo cho từng chương trình.</p></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="kicker">Lộ trình phát triển tiếp theo</div>
+          <div>
+            <div class="road-step"><div class="road-phase g">Hiện tại</div><div><h3>Phiên bản sẵn sàng phát hành</h3><p class="body-sm">Hoàn thiện 4 bản đồ văn phòng, 2 chế độ chơi tách biệt BXH, điều khiển Desktop/Mobile và vận hành hội trường 500 người.</p></div></div>
+            <div class="road-step"><div class="road-phase b">Giai đoạn 2</div><div><h3>AI Bình luận viên &amp; Độ khó cá nhân hóa</h3><p class="body-sm">Tạo bình luận trực tiếp sinh động theo diễn biến vượt mặt trên sân khấu và đề xuất thử thách Solo phù hợp trình độ từng người.</p></div></div>
+            <div class="road-step"><div class="road-phase">Giai đoạn 3</div><div><h3>Nền tảng sự kiện đa chủ đề</h3><p class="body-sm">Cho phép Ban Tổ chức khởi tạo chủ đề bản đồ mới theo mùa lễ hội, kết nối giải đấu liên chi nhánh toàn quốc.</p></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot"><span>Nhà F Đi Làm · Giá trị &amp; Lộ trình</span><span>Tính khả thi cao · Chi phí hạ tầng tối ưu · Dễ nhân rộng</span></div>
+    </section>
+
+    <!-- SLIDE 10 -->
+    <section class="slide dark" data-title="Trải nghiệm trực tiếp & Cảm ơn" data-note="Kính mời Ban Giám khảo quét mã QR trên màn hình hoặc mở trực tiếp đường dẫn trải nghiệm để tự tay lái thử chế độ Solo vô tận và xem màn hình điều phối Thi đấu. Xin trân trọng cảm ơn Ban Giám khảo đã lắng nghe và rất mong nhận được các câu hỏi góp ý.">
+      <div class="meta">
+        <div class="meta-brand"><span class="tri"><i class="b"></i><i class="o"></i><i class="g"></i></span><span>09 · Trải nghiệm trực tiếp &amp; Hỏi đáp</span></div>
+        <span class="tnum">10 / 10</span>
+      </div>
+      <div class="demo-grid">
+        <div>
+          <div class="kicker">Mời Ban Giám khảo trải nghiệm ngay</div>
+          <h2 class="display-xl" style="font-size:64px;color:var(--paper);margin-top:8px">Trải nghiệm trực tiếp <span class="accent-text">Nhà F Đi Làm</span></h2>
+          <div class="demo-steps">
+            <div class="demo-step"><b>01</b><span>Quét mã QR trên màn hình bằng điện thoại hoặc truy cập đường dẫn trò chơi trên trình duyệt máy tính.</span></div>
+            <div class="demo-step"><b>02</b><span>Chọn 1 trong 4 lộ trình văn phòng và thử sức với chế độ <strong>Solo vô tận</strong> hoặc <strong>Thi đấu 8:15</strong>.</span></div>
+            <div class="demo-step"><b>03</b><span>Theo dõi bảng xếp hạng trực tiếp và màn hình điều phối MC ngay trong thời gian thực.</span></div>
+          </div>
+        </div>
+        <div class="qr-card">
+          <div class="qr-box">
+            <strong style="font-size:15px;color:#11181f">Khu vực dán mã QR</strong>
+            <span>Lấy mã QR trực tiếp từ đường dẫn <code>/qr.svg</code> của máy chủ đang chạy khi trình chiếu</span>
+          </div>
+          <b>Quét mã để tham gia</b>
+          <p>Không cần cài đặt · Hoạt động mượt mà trên iOS, Android và trình duyệt máy tính</p>
+        </div>
+      </div>
+      <div class="s-foot"><span>Trân trọng cảm ơn Ban Giám khảo &amp; Quý vị đại biểu đã lắng nghe</span><span>Phần trao đổi &amp; Hỏi đáp (Q&amp;A)</span></div>
+    </section>
+
+  </div>
+</main>
+
+<aside id="notesDrawer" hidden aria-label="Ghi chú thuyết trình">
+  <div class="n-head">
+    <b>Gợi ý lời thuyết trình · <span id="noteSlideLabel">Slide 01</span></b>
+    <button id="closeNotes" class="tb-btn" type="button" style="height:28px;padding:0 10px">Đóng (N)</button>
+  </div>
+  <p class="n-body" id="noteBody"></p>
+</aside>
+
+<section id="overview" hidden aria-label="Tổng quan tất cả slide">
+  <h2>Tổng quan bài thuyết trình (10 slide)</h2>
+  <div class="ov-grid" id="ovGrid"></div>
+</section>
+
+<footer id="toolbar" aria-label="Thanh điều khiển trình chiếu">
+  <div class="tb-group">
+    <button id="prevBtn" class="tb-btn" type="button">← Trước</button>
+    <span class="tb-counter" id="counter">01 / 10</span>
+    <button id="nextBtn" class="tb-btn" type="button">Tiếp →</button>
+    <span class="tb-title" id="slideTitle"></span>
+  </div>
+  <div class="tb-group">
+    <button id="gridBtn" class="tb-btn" type="button">Tổng quan (G)</button>
+    <button id="notesBtn" class="tb-btn" type="button">Ghi chú (N)</button>
+    <button id="fsBtn" class="tb-btn" type="button">Toàn màn hình (F)</button>
+    <button id="printBtn" class="tb-btn primary" type="button">Xuất PDF 16:9</button>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const deck = document.getElementById('deck');
+  const stage = document.getElementById('stage');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const slideTitle = document.getElementById('slideTitle');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const gridBtn = document.getElementById('gridBtn');
+  const notesBtn = document.getElementById('notesBtn');
+  const fsBtn = document.getElementById('fsBtn');
+  const printBtn = document.getElementById('printBtn');
+  const notesDrawer = document.getElementById('notesDrawer');
+  const closeNotes = document.getElementById('closeNotes');
+  const noteSlideLabel = document.getElementById('noteSlideLabel');
+  const noteBody = document.getElementById('noteBody');
+  const overview = document.getElementById('overview');
+  const ovGrid = document.getElementById('ovGrid');
+  let current = 0;
+
+  const pad2 = n => (n < 10 ? '0' + n : String(n));
+  function fitDeck() {
+    const scale = Math.min(Math.max(320, stage.clientWidth - 36) / 1280, Math.max(180, stage.clientHeight - 36) / 720, 1.35);
+    deck.style.transform = `scale(${scale.toFixed(4)})`;
+  }
+  function renderOverview() {
+    ovGrid.innerHTML = '';
+    slides.forEach((s, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ov-card' + (idx === current ? ' current' : '');
+      const num = document.createElement('span'); num.textContent = `SLIDE ${pad2(idx + 1)}`;
+      const title = document.createElement('b'); title.textContent = s.dataset.title || `Slide ${idx + 1}`;
+      const note = document.createElement('small'); note.textContent = (s.dataset.note || '').slice(0, 110) + '…';
+      btn.append(num, title, note);
+      btn.onclick = () => { overview.hidden = true; gridBtn.classList.remove('active'); go(idx); };
+      ovGrid.appendChild(btn);
+    });
+  }
+  function go(index) {
+    current = Math.max(0, Math.min(total - 1, index));
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    counter.textContent = `${pad2(current + 1)} / ${pad2(total)}`;
+    slideTitle.textContent = slides[current].dataset.title || '';
+    progress.style.width = (((current + 1) / total) * 100).toFixed(2) + '%';
+    prevBtn.disabled = current === 0; nextBtn.disabled = current === total - 1;
+    prevBtn.style.opacity = current === 0 ? '.45' : '1'; nextBtn.style.opacity = current === total - 1 ? '.45' : '1';
+    noteSlideLabel.textContent = `Slide ${pad2(current + 1)} · ${slides[current].dataset.title || ''}`;
+    noteBody.textContent = slides[current].dataset.note || '';
+    if (!overview.hidden) renderOverview();
+    if (history.replaceState) history.replaceState(null, '', '#slide-' + (current + 1));
+  }
+  const toggleNotes = () => { notesDrawer.hidden = !notesDrawer.hidden; notesBtn.classList.toggle('active', !notesDrawer.hidden); };
+  const toggleOverview = () => { overview.hidden = !overview.hidden; gridBtn.classList.toggle('active', !overview.hidden); if (!overview.hidden) renderOverview(); };
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+    else document.exitFullscreen?.().catch(() => {});
+  };
+
+  prevBtn.onclick = () => go(current - 1);
+  nextBtn.onclick = () => go(current + 1);
+  notesBtn.onclick = toggleNotes; closeNotes.onclick = toggleNotes;
+  gridBtn.onclick = toggleOverview; fsBtn.onclick = toggleFullscreen;
+  printBtn.onclick = () => window.print();
+
+  window.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { if (!overview.hidden) return; e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { if (!overview.hidden) return; e.preventDefault(); go(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(total - 1); }
+    else if (e.key === 'n' || e.key === 'N') { e.preventDefault(); toggleNotes(); }
+    else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); toggleOverview(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 'Escape') { if (!overview.hidden) toggleOverview(); else if (!notesDrawer.hidden) toggleNotes(); }
+  });
+
+  let touchX = 0;
+  stage.addEventListener('touchstart', e => { if (e.touches.length === 1) touchX = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', e => {
+    if (!e.changedTouches.length) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 48) go(current + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  window.addEventListener('resize', fitDeck);
+  document.addEventListener('fullscreenchange', () => setTimeout(fitDeck, 60));
+
+  const m = /^#slide-(\d+)$/.exec(location.hash);
+  fitDeck();
+  go(m ? Math.max(0, Math.min(total - 1, parseInt(m[1], 10) - 1)) : 0);
+})();
+</script>
+</body>
+</html>

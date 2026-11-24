@@ -1,6 +1,6 @@
 # Nhà F Đi Làm
 
-Trò chơi tương tác đa người chơi trên trình duyệt mô phỏng hành trình đến văn phòng trước mốc chấm công **08:15**. Hỗ trợ tối đa **500 cán bộ nhân viên** tham gia đồng thời, tích hợp **4 lộ trình văn phòng đặc trưng**, **2 chế độ chơi với 2 bảng xếp hạng tách biệt**, và **bộ slide thuyết trình 16:9** tại `/slides`.
+Trò chơi tương tác đa người chơi trên trình duyệt mô phỏng hành trình đến văn phòng trước mốc chấm công **08:15**. Hỗ trợ tối đa **500 cán bộ nhân viên** tham gia đồng thời, tích hợp **4 lộ trình văn phòng đặc trưng** và **2 chế độ chơi với 2 bảng xếp hạng tách biệt**.
 
 ## Tính năng nổi bật
 
@@ -16,7 +16,6 @@ Trò chơi tương tác đa người chơi trên trình duyệt mô phỏng hàn
   - **Desktop:** `←`/`→` hoặc `A`/`D` điều hướng, `↑`/`W`/`Space` tăng ga, `↓`/`S` phanh.
   - **Mobile:** Vuốt trái/phải hoặc nghiêng máy để điều hướng, kết hợp nút `PHANH` và `TĂNG GA` riêng biệt.
 - **Nhận diện đồng bộ & văn phong doanh nghiệp:** Xe xanh dương, áo cam, mũ xanh lá kèm lá cờ FPT bay phấp phới; khối tòa nhà 2.5D nối liền theo từng văn phòng; toàn bộ thông điệp lịch sự, chuẩn mực sự kiện doanh nghiệp.
-- **Bài thuyết trình 16:9 tích hợp sẵn (`/slides`):** 10 slide trình chiếu dự thi AI Game, hỗ trợ phím mũi tên, toàn màn hình (`F`), tổng quan (`G`), gợi ý lời thuyết trình (`N`) và xuất PDF chuẩn 16:9.
 
 ## Khởi chạy nhanh
 
@@ -34,7 +33,6 @@ Các đường dẫn chính sau khi khởi chạy:
 | `/` | Trang người chơi (Mobile & Desktop) |
 | `/host` | Bảng điều phối sự kiện dành cho MC |
 | `/bang` | Màn hình trình chiếu trực tiếp hội trường |
-| `/slides` | Bộ 10 slide thuyết trình 16:9 (hỗ trợ xuất PDF) |
 | `/qr.svg` | Mã QR vào phòng thi đấu |
 
 > **Lưu ý về cảm biến nghiêng máy trên điện thoại:** Chạy `HTTPS=1 npm start` (tự sinh chứng chỉ cho mạng LAN) hoặc triển khai qua máy chủ hỗ trợ HTTPS để mở khóa chế độ lái nghiêng máy trên iOS/Android.

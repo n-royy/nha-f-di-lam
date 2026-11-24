@@ -55,7 +55,6 @@ app.use('/fonts/chakra', express.static(path.join(__dirname, 'node_modules/@font
 app.get('/', (_, res) => res.sendFile(path.join(pub, 'play.html')));
 app.get('/host', (_, res) => res.sendFile(path.join(pub, 'host.html')));
 app.get('/bang', (_, res) => res.sendFile(path.join(pub, 'host.html')));
-app.get('/slides', (_, res) => res.sendFile(path.join(pub, 'slides.html')));
 app.get('/logo', (_, res) => {
   for (const ext of ['svg', 'png', 'webp', 'jpg']) {
     const f = path.join(pub, 'logo-fpt.' + ext);
@@ -683,7 +682,7 @@ io.on('connection', socket => {
 
 // ---------- Chạy ----------
 loadData();
-httpServer.listen(CFG.PORT, () => {
+httpServer.listen(CFG.PORT, '0.0.0.0', () => {
   console.log('\n  NHÀ F ĐI LÀM đã chạy\n');
   console.log(`  • Người chơi vào:   ${JOIN_URL}`);
   const adminBase = CFG.PUBLIC_URL ? baseUrl.replace(/\/$/, '') : `http://localhost:${CFG.PORT}`;

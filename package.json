@@ -4,8 +4,11 @@
   "description": "Nhà F Đi Làm: game đua xe máy cho tối đa 500 người chơi bằng điện thoại",
   "main": "server.js",
   "scripts": {
+    "dev": "node server.js",
     "start": "node server.js",
     "start:https": "node server.js --https",
+    "build": "node --check server.js && node --check config.js && node --check test/simulate.js",
+    "lint": "node --check server.js && node --check config.js && node --check test/simulate.js",
     "test:500": "node test/simulate.js http://localhost:3000 500"
   },
   "license": "ISC",
