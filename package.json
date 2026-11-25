@@ -21,7 +21,8 @@
     "express": "^5.1.0",
     "qrcode": "^1.5.4",
     "selfsigned": "^2.4.1",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "three": "^0.187.0"
   },
   "devDependencies": {
     "socket.io-client": "^4.8.1"

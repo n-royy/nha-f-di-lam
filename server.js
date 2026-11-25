@@ -52,6 +52,8 @@ const pub = path.join(__dirname, 'public');
 app.use(express.static(pub, { extensions: ['html'], index: false }));
 app.use('/fonts/bvp', express.static(path.join(__dirname, 'node_modules/@fontsource/be-vietnam-pro'), { maxAge: '7d' }));
 app.use('/fonts/chakra', express.static(path.join(__dirname, 'node_modules/@fontsource/chakra-petch'), { maxAge: '7d' }));
+app.use('/vendor/three/build', express.static(path.join(__dirname, 'node_modules/three/build'), { maxAge: '7d' }));
+app.use('/vendor/three/examples/jsm', express.static(path.join(__dirname, 'node_modules/three/examples/jsm'), { maxAge: '7d' }));
 app.get('/', (_, res) => res.sendFile(path.join(pub, 'play.html')));
 app.get('/host', (_, res) => res.sendFile(path.join(pub, 'host.html')));
 app.get('/bang', (_, res) => res.sendFile(path.join(pub, 'host.html')));
@@ -601,8 +603,8 @@ io.on('connection', socket => {
     const m = mapOf(mapId);
     socket.data.soloAt = 0;
 
-    // Giới hạn vật lý theo thời gian sống sót thực tế (chống gian lận điểm)
-    const maxDist = Math.round(elapsed * BASE_MAX_SPEED * (m.speedMul || 1) * 1.45 + 450);
+    // Giới hạn vật lý theo thời gian sống sót thực tế (chống gian lận điểm, hỗ trợ tốc độ Solo tăng cao về sau)
+    const maxDist = Math.round(elapsed * BASE_MAX_SPEED * (m.speedMul || 1) * 1.85 + 450);
     const dist = clamp(Math.round(+d.dist || 0), 0, maxDist);
     const maxPassed = Math.floor(dist / 140) + 2;
     const maxNear = Math.min(300, maxPassed * 2 + 2);
