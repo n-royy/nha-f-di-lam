@@ -92,9 +92,23 @@ legend{padding:0;margin-bottom:2px}
 kbd{display:inline-block;background:rgba(255,245,230,.16);border:1px solid rgba(255,245,230,.38);border-bottom-width:2.5px;border-radius:5px;padding:1px 6px;font:800 11.5px/1.25 var(--body);color:#fff;white-space:nowrap}
 #toast{position:absolute;left:50%;top:27%;transform:translateX(-50%);z-index:4;pointer-events:none;background:rgba(5,8,11,.88);padding:8px 14px;border-radius:7px;font:italic 700 calc(19px*var(--u)) var(--display);white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .15s}
 #toast.on{opacity:1}
-#boss{position:absolute;left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));top:30%;max-width:440px;margin-inline:auto;z-index:5;background:var(--paper);color:var(--ink);border:3px solid #d92d20;border-radius:14px;padding:13px 14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;box-shadow:0 14px 36px rgba(0,0,0,.6)}
-#boss b{display:block;font-size:16px;color:#b42318}#boss span{font-size:14px;line-height:1.35}
-#boss button{background:#d92d20;color:#fff;border:0;border-radius:9px;padding:12px 14px;font-weight:800;min-height:44px}
+#boss{position:absolute;top:calc(62px*var(--u));right:max(calc(46px*var(--u)),env(safe-area-inset-right,0px));width:min(286px,calc(100% - 210px));z-index:6;
+  background:rgba(10,16,23,.92);color:var(--paper);border:1px solid rgba(255,245,230,.22);border-left:3.5px solid var(--orange);border-radius:10px;
+  padding:8px 9px;display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:start;
+  box-shadow:0 10px 24px rgba(0,0,0,.48);backdrop-filter:blur(6px);animation:bossIn .24s cubic-bezier(.2,1.25,.4,1) both}
+@keyframes bossIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+#bossAv{width:28px;height:28px;border-radius:7px;background:var(--orange);color:#fff;display:grid;place-items:center;
+  font:italic 700 12px/1 var(--display);letter-spacing:.02em;flex:none;margin-top:1px}
+#boss .bBody{min-width:0;display:grid;gap:2px}
+#boss .bHead{display:flex;align-items:center;gap:5px;flex-wrap:wrap;line-height:1.15}
+#bossFrom{font-size:12px;font-weight:800;color:#fff5e6}
+#bossApp{font-size:9.5px;font-weight:700;color:#ffd2b0;background:rgba(255,245,230,.12);border-radius:4px;padding:1px 5px}
+#bossText{font-size:11.5px;line-height:1.32;color:#dbe3ea}
+#bossBtn{background:rgba(255,245,230,.1);color:#cdd6de;border:0;border-radius:6px;width:22px;height:22px;
+  padding:0;font-size:14px;font-weight:800;line-height:1;display:grid;place-items:center;flex:none}
+#bossBtn:hover{background:rgba(255,245,230,.22);color:#fff}
+@media (max-width:680px){#boss{top:calc(102px*var(--u));right:max(calc(40px*var(--u)),env(safe-area-inset-right,0px));width:min(244px,calc(100% - 54px));padding:7px 8px}}
+@media (prefers-reduced-motion:reduce){#boss{animation:none}}
 #scan{background:rgba(17,24,31,.9);z-index:7}
 .kiosk{min-width:0;background:#e9edf0;color:var(--ink);border-radius:18px;padding:16px;display:grid;gap:12px;justify-items:center;box-shadow:0 14px 0 #8d979f,0 26px 40px rgba(0,0,0,.5)}
 .kiosk h2{font-size:18px;margin:0;text-align:center;text-wrap:balance}
@@ -127,16 +141,27 @@ kbd{display:inline-block;background:rgba(255,245,230,.16);border:1px solid rgba(
 .soScoreRow b{font:italic 700 38px/1 var(--display);color:#b64208}
 .soScoreRow.best b{font-size:26px;color:var(--ink)}
 .newBest{display:inline-block;background:#d92d20;color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;letter-spacing:.05em}
-.soMeta{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;font-variant-numeric:tabular-nums}
+.soMeta{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-variant-numeric:tabular-nums}
 .soMeta div{background:#f1e6d6;border-radius:7px;padding:7px 4px}
-.soMeta b{display:block;font-size:16px;font-weight:800;color:var(--ink)}
-.soMeta small{font-size:11px;color:#55606a;font-weight:600}
+.soMeta b{display:block;font-size:15.5px;font-weight:800;color:var(--ink)}
+.soMeta small{font-size:10.5px;color:#55606a;font-weight:600}
 .soRank{margin:0;font-size:13.5px;font-weight:700;text-align:center;color:#0a6ebd}
 .soQuickMaps{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
 .soQuickMaps button{background:rgba(255,245,230,.1);border:1px solid rgba(255,245,230,.28);border-radius:7px;padding:7px 4px;font-size:11.5px;font-weight:700;color:var(--paper)}
 .soQuickMaps button.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 
-.acts{display:grid;grid-template-columns:1.2fr 1fr;gap:10px}
+.cardCta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,#0a6ebd,#085492);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:9px;min-height:46px;padding:11px 14px;font:italic 700 17px/1.1 var(--display);letter-spacing:.02em;cursor:pointer}
+.cardCta svg{width:19px;height:19px;flex:none}
+.cardCta:active{transform:translateY(2px)}
+#cardModal{position:fixed;inset:0;z-index:35;background:rgba(5,8,11,.88);display:flex;align-items:center;justify-content:center;padding:max(14px,env(safe-area-inset-top,0px)) 14px max(14px,env(safe-area-inset-bottom,0px));overflow-y:auto}
+#cardModal .cmBox{width:min(680px,100%);background:#141c24;border:1px solid rgba(255,245,230,.18);border-radius:14px;padding:16px;display:grid;gap:12px;box-shadow:0 24px 60px rgba(0,0,0,.65)}
+#cardModal .cmHead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#cardModal .cmHead b{font:italic 700 20px var(--display);color:var(--paper)}
+#cardModal .cmHead span{font-size:12px;color:var(--muted)}
+#cardModal .cmImgWrap{background:#090d12;border-radius:10px;overflow:hidden;border:1px solid rgba(255,245,230,.12)}
+#cardModal img{display:block;width:100%;height:auto}
+#cardModal .cmActs{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ghost{background:transparent;border:1.5px solid rgba(255,245,230,.5);border-radius:9px;font-weight:600;padding:11px;color:var(--paper)}
 #copyText{font-size:13px;user-select:text;-webkit-user-select:text;margin:0;background:rgba(255,245,230,.1);padding:10px;border-radius:7px}
 input{font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:0;border-radius:8px;padding:13px 12px;width:100%;box-sizing:border-box;-webkit-user-select:text;user-select:text}
@@ -280,16 +305,20 @@ form{display:grid;gap:14px}
   <div id="safe" style="position:fixed;visibility:hidden;pointer-events:none;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)"></div>
   <div id="toast" role="status"></div>
   <div id="net" role="alert" hidden>Mất kết nối máy chủ, đang tự động khôi phục...</div>
-  <div id="boss" data-ui hidden>
-    <div><b>Thông báo từ Quản lý</b><span id="bossText">Cuộc họp sáng sắp bắt đầu, anh/chị đã gần đến văn phòng chưa?</span></div>
-    <button id="bossBtn" type="button">Đóng thông báo</button>
+  <div id="boss" data-ui role="status" aria-live="polite" hidden>
+    <div id="bossAv" aria-hidden="true">PM</div>
+    <div class="bBody">
+      <div class="bHead"><b id="bossFrom">Sếp Minh</b><span id="bossApp">FPT Workplace</span></div>
+      <span id="bossText">Cuộc họp sáng sắp bắt đầu, anh/chị đã gần đến văn phòng chưa?</span>
+    </div>
+    <button id="bossBtn" type="button" aria-label="Đóng thông báo">×</button>
   </div>
 
   <section id="menu" class="screen" data-ui>
     <div class="inner">
       <div class="col">
         <div class="toprow"><img class="brand" alt="Logo FPT" hidden><div class="deadline"><small>Mốc chấm công</small><canvas id="ledMenu" width="10" height="10"></canvas></div></div>
-        <h1>Nhà F <em>Đi Làm</em></h1>
+        <h1 id="menuTitle">Nhà F <em>Đi Làm</em></h1>
         <p class="tag"></p>
         <p class="lede" id="lede"></p>
       </div>
@@ -372,13 +401,15 @@ form{display:grid;gap:14px}
           </div>
         </div>
         <div class="soMeta">
-          <div><b id="soPassed">0</b><small>Chướng ngại đã vượt</small></div>
-          <div><b id="soNear">0</b><small>Vượt sát an toàn (+2)</small></div>
+          <div><b id="soPassed">0</b><small>Chướng ngại</small></div>
+          <div><b id="soNear">0</b><small>Vượt sát</small></div>
+          <div><b id="soCombo">x0</b><small>Max Combo</small></div>
           <div><b id="soDist">0.0 km</b><small>Quãng đường</small></div>
         </div>
         <p class="soRank" id="soRank">Đang cập nhật BXH Solo...</p>
       </div>
       <button id="soRetry" class="go" type="button">THỬ SỨC LẠI (Space)</button>
+      <button id="soCardBtn" class="cardCta" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-6 6"/></svg>LƯU THẺ CHỨNG NHẬN (PNG)</button>
       <div class="soQuickMaps" id="soQuickMaps"></div>
       <div class="acts">
         <button id="soLb" class="ghost" type="button">BXH Solo</button>
@@ -477,7 +508,8 @@ form{display:grid;gap:14px}
         <p>Lộ trình kéo dài liên tục với tốc độ tăng dần theo điểm số. Anh/chị tập trung tránh chướng ngại vật, giữ phím <b>PHANH</b> trước đèn đỏ và vượt sát an toàn để ghi thêm điểm. <b>Lượt chơi sẽ kết thúc ngay sau 1 va chạm, đi vào vùng ngập sâu hoặc vượt đèn đỏ.</b> Thu thập Bánh mì / Xôi / Nước dừa để nhận <b>1 lớp Khiên bảo vệ</b>. Bảng xếp hạng Solo được tách biệt hoàn toàn với chế độ Thi đấu.</p>
         <table class="rtable"><tbody>
           <tr><td>Vượt qua mỗi đợt chướng ngại / ngã tư</td><td>+1 điểm</td></tr>
-          <tr><td>Vượt sát an toàn ở tốc độ cao (Near-Miss)</td><td>+2 điểm</td></tr>
+          <tr><td>Vượt sát an toàn (Near-Miss) &amp; chuỗi Combo</td><td>+2 đến +5 điểm</td></tr>
+          <tr><td>Chuỗi 3 lần lách sát liên tiếp</td><td>Bứt tốc Deadline (5 giây)</td></tr>
           <tr><td>Thu thập Cà phê / Bánh mì / Xôi / Nước dừa</td><td>+3 điểm</td></tr>
           <tr><td>Huy chương Đồng / Bạc / Vàng / Bạch Kim</td><td>15 / 35 / 65 / 100 điểm</td></tr>
         </tbody></table>
@@ -498,10 +530,28 @@ form{display:grid;gap:14px}
       <div class="eyebrow" id="cbEyebrow">Bảng xếp hạng vòng thi · cập nhật trực tiếp</div>
       <h2 style="font:italic 700 clamp(30px,8vw,46px)/1.02 var(--display);margin:0">Bảng xếp hạng Thi đấu</h2>
       <div class="cbar"><div class="top"><b id="cbRank">Đang đồng bộ kết quả...</b><span id="cbMine"></span></div><p id="cbSay"></p></div>
+      <button id="cbCardBtn" class="cardCta" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-6 6"/></svg>LƯU THẺ CHỨNG NHẬN CHẤM CÔNG (PNG)</button>
       <p class="msg" id="cbInfo"></p>
       <div class="rows" id="cbRows"></div>
     </div>
   </section>
+
+  <!-- Cửa sổ xem trước & tải Thẻ Chứng nhận Chấm công Nhà F (PNG) -->
+  <div id="cardModal" data-ui role="dialog" aria-modal="true" aria-labelledby="cmTitle" hidden>
+    <div class="cmBox">
+      <div class="cmHead">
+        <div>
+          <b id="cmTitle">Thẻ Chứng Nhận Chấm Công Nhà F</b>
+          <div><span id="cmSub">Ảnh PNG độ nét cao · Sẵn sàng chia sẻ nội bộ</span></div>
+        </div>
+      </div>
+      <div class="cmImgWrap"><img id="cardPreviewImg" alt="Thẻ chứng nhận thành tích Nhà F Đi Làm"></div>
+      <div class="cmActs">
+        <button id="cmDownload" class="go" type="button">TẢI ẢNH PNG</button>
+        <button id="cmClose" class="ghost" type="button">Đóng</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Bảng xếp hạng tách biệt 2 mode: Solo Vô Tận & Thi Đấu 8:15 -->
   <section id="lb" class="screen panel" data-ui hidden>
@@ -530,6 +580,37 @@ var app=$('app'),cv=$('c'),g=cv.getContext('2d');
 var C={ink:'#11181f',asphalt:'#303b46',asphalt2:'#2a343e',paint:'#e9e2d2',paper:'#fff5e6',orange:'#f26f21',blue:'#0a6ebd',green:'#37b34a',
   led:'#ff4a3d',amber:'#ffb020',ledG:'#37e05a',off:'#1b1f24',walk:'#b8ab97',walk2:'#ad9f8b',curb:'#d8d1c3',block:'#6d5f53'};
 var CFG=window.DCC;
+var DEFAULT_BRAND={
+  eventName:'Nhà F Đi Làm',eventTag:'#NhaFDiLam',slogan:'',accentColor:'#f26f21',
+  billboards:['FPT · KIẾN TẠO HẠNH PHÚC','CHẤM CÔNG ĐÚNG 08:15','ONE FPT · BỨT TỐC DEADLINE','AN TOÀN · ĐÚNG GIỜ · VUI KHỎE']
+};
+var BRAND=(CFG&&CFG.brand)?CFG.brand:DEFAULT_BRAND;
+function applyBrand(b){
+  if(!b||typeof b!=='object')return;
+  BRAND={
+    eventName:String(b.eventName||DEFAULT_BRAND.eventName),
+    eventTag:String(b.eventTag||DEFAULT_BRAND.eventTag),
+    slogan:String(b.slogan||''),
+    accentColor:String(b.accentColor||DEFAULT_BRAND.accentColor),
+    billboards:Array.isArray(b.billboards)&&b.billboards.length?b.billboards.slice(0,4):DEFAULT_BRAND.billboards.slice()
+  };
+  C.orange=BRAND.accentColor;
+  document.documentElement.style.setProperty('--orange',BRAND.accentColor);
+  document.title=BRAND.eventName;
+  var mt=$('menuTitle');
+  if(mt){
+    var pts=BRAND.eventName.trim().split(' ');
+    mt.textContent='';
+    if(pts.length<=1){mt.textContent=BRAND.eventName}
+    else{
+      var sp=pts.length>=3?pts.length-2:pts.length-1;
+      mt.appendChild(document.createTextNode(pts.slice(0,sp).join(' ')+' '));
+      var em=document.createElement('em');em.textContent=pts.slice(sp).join(' ');mt.appendChild(em);
+    }
+  }
+  if(BRAND.slogan){Array.prototype.forEach.call(document.querySelectorAll('.tag'),function(t){t.textContent=BRAND.slogan})}
+  if(window.SCENE3D&&window.SCENE3D.setBrand)window.SCENE3D.setBrand(BRAND);
+}
 var MAPS=CFG.maps||[
   {id:0,code:'ftown',name:'F-TOWN',place:'F-Town, TP.HCM',subtitle:'Mùa Triều Cường',summary:'',tags:[],speedMul:1},
   {id:1,code:'fville',name:'F-VILLE',place:'F-Ville, Hòa Lạc',subtitle:'Cao Tốc Sương Mù',summary:'',tags:[],speedMul:1.12},
@@ -870,8 +951,9 @@ function reset(){
   else buildContest(campus,curSeed);
   var calls=campus===2?[.22,.50,.78]:campus===1?[.26,.74]:campus===3?[.36,.70]:[.30,.66];
   st={t:0,py:0,x:0,vx:0,speed:0,throttle:0,heat:0,stun:0,stunType:'',inv:0,boost:0,shield:0,lean:0,flagPhase:0,
+    combo:0,maxCombo:0,comboT:0,comboBonus:0,fever:0,
     taps:0,hits:0,reds:0,coffee:0,banh:0,near:0,passed:0,soloScore:0,newBestHit:false,topSpeed:0,shake:0,
-    calls:calls,callIdx:0,bossT:0,inFlood:false,inFog:false,inHeat:false,inRain:false,windForce:0,zoneLabel:'',finished:null};
+    calls:calls,callIdx:0,bossT:0,popupCd:4.2,popupSeen:{},inFlood:false,inFog:false,inHeat:false,inRain:false,windForce:0,zoneLabel:'',finished:null};
   kicks=0;scanP=0;scanStage=0;scanQuirk=Math.floor(Math.random()*3);floats=[];parts=[];brakeHold=false;gasHold=false;scorePop=0;crashTimer=0;crashReason='';
   vehicles.forEach(function(v){v.active=false;v.nearDone=false;v.swerveDone=false;v.swerveTrig=0});
   if(tileMapId!==campus&&W>0)rebuildTiles();
@@ -907,6 +989,9 @@ function bestFanfare(){[660,880,1174,1318].forEach(function(f,i){setTimeout(func
 function whistle(){[0,.14,.28].forEach(function(t){setTimeout(function(){beep(2200,.1,'sine',.07)},t*1000)})}
 function chime(){beep(660,.08,'sine',.06);setTimeout(function(){beep(990,.14,'sine',.06)},75)}
 function whoosh(){beep(520,.07,'triangle',.04);setTimeout(function(){beep(780,.08,'triangle',.035)},45)}
+function comboChime(n){var notes=[523,587,659,784,880,1046,1175,1318];var base=notes[Math.min(notes.length-1,Math.max(0,(n||1)-1))];beep(base,.08,'triangle',.055);setTimeout(function(){beep(base*1.25,.1,'sine',.048)},45)}
+function feverFanfare(){[587,740,880,1175].forEach(function(f,i){setTimeout(function(){beep(f,.14,'triangle',.065)},i*55)})}
+function chatPing(){beep(784,.07,'triangle',.04);setTimeout(function(){beep(1046,.11,'sine',.045)},65)}
 function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 function toast(s){var el=$('toast');el.textContent=s;el.classList.add('on');toastT=1.25}
 
@@ -1005,6 +1090,7 @@ addEventListener('pointerup',up);addEventListener('pointercancel',up);
 addEventListener('contextmenu',function(e){if(e.target&&e.target.tagName!=='INPUT')e.preventDefault()});
 addEventListener('keydown',function(e){
   if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'))return;
+  if(!$('cardModal').hidden){if(e.key==='Escape'){e.preventDefault();closeCardModal()}return}
   keys[e.key]=true;
   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','A','d','D','w','W','s','S',' '].indexOf(e.key)>=0)setInputMode('desktop');
   if((e.key==='Escape'||e.key==='p'||e.key==='P')&&isSoloMode()){
@@ -1053,6 +1139,7 @@ function hit(msg){
     st.shield=0;st.inv=1.45;st.speed*=.85;st.shake=.18;
     toast('Khiên bảo vệ đã kích hoạt!');addFloat('ĐÃ BẢO VỆ!',C.ledG);addPart(st.x,st.py,C.ledG,14,110);beep(540,.1,'triangle',.06);buzz(45);return;
   }
+  st.combo=0;st.comboT=0;st.fever=0;
   if(isSoloMode()){triggerSoloCrash(msg);return}
   st.stun=.72;st.stunType='crash';st.inv=1.8;st.speed=0;st.throttle*=.35;st.hits++;st.shake=.4;
   toast(msg);addFloat('-20',C.led);addPart(st.x,st.py,C.orange,12,95);horn();buzz(120);
@@ -1063,6 +1150,8 @@ function update(dt){
   if(!solo&&st.t>=TIMEOUT){finishContest(null);return}
   var spMul=mapOf(campus).speedMul||1;
   st.inv=Math.max(0,st.inv-dt);st.boost=Math.max(0,st.boost-dt);st.shake=Math.max(0,st.shake-dt);
+  if(st.fever>0)st.fever=Math.max(0,st.fever-dt);
+  if(st.comboT>0){st.comboT=Math.max(0,st.comboT-dt);if(st.comboT<=0)st.combo=0}
   scorePop=Math.max(0,scorePop-dt*4.5);
 
   if(solo)spawnSoloUntil(st.py+2800);
@@ -1082,14 +1171,15 @@ function update(dt){
 
   /* Ga giữ mượt (Desktop ↑/W/Space hoặc Mobile nút TĂNG GA) & Nhiệt máy */
   var brake=braking(),acc=accelerating()&&!brake&&st.stun<=0;
+  var feverHeatMul=st.fever>0?.48:1;
   if(acc){
     st.throttle=clamp(st.throttle+(solo?.95:.82)*dt,0,1);
-    if(st.throttle>.74){st.heat+=(st.inHeat?.56:.44)*dt}
+    if(st.throttle>.74){st.heat+=(st.inHeat?.56:.44)*feverHeatMul*dt}
   }else{
-    var coolRate=st.inHeat?.36:.45;
+    var coolRate=(st.inHeat?.36:.45)*(st.fever>0?1.35:1);
     st.heat=Math.max(0,st.heat-coolRate*dt);
   }
-  if(st.heat>=1&&st.stun<=0){st.stun=solo?1.15:1.8;st.stunType='heat';st.throttle=0;st.heat=.45;beep(75,.4,'sawtooth',.06);buzz(160)}
+  if(st.heat>=1&&st.stun<=0){st.stun=solo?1.15:1.8;st.stunType='heat';st.throttle=0;st.heat=.45;st.combo=0;st.comboT=0;st.fever=0;beep(75,.4,'sawtooth',.06);buzz(160)}
 
   /* Lái + gió tạt ngang (tăng nhẹ độ nhạy đánh lái khi tốc độ Solo lên rất cao) */
   if(st.stun<=0){
@@ -1110,10 +1200,10 @@ function update(dt){
     var timeBoost=st.t*2.6+Math.max(0,st.t-60)*1.1;
     var scoreBoost=st.soloScore*1.15;
     var autoCruise=Math.min(640,220+timeBoost+scoreBoost);
-    var target=(autoCruise+st.throttle*105+(st.boost>0?95:0))*spMul*(st.inFlood?.76:1);
+    var target=(autoCruise+st.throttle*105+(st.boost>0?95:0)+(st.fever>0?46:0))*spMul*(st.inFlood?.76:1);
     st.speed+=clamp(target-st.speed,-350*dt,680*dt);
   }else{
-    var target2=(155+st.throttle*245+(st.boost>0?95:0))*spMul*(st.inFlood?.72:1);
+    var target2=Math.min(516,155+st.throttle*245+(st.boost>0?95:0)+(st.fever>0?36:0))*spMul*(st.inFlood?.72:1);
     st.speed+=clamp(target2-st.speed,-320*dt,560*dt);
   }
   st.topSpeed=Math.max(st.topSpeed,st.speed);
@@ -1124,7 +1214,7 @@ function update(dt){
     var l=lights[li];
     if(prevFront<l.y&&front>=l.y&&lightState(l,st.t).s==='r'&&st.speed>5){
       if(solo){whistle();triggerSoloCrash('Vượt đèn đỏ — Lượt chơi kết thúc do vi phạm tín hiệu giao thông.');return}
-      st.reds++;st.stun=4.5;st.stunType='fine';st.speed=0;st.throttle=0;st.py=l.y-21;
+      st.reds++;st.stun=4.5;st.stunType='fine';st.speed=0;st.throttle=0;st.py=l.y-21;st.combo=0;st.comboT=0;st.fever=0;
       addFloat('-50 ĐÈN ĐỎ!',C.led);whistle();buzz([80,50,80]);
     }
   }
@@ -1169,9 +1259,21 @@ function update(dt){
       if(mode!=='race')return;
     }else if(!v.nearDone&&st.inv<=0&&st.stun<=0&&st.speed>=215&&v.y<st.py-10&&v.y>st.py-52&&dxAbs<v.w/2+31){
       v.nearDone=true;st.near++;st.throttle=clamp(st.throttle+.08,0,1);
-      if(solo)addSoloPoints(2,'VƯỢT SÁT +2!',C.amber);
-      else addFloat('VƯỢT SÁT +5!',C.amber);
-      whoosh();
+      st.combo++;if(st.combo>st.maxCombo)st.maxCombo=st.combo;st.comboT=4.8;
+      if(solo){
+        var extra=Math.min(3,st.combo-1);st.comboBonus+=extra;var pts=2+extra;
+        addSoloPoints(pts,st.combo>=2?('COMBO x'+st.combo+' · +'+pts+'!'):'VƯỢT SÁT +2!',st.combo>=3?'#ffb020':C.amber);
+      }else{
+        addFloat(st.combo>=2?('COMBO x'+st.combo+' · +5!'):'VƯỢT SÁT +5!',st.combo>=3?'#ffb020':C.amber);
+      }
+      addPart(st.x,st.py,st.combo>=3?'#ffb020':'#ffe2b8',st.combo>=3?8:4,75);
+      comboChime(st.combo);
+      if(st.combo>=3&&(st.combo===3||st.combo%3===0)){
+        st.fever=5.0;st.heat=Math.max(0,st.heat-.32);st.shake=Math.max(st.shake,.18);
+        feverFanfare();buzz([35,25,55]);
+        toast('BỨT TỐC DEADLINE! Tăng tốc & tản nhiệt 50%');
+        addFloat('BỨT TỐC DEADLINE!',C.amber,st.x,st.py+60);
+      }
     }
   }
 
@@ -1231,13 +1333,28 @@ function update(dt){
     }
   }
 
-  /* Sếp gọi: chỉ bật trong Thi đấu (Solo giữ nhịp arcade gọn gàng, không che ngang vô cớ) */
-  if(!solo&&st.calls.length&&st.py/ROUTE>st.calls[0]){
-    st.calls.shift();
-    var ctxt=sty.calls[st.callIdx%sty.calls.length];st.callIdx++;
-    $('bossText').textContent=ctxt;$('boss').hidden=false;st.bossT=3.2;beep(880,.13,'sine',.07);setTimeout(function(){beep(1100,.13,'sine',.07)},140);
-  }
+  /* Thông báo công sở vui nhộn theo bối cảnh (FPT Workplace / Teams / F-Care / Canteen — góc trên phải, không che đường!) */
+  if(st.popupCd>0)st.popupCd-=dt;
   if(st.bossT>0){st.bossT-=dt;if(st.bossT<=0)$('boss').hidden=true}
+  if(st.stun<=0&&st.popupCd<=0){
+    var pKey='';
+    if(solo&&st.soloScore>=80&&!st.popupSeen.solo80)pKey='solo80';
+    else if(solo&&st.soloScore>=50&&!st.popupSeen.solo50)pKey='solo50';
+    else if(solo&&st.soloScore>=20&&!st.popupSeen.solo20)pKey='solo20';
+    else if(st.fever>2.5&&!st.popupSeen.fever)pKey='fever';
+    else if(!solo&&st.py/ROUTE>.76&&!st.popupSeen.nearGate)pKey='nearGate';
+    else if(!solo&&clockSec()>DEADLINE-240&&!st.popupSeen.deadline)pKey='deadline';
+    else if((st.inRain||st.inFlood)&&!st.popupSeen.rain)pKey='rain';
+    else if(st.inFog&&!st.popupSeen.fog)pKey='fog';
+    else if((st.inHeat||st.heat>.76)&&!st.popupSeen.heat)pKey='heat';
+    else if(Math.abs(st.windForce)>28&&!st.popupSeen.wind)pKey='wind';
+    else if(!solo&&st.calls.length&&st.py/ROUTE>st.calls[0]){
+      st.calls.shift();
+      var ctxt=sty.calls[st.callIdx%sty.calls.length];st.callIdx++;
+      showOfficePopup({av:'PM',col:'#0a6ebd',from:'Quản lý trực tiếp',app:'Microsoft Teams',text:ctxt});
+    }
+    if(pKey)triggerOfficePopup(pKey);
+  }
 
   for(var fi=floats.length-1;fi>=0;fi--){var fl=floats[fi];fl.y+=fl.vy*dt;fl.a-=dt*1.05;if(fl.a<=0)floats.splice(fi,1)}
   for(var pi=parts.length-1;pi>=0;pi--){var pt=parts[pi];pt.x+=pt.vx*dt;pt.y+=pt.vy*dt;pt.life-=dt;if(pt.life<=0)parts.splice(pi,1)}
@@ -1246,6 +1363,66 @@ function update(dt){
   if(A&&engG&&!muted){eng.frequency.setTargetAtTime(52+st.speed*.26,A.currentTime,.05);engG.gain.setTargetAtTime(st.speed>1?.026:.008,A.currentTime,.05)}
 }
 function clockSec(){return CLOCK0+st.t*RATE}
+
+/* ===== Thông báo công sở vui nhộn theo bối cảnh (FPT Workplace / Teams / F-Care / Canteen) ===== */
+var OFFICE_POPUPS={
+  rain:[
+    {av:'PM',col:'#0a6ebd',from:'Sếp Minh',app:'Microsoft Teams',text:'Nước ngập tới pô chưa em? Lên tới F-Town anh pha sẵn ly trà gừng nóng!'},
+    {av:'HR',col:'#f26f21',from:'HR Nhà F',app:'FPT Workplace',text:'Mưa lớn quá trời, anh em chạy cẩn thận tránh vùng ngập sâu kẻo tắt máy nhé!'}
+  ],
+  fog:[
+    {av:'TL',col:'#475569',from:'Team Lead',app:'FPT Workplace',text:'Sương mù Hòa Lạc dày như Đà Lạt! Bật đèn pha bám vạch kẻ đường nha anh em.'},
+    {av:'FC',col:'#37b34a',from:'F-Care',app:'Thông báo nội bộ',text:'Cao tốc F-Ville có sương mù sớm, giữ đều ga và quan sát tín hiệu từ xa nhé!'}
+  ],
+  heat:[
+    {av:'CT',col:'#d97706',from:'Canteen Nhà F',app:'Chat Nội Bộ',text:'Trời nắng nóng quá! Tới văn phòng ghé ngay quầy cà phê sữa đá hạ nhiệt nha!'},
+    {av:'FC',col:'#e11d48',from:'Kỹ thuật F-Care',app:'Cảnh báo nhẹ',text:'Động cơ đang nóng rồi đó! Nhả nhẹ ga xíu kẻo quá nhiệt lại đứng nhìn team vượt!'}
+  ],
+  wind:[
+    {av:'ĐN',col:'#0284c7',from:'Đồng nghiệp ĐN',app:'Microsoft Teams',text:'Gió biển Mỹ Khê thổi bay cả nón! Giữ chắc tay lái kẻo dạt sang làn bên cạnh nhé!'},
+    {av:'FC',col:'#0a6ebd',from:'F-Care Đà Nẵng',app:'FPT Workplace',text:'Cung đường ven biển đang có gió ngang mạnh — ưu tiên giữ làn giữa an toàn!'}
+  ],
+  fever:[
+    {av:'PM',col:'#f26f21',from:'PM Dự án',app:'Microsoft Teams',text:'Tốc độ lách sát này đem đi fix bug production thì cả team xong Sprint sớm 2 ngày!'},
+    {av:'HR',col:'#37b34a',from:'HR Nhà F',app:'FPT Workplace',text:'Bứt tốc Deadline quá cháy! Phong độ tay lái lụa số 1 văn phòng hôm nay!'}
+  ],
+  deadline:[
+    {av:'QŨ',col:'#d92d20',from:'Kế toán Quỹ Team',app:'Chat Nhóm',text:'Sắp điểm 08:15 rồi! Tăng ga ngay kẻo hôm nay lại tài trợ 50K trà sữa cho cả phòng!'},
+    {av:'PM',col:'#0a6ebd',from:'Nhắc lịch Stand-up',app:'FPT Workplace',text:'Còn ít phút nữa tới giờ họp sáng — cả đội đang chờ bạn mở màn báo cáo tiến độ!'}
+  ],
+  nearGate:[
+    {av:'BV',col:'#37b34a',from:'Bảo vệ Cổng F',app:'F-Care',text:'Thấy thấp thoáng cờ FPT phía xa rồi! Nhớ chuẩn bị tháo mũ để quét mặt chấm công nhé!'}
+  ],
+  solo20:[
+    {av:'PM',col:'#0a6ebd',from:'Sếp Minh',app:'Microsoft Teams',text:'20 điểm rồi! Tay lái lụa thế này sáng nào cũng chắc suất chấm công Top 1 công ty!'}
+  ],
+  solo50:[
+    {av:'HR',col:'#f26f21',from:'HR Nhà F',app:'FPT Workplace',text:'50 điểm không một vết xước! Đề xuất trao ngay danh hiệu Tay Lái Vàng Nhà F!'}
+  ],
+  solo80:[
+    {av:'FPT',col:'#37b34a',from:'Cộng đồng Nhà F',app:'FPT Workplace',text:'80 điểm kỷ lục! Cả tầng văn phòng đang vây quanh màn hình cổ vũ bạn đấy!'}
+  ]
+};
+function showOfficePopup(item){
+  if(!item)return;
+  var box=$('boss');
+  $('bossAv').textContent=item.av||'F';
+  $('bossAv').style.background=item.col||C.orange;
+  box.style.borderLeftColor=item.col||C.orange;
+  $('bossFrom').textContent=item.from||'Nhà F';
+  $('bossApp').textContent=item.app||'FPT Workplace';
+  $('bossText').textContent=item.text||'';
+  box.hidden=false;
+  st.bossT=3.9;
+  st.popupCd=11.5;
+  chatPing();
+}
+function triggerOfficePopup(key){
+  var list=OFFICE_POPUPS[key];
+  if(!list||!list.length)return;
+  st.popupSeen[key]=true;
+  showOfficePopup(list[Math.random()*list.length|0]);
+}
 
 /* Quét mặt (chế độ Thi đấu) */
 var QUIRKS=[
@@ -1306,6 +1483,7 @@ function renderSoloQuickMaps(){
     box.appendChild(b);
   });
 }
+var lastSoloCard=null,lastCardUrl='';
 function finishSolo(){
   mode='result';setBrake(false);setGas(false);hideAll();$('copyText').hidden=true;$('soCopy').textContent='Sao chép thành tích';
   $('soRetry').textContent=isMobileUI()?'THỬ SỨC LẠI':'THỬ SỨC LẠI (Space)';
@@ -1316,17 +1494,19 @@ function finishSolo(){
   $('soReason').textContent=crashReason||'Lượt chơi kết thúc do va chạm trên lộ trình.';
   $('soMedal').className='medal '+med.cls;$('soMedal').textContent=med.ico;$('soMedalLab').textContent=med.lab;
   $('soScore').textContent=sc;$('soBest').textContent=best;$('soNewBest').hidden=!isNew;
-  $('soPassed').textContent=st.passed;$('soNear').textContent=st.near;$('soDist').textContent=distKm+' km';
+  $('soPassed').textContent=st.passed;$('soNear').textContent=st.near;$('soCombo').textContent='x'+(st.maxCombo||0);$('soDist').textContent=distKm+' km';
   $('soRank').textContent='Đang đồng bộ điểm lên BXH Solo...';
   renderSoloQuickMaps();
-  shareText='Nhà F Đi Làm (Chế độ Solo · '+cm.place+'): Tôi vừa đạt '+sc+' điểm ('+med.lab+', quãng đường '+distKm+' km). Mời anh/chị cùng thử sức! #NhaFDiLam';
+  lastSoloCard={mode:'solo',name:me.name||'Thành viên Nhà F',dept:me.team||'',map:cm,score:sc,best:best,isNew:isNew,medal:med,passed:st.passed,near:st.near,maxCombo:st.maxCombo||0,distKm:distKm,rank:0,total:0};
+  shareText=BRAND.eventName+' (Chế độ Solo · '+cm.place+'): Tôi vừa đạt '+sc+' điểm ('+med.lab+', Max Combo x'+(st.maxCombo||0)+', quãng đường '+distKm+' km). Mời anh/chị cùng thử sức! '+BRAND.eventTag;
   $('soloOver').hidden=false;$('soloOver').scrollTop=0;
 
   var picks=st.coffee+st.banh;
-  net.emit('solo:finish',{score:sc,passed:st.passed,near:st.near,picks:picks,dist:Math.round(st.py),reason:crashReason},function(r){
+  net.emit('solo:finish',{score:sc,passed:st.passed,near:st.near,picks:picks,comboBonus:st.comboBonus||0,dist:Math.round(st.py),reason:crashReason},function(r){
     if(!r||!r.ok){$('soRank').textContent=(r&&r.error)||'Chưa thể lưu kết quả lên BXH.';return}
     $('soScore').textContent=r.score;
     if(r.mapBest!=null){setSoloBest(campus,r.mapBest);$('soBest').textContent=Math.max(best,r.mapBest)}
+    if(lastSoloCard){lastSoloCard.score=r.score;lastSoloCard.rank=r.rank;lastSoloCard.total=r.total}
     $('soRank').textContent='Xếp hạng '+r.rank+' / '+r.total+' người trên BXH Solo'+(r.bestScore>r.score?' (kỷ lục cao nhất: '+r.bestScore+' điểm)':'');
   });
 }
@@ -1362,14 +1542,182 @@ function finishContest(sec){
   var arrived=sec!=null,picks=st.coffee+st.banh;
   if(arrived){beep(660,.12,'sine',.08);setTimeout(function(){beep(880,.18,'sine',.08)},130)}
   var body={arrived:arrived,p:clamp(st.py/ROUTE,0,1),h:st.hits,r:st.reds,b:picks,nm:st.near};
-  openBoard({sec:sec,score:calcContestScore(sec,st),say:closing(sec,0,0)});
+  openBoard({sec:sec,score:calcContestScore(sec,st),say:closing(sec,0,0),near:st.near||0,maxCombo:st.maxCombo||0,hits:st.hits||0,distKm:((st.py/1000)*.7).toFixed(1)});
   net.emit('finish',body,function(r){
     if(!r||!r.ok){if(!finalRes)$('cbInfo').textContent=(r&&r.error)||'Chưa thể gửi kết quả lên hệ thống.';return}
     if(myEntry)myEntry.status='done';if(finalRes)return;
-    cbMine={sec:r.sec,score:r.score,say:r.rejected?'Hệ thống chưa thể xác nhận lượt về đích này do thông số tốc độ bất thường.':closing(r.sec,0,0)};
+    cbMine={sec:r.sec,score:r.score,near:st.near||0,maxCombo:st.maxCombo||0,hits:st.hits||0,distKm:((st.py/1000)*.7).toFixed(1),say:r.rejected?'Hệ thống chưa thể xác nhận lượt về đích này do thông số tốc độ bất thường.':closing(r.sec,0,0)};
     renderBoard(r.board);
   });
 }
+
+/* ===== Thẻ Chứng Nhận Chấm Công Nhà F (xuất ảnh PNG 1 chạm hoàn toàn nội bộ) ===== */
+function getFptTitle(o){
+  if(o.mode==='contest'){
+    if(o.rank===1)return'Quán Quân Đường Đua Nhà F';
+    if(o.sec==null)return'Chiến Binh Kẹt Xe Giờ Cao Điểm';
+    var d=DEADLINE-o.sec;
+    if(d>=360)return'Chiến Thần Chấm Công Sớm';
+    if(d>=60)return'Tay Lái Lụa Đúng Giờ';
+    if(d>=0)return'Bậc Thầy Sát Nút 08:15';
+    return'Nhà Tài Trợ Quỹ Đi Muộn';
+  }
+  if(o.score>=100)return'Huyền Thoại Đường Phố Nhà F';
+  if(o.score>=65)return'Chiến Thần Lách Xe F-Campus';
+  if(o.score>=35)return'Tay Lái Lụa Giờ Cao Điểm';
+  if((o.maxCombo||0)>=3)return'Chuyên Gia Lách Sát Bứt Tốc';
+  if(o.score>=15)return'Cư Dân Nhà F Vững Tay Lái';
+  return'Tân Binh Đường Đua Sáng Thứ Hai';
+}
+function renderAchievementCard(o){
+  var cw=1080,ch=640,oc=document.createElement('canvas');oc.width=cw;oc.height=ch;
+  var c=oc.getContext('2d');
+  var bg=c.createLinearGradient(0,0,cw,ch);
+  bg.addColorStop(0,'#0e161f');bg.addColorStop(.55,'#162230');bg.addColorStop(1,'#101923');
+  c.fillStyle=bg;c.fillRect(0,0,cw,ch);
+
+  /* Ánh sáng trang trí tinh tế 2 góc + vạch tốc độ nền */
+  var gl1=c.createRadialGradient(cw*.88,ch*.16,20,cw*.88,ch*.16,380);
+  gl1.addColorStop(0,'rgba(242,111,33,.22)');gl1.addColorStop(1,'rgba(242,111,33,0)');
+  c.fillStyle=gl1;c.fillRect(0,0,cw,ch);
+  var gl2=c.createRadialGradient(cw*.12,ch*.88,20,cw*.12,ch*.88,360);
+  gl2.addColorStop(0,'rgba(10,110,189,.2)');gl2.addColorStop(1,'rgba(10,110,189,0)');
+  c.fillStyle=gl2;c.fillRect(0,0,cw,ch);
+  c.strokeStyle='rgba(255,245,230,.04)';c.lineWidth=2;
+  for(var sl=-120;sl<cw+200;sl+=68){c.beginPath();c.moveTo(sl,ch);c.lineTo(sl+210,0);c.stroke()}
+
+  /* Dải 3 màu thương hiệu FPT trên cùng */
+  c.fillStyle=C.blue;c.fillRect(0,0,cw/3,12);
+  c.fillStyle=C.orange;c.fillRect(cw/3,0,cw/3,12);
+  c.fillStyle=C.green;c.fillRect(cw*2/3,0,cw/3,12);
+
+  /* Khung viền trong */
+  c.strokeStyle='rgba(255,245,230,.14)';c.lineWidth=2;
+  rr(c,28,32,cw-56,ch-64,18);c.stroke();
+
+  /* Header: Logo FPT + tiêu đề chứng nhận + ngày */
+  var lx=60,ly=62;
+  if(logoOk){
+    var lh=46,lw=Math.min(130,lh*logoImg.width/Math.max(1,logoImg.height));
+    c.fillStyle='#ffffff';rr(c,lx,ly,lw+18,lh+12,8);c.fill();
+    c.drawImage(logoImg,lx+9,ly+6,lw,lh);
+    lx+=lw+34;
+  }else{
+    c.fillStyle='#ffffff';rr(c,lx,ly,98,58,8);c.fill();
+    c.font='italic 800 32px "Chakra Petch","Be Vietnam Pro",sans-serif';c.textBaseline='middle';c.textAlign='center';
+    c.fillStyle=C.blue;c.fillText('F',lx+24,ly+30);c.fillStyle=C.orange;c.fillText('P',lx+49,ly+30);c.fillStyle=C.green;c.fillText('T',lx+74,ly+30);
+    lx+=116;
+  }
+  c.textAlign='left';c.textBaseline='top';
+  c.fillStyle=C.orange;c.font='800 16px "Be Vietnam Pro",sans-serif';
+  c.fillText('CHỨNG NHẬN CHẤM CÔNG NHÀ F',lx,ly+5);
+  var nowD=new Date(),ds=(nowD.getDate()<10?'0':'')+nowD.getDate()+'/'+(nowD.getMonth()+1<10?'0':'')+(nowD.getMonth()+1)+'/'+nowD.getFullYear();
+  c.fillStyle='#aab6c2';c.font='600 15px "Be Vietnam Pro",sans-serif';
+  c.fillText((o.mode==='contest'?'GIẢI THI ĐẤU 08:15':'CHẾ ĐỘ SOLO VÔ TẬN')+' · '+(o.map?o.map.place:'F-Town')+' · '+ds,lx,ly+31);
+
+  /* Cột trái: Tên người chơi + Đơn vị + Danh hiệu STCo */
+  var nameTxt=o.name||'Thành viên Nhà F';
+  var nameFs=nameTxt.length>22?46:nameTxt.length>15?56:66;
+  c.fillStyle='#fff5e6';c.font='italic 700 '+nameFs+'px "Chakra Petch","Be Vietnam Pro",sans-serif';
+  c.fillText(nameTxt,60,164,560);
+
+  c.fillStyle='#c5d0da';c.font='600 22px "Be Vietnam Pro",sans-serif';
+  c.fillText(o.dept?('Đơn vị: '+o.dept):'Cán bộ nhân viên Nhà F',60,242,540);
+
+  var title=getFptTitle(o);
+  c.fillStyle='rgba(242,111,33,.16)';rr(c,60,294,540,74,12);c.fill();
+  c.strokeStyle='rgba(242,111,33,.5)';c.lineWidth=1.5;rr(c,60,294,540,74,12);c.stroke();
+  c.fillStyle='#ffb020';c.font='700 13px "Be Vietnam Pro",sans-serif';
+  c.fillText('DANH HIỆU ĐƯỜNG ĐUA',80,308);
+  c.fillStyle='#fff5e6';c.font='italic 700 27px "Chakra Petch","Be Vietnam Pro",sans-serif';
+  c.fillText(title,80,329,500);
+
+  /* Cột phải: Thẻ đồng hồ chấm công / Điểm số nổi bật */
+  var rx=640,ry=154,rw=380,rh=218;
+  c.fillStyle='#080d12';rr(c,rx,ry,rw,rh,16);c.fill();
+  c.strokeStyle='rgba(255,245,230,.16)';c.lineWidth=2;rr(c,rx,ry,rw,rh,16);c.stroke();
+  c.textAlign='center';
+  if(o.mode==='contest'){
+    var onTime=o.sec!=null&&o.sec<=DEADLINE;
+    c.fillStyle=onTime?C.ledG:C.led;c.font='800 14px "Be Vietnam Pro",sans-serif';
+    c.fillText(o.sec==null?'CHƯA HOÀN TẤT LỘ TRÌNH':onTime?'CHẤM CÔNG ĐÚNG GIỜ · BẢO TOÀN '+FINE_TEXT.toUpperCase():'CHẤM CÔNG MUỘN · GÓP QUỸ '+FINE_TEXT.toUpperCase(),rx+rw/2,ry+24);
+    c.fillStyle=onTime?C.ledG:o.sec==null?'#aab4bc':C.led;
+    c.font='italic 700 66px "Chakra Petch","Be Vietnam Pro",sans-serif';
+    c.fillText(o.sec!=null?fmt(o.sec):'--:--:--',rx+rw/2,ry+58);
+    c.fillStyle='#fff5e6';c.font='italic 700 32px "Chakra Petch","Be Vietnam Pro",sans-serif';
+    c.fillText((o.score||0)+' ĐIỂM',rx+rw/2,ry+148);
+    c.fillStyle='#aab6c2';c.font='600 15px "Be Vietnam Pro",sans-serif';
+    c.fillText(o.rank?('Xếp hạng #'+o.rank+(o.total?' / '+o.total:'')):'Đã ghi nhận kết quả vòng thi',rx+rw/2,ry+186);
+  }else{
+    c.fillStyle=o.isNew?C.amber:'#aab6c2';c.font='800 14px "Be Vietnam Pro",sans-serif';
+    c.fillText(o.isNew?'KỶ LỤC CÁ NHÂN MỚI!':'THÀNH TÍCH SOLO VÔ TẬN',rx+rw/2,ry+24);
+    c.fillStyle='#fff5e6';c.font='italic 700 78px "Chakra Petch","Be Vietnam Pro",sans-serif';
+    c.fillText(String(o.score||0),rx+rw/2,ry+52);
+    c.fillStyle=C.orange;c.font='800 18px "Be Vietnam Pro",sans-serif';
+    c.fillText((o.medal?o.medal.lab:'Chưa đạt huy chương').toUpperCase(),rx+rw/2,ry+146);
+    c.fillStyle='#aab6c2';c.font='600 15px "Be Vietnam Pro",sans-serif';
+    c.fillText(o.rank?('Hạng #'+o.rank+' / '+o.total+' BXH Solo · Kỷ lục: '+o.best):('Kỷ lục lộ trình: '+(o.best||o.score||0)+' điểm'),rx+rw/2,ry+182);
+  }
+
+  /* Thanh thông số 4 cột phía dưới */
+  var stats=o.mode==='contest'
+    ?[['XẾP HẠNG',o.rank?('#'+o.rank):'—'],['QUÃNG ĐƯỜNG',(o.distKm||'11.9')+' km'],['VƯỢT SÁT',String(o.near||0)],['MAX COMBO','x'+(o.maxCombo||0)]]
+    :[['CHƯỚNG NGẠI',String(o.passed||0)],['VƯỢT SÁT',String(o.near||0)],['MAX COMBO','x'+(o.maxCombo||0)],['QUÃNG ĐƯỜNG',(o.distKm||'0.0')+' km']];
+  var sy0=414,sw=224,sh=104,sgap=21;
+  stats.forEach(function(item,idx){
+    var bx=60+idx*(sw+sgap);
+    c.fillStyle='rgba(255,245,230,.06)';rr(c,bx,sy0,sw,sh,12);c.fill();
+    c.strokeStyle='rgba(255,245,230,.12)';c.lineWidth=1;rr(c,bx,sy0,sw,sh,12);c.stroke();
+    c.textAlign='left';c.fillStyle='#9aa7b4';c.font='700 13px "Be Vietnam Pro",sans-serif';
+    c.fillText(item[0],bx+18,sy0+18);
+    c.fillStyle='#fff5e6';c.font='italic 700 36px "Chakra Petch","Be Vietnam Pro",sans-serif';
+    c.fillText(item[1],bx+18,sy0+45);
+  });
+
+  /* Footer */
+  c.strokeStyle='rgba(255,245,230,.12)';c.lineWidth=1;
+  c.beginPath();c.moveTo(60,552);c.lineTo(cw-60,552);c.stroke();
+  c.textAlign='left';c.fillStyle='#9aa7b4';c.font='700 15px "Be Vietnam Pro",sans-serif';
+  c.fillText((BRAND.eventName||'NHÀ F ĐI LÀM').toUpperCase()+' · SỰ KIỆN NỘI BỘ FPT',60,572);
+  c.textAlign='right';c.fillStyle=C.orange;c.font='italic 700 18px "Chakra Petch","Be Vietnam Pro",sans-serif';
+  c.fillText((BRAND.eventTag||'#NhaFDiLam')+'  ·  '+(o.map?o.map.name:'FPT'),cw-60,570);
+  return oc.toDataURL('image/png');
+}
+function openCardModal(o){
+  lastCardUrl=renderAchievementCard(o);
+  $('cardPreviewImg').src=lastCardUrl;
+  $('cmSub').textContent=(o.mode==='contest'?'Chế độ Thi đấu 08:15':'Chế độ Solo Vô Tận')+' · '+(o.map?o.map.place:'')+' · Ảnh PNG 1080×640';
+  $('cardModal').hidden=false;
+  $('cmDownload').focus();
+}
+function closeCardModal(){$('cardModal').hidden=true}
+$('cmClose').addEventListener('click',closeCardModal);
+$('cardModal').addEventListener('click',function(e){if(e.target===$('cardModal'))closeCardModal()});
+$('cmDownload').addEventListener('click',function(){
+  if(!lastCardUrl)return;
+  var a=document.createElement('a');
+  var code=mapOf(campus).code||'fpt';
+  a.href=lastCardUrl;a.download='the-cham-cong-nha-f-'+code+'.png';
+  document.body.appendChild(a);a.click();a.remove();
+  toast('Đã tải Thẻ Chứng Nhận Chấm Công Nhà F!');
+});
+$('soCardBtn').addEventListener('click',function(){
+  if(!lastSoloCard)return;
+  openCardModal(lastSoloCard);
+});
+$('cbCardBtn').addEventListener('click',function(){
+  var m=cbMine||{};
+  var rankNo=finalRes?finalRes.rank:(live?live.r:0);
+  var total=finalRes?finalRes.total:(live?live.t:(cbLast?cbLast.total:0));
+  var mapId=(cbLast&&cbLast.mapId!=null)?cbLast.mapId:(state?state.mapId:campus);
+  openCardModal({
+    mode:'contest',name:me.name||'Thành viên Nhà F',dept:me.team||'',map:mapOf(mapId),
+    sec:m.sec!=null?m.sec:null,score:m.score!=null?m.score:(live?live.c:0),
+    rank:rankNo,total:total,near:m.near!=null?m.near:(st?st.near:0),
+    maxCombo:m.maxCombo!=null?m.maxCombo:(st?st.maxCombo:0),
+    distKm:m.distKm||(st?((st.py/1000)*.7).toFixed(1):'11.9')
+  });
+});
 
 var shareText='';
 $('soCopy').addEventListener('click',function(){var box=$('copyText');
@@ -2037,20 +2385,6 @@ function drawWeather(){
   }
 }
 
-function drawGhosts(py){
-  if(play!=='contest'||!live)return;
-  [live.ah,live.bh].forEach(function(gh,idx){
-    if(!gh||gh.p==null)return;
-    var gy=gh.p*ROUTE;if(Math.abs(gy-py)>620)return;
-    var y=sy(gy,py),gx=sx(idx===0?-58:58);
-    drawBike(gx,y,S*1.05,idx===0?'#ffb020':'#7fd8c8',{alpha:.52,helmet:'#fff',shirt:'#0a6ebd'});
-    g.save();g.font='700 '+(11*HUD.u)+'px "Be Vietnam Pro",sans-serif';g.textAlign='center';
-    var tw=g.measureText(gh.n).width+10;
-    g.fillStyle='rgba(5,8,11,.76)';rr(g,gx-tw/2,y-34*S-12,tw,18,5);g.fill();
-    g.fillStyle=idx===0?'#ffb020':'#bfefff';g.fillText(gh.n,gx,y-34*S+1);g.restore();
-  });
-}
-
 /* HUD riêng cho Solo Vô Tận — đặt gọn bên trái để giữ lòng đường giữa thông thoáng 100% */
 function drawSoloHUD(){
   var u=HUD.u,scStr=String(st.soloScore),best=Math.max(st.soloScore,getSoloBest(campus));
@@ -2094,6 +2428,9 @@ function drawSoloHUD(){
   g.textBaseline='alphabetic';
 
   var stackY=ly+boxH+8*u;
+
+  /* Thẻ Combo lách sát & Bứt tốc Deadline gọn bên trái */
+  stackY=drawComboHUD(lx,stackY,u,true);
 
   /* Đèn đỏ sắp tới (xếp gọn ngay dưới khối điểm bên trái) */
   var nl=null;for(var i=0;i<lights.length;i++){if(lights[i].y>st.py+22){nl=lights[i];break}}
@@ -2141,6 +2478,7 @@ function drawSoloHUD(){
     g.fillStyle=C.amber;g.textAlign='center';g.textBaseline='middle';g.font='italic 700 '+(24*u)+'px "Chakra Petch","Be Vietnam Pro",sans-serif';g.fillText('ĐỘNG CƠ QUÁ NHIỆT',W/2,py2+30*u);
     g.fillStyle='#fff';g.font='600 '+(13*u)+'px "Be Vietnam Pro",sans-serif';g.fillText('Vui lòng chờ động cơ hạ nhiệt...',W/2,py2+56*u);g.textBaseline='alphabetic';
   }
+  drawRouteRadar(true);
 }
 
 /* HUD Chế độ Thi đấu (giữ nguyên luật 8:15 — căn gọn về bên trái cho cả Desktop & Mobile) */
@@ -2163,6 +2501,7 @@ function drawContestHUD(){
   g.textAlign='left';g.strokeText(km,bx,by+24*u);g.fillText(km,bx,by+24*u);
 
   var stackY=by+32*u;
+  stackY=drawComboHUD(bx,stackY,u,false);
   var nl=null;for(var i=0;i<lights.length;i++){if(lights[i].y>st.py+22){nl=lights[i];break}}
   if(nl&&nl.y-st.py<1600){var s=lightState(nl,st.t),cols={r:C.led,y:C.amber,g:C.ledG};
     g.fillStyle='rgba(5,8,11,.86)';rr(g,bx,stackY,112*u,36*u,7*u);g.fill();['r','y','g'].forEach(function(k,j){g.fillStyle=s.s===k?cols[k]:'#2c2f33';g.beginPath();g.arc(bx+(13+j*15)*u,stackY+18*u,6*u,0,7);g.fill()});
@@ -2220,6 +2559,7 @@ function drawContestHUD(){
     var ttl={fine:'VƯỢT ĐÈN ĐỎ',stall:'ĐỘNG CƠ TẮT MÁY',heat:'ĐỘNG CƠ QUÁ NHIỆT'}[st.stunType],sub=st.stunType==='fine'?'Tạm dừng '+Math.ceil(st.stun)+' giây theo quy định':st.stunType==='heat'?'Vui lòng chờ động cơ hạ nhiệt...':stallSub;
     var pw2=side?Math.min(ROAD*2*S-16,320*u):Math.min(W-32,320*u),ph=92*u,py2=H*.38;g.fillStyle=st.stunType==='fine'?'rgba(170,24,18,.94)':'rgba(5,8,11,.94)';rr(g,(W-pw2)/2,py2,pw2,ph,10*u);g.fill();
     g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.font='italic 700 '+Math.min(25*u,pw2/9.2)+'px "Chakra Petch","Be Vietnam Pro",sans-serif';g.fillText(ttl,W/2,py2+36*u);g.font='600 '+(13*u)+'px "Be Vietnam Pro",sans-serif';g.fillText(sub,W/2,py2+68*u);g.textBaseline='alphabetic'}
+  drawRouteRadar(false);
 }
 
 var use3D=(function(){try{return localStorage.getItem('dcc-3d')!=='0'}catch(e){return true}})();
@@ -2245,13 +2585,170 @@ function initScene3D(){
     if(lost)toast('Tự động chuyển sang 2D để đảm bảo mượt mà',C.amber);
     syncControlsUI();
   });
-  if(ok&&W>0&&H>0){mgr.resize(W,H);mgr.setMap(campus)}
+  if(ok&&W>0&&H>0){mgr.resize(W,H);mgr.setBrand(BRAND);mgr.setMap(campus)}
   if(!ok)use3D=false;
   if($('c3d'))$('c3d').hidden=!is3DActive();
   syncControlsUI();
 }
 if(window.SCENE3D)initScene3D();
 window.addEventListener('scene3d:ready',initScene3D);
+
+/* Thẻ Combo lách sát & Bứt tốc Deadline gọn gàng bên trái (không chắn tầm nhìn lòng đường giữa) */
+function drawComboHUD(lx,y,u,isSolo){
+  var fever=st.fever>0,combo=st.combo||0;
+  if(!fever&&combo<2)return y;
+  var bw=fever?156*u:138*u,bh=38*u;
+  g.save();
+  g.fillStyle=fever?'rgba(42,18,4,.9)':'rgba(5,8,11,.86)';
+  rr(g,lx,y,bw,bh,7*u);g.fill();
+  g.strokeStyle=fever?'#ffb020':'rgba(242,111,33,.65)';
+  g.lineWidth=fever?2:1.4;rr(g,lx,y,bw,bh,7*u);g.stroke();
+  g.textAlign='left';g.textBaseline='middle';
+  g.font='italic 700 '+(14.5*u)+'px "Chakra Petch","Be Vietnam Pro",sans-serif';
+  g.fillStyle=fever?'#ffb020':'#fff5e6';
+  g.fillText(fever?('BỨT TỐC · x'+Math.max(3,combo)):('COMBO x'+combo),lx+9*u,y+15*u);
+  g.textAlign='right';g.font='800 '+(10*u)+'px "Be Vietnam Pro",sans-serif';
+  g.fillStyle=fever?'#ffd9a8':C.amber;
+  var rightTag=fever?(st.fever.toFixed(1)+'s'):(isSolo?('+'+(2+Math.min(3,combo-1))+'đ'):'+5đ');
+  g.fillText(rightTag,lx+bw-9*u,y+15*u);
+  var ratio=fever?clamp(st.fever/5.0,0,1):clamp(st.comboT/4.8,0,1);
+  g.fillStyle='rgba(255,255,255,.16)';rr(g,lx+9*u,y+27*u,bw-18*u,5*u,2.5*u);g.fill();
+  g.fillStyle=fever?'#ffb020':C.orange;rr(g,lx+9*u,y+27*u,Math.max(4*u,(bw-18*u)*ratio),5*u,2.5*u);g.fill();
+  g.restore();
+  return y+bh+7*u;
+}
+/* Thanh Radar lộ trình dọc bên mép phải (Thi đấu: toàn tuyến 0→100% tới cổng; Solo: radar quét trước 2km!) */
+function drawRouteRadar(isSolo){
+  var u=HUD.u,mob=isMobileUI();
+  var topY=(mob?114:76)*u,botY=H-(mob?164:84)*u;
+  var trackH=botY-topY;
+  if(trackH<110*u)return;
+  var barW=14*u,rx=W-SAFE.r-barW-11*u,rcx=rx+barW/2;
+  var zoneCols={rain:'rgba(42,144,226,.72)',fog:'rgba(148,163,184,.72)',heat:'rgba(242,111,33,.72)',wind:'rgba(34,211,238,.72)'};
+  var sigCols={r:C.led,y:C.amber,g:C.ledG};
+
+  g.save();
+  /* Nhãn đầu thanh Radar có nền tối tương phản cao */
+  g.textAlign='center';g.textBaseline='middle';
+  g.font='800 '+(8.5*u)+'px "Be Vietnam Pro",sans-serif';
+  var topLab=isSolo?'RADAR':'CỔNG';
+  var topW=g.measureText(topLab).width+8*u;
+  var topBx=Math.min(W-SAFE.r-topW-3*u,rcx-topW/2);
+  g.fillStyle='rgba(5,8,11,.84)';rr(g,topBx,topY-17*u,topW,13*u,4*u);g.fill();
+  g.fillStyle='#fff5e6';g.fillText(topLab,topBx+topW/2,topY-10.2*u);
+
+  /* Thân thanh Radar trong suốt tối màu */
+  g.fillStyle='rgba(5,8,11,.80)';rr(g,rx,topY,barW,trackH,7*u);g.fill();
+  g.strokeStyle='rgba(255,245,230,.26)';g.lineWidth=1.2;rr(g,rx,topY,barW,trackH,7*u);g.stroke();
+
+  g.save();
+  rr(g,rx+1.5,topY+1.5,barW-3,trackH-3,5.5*u);g.clip();
+
+  if(!isSolo){
+    /* Thi đấu: bản đồ toàn tuyến 0 → ROUTE */
+    for(var zi=0;zi<zones.length;zi++){
+      var z=zones[zi];
+      var y1=botY-clamp(z.b/ROUTE,0,1)*trackH;
+      var y2=botY-clamp(z.a/ROUTE,0,1)*trackH;
+      g.fillStyle=zoneCols[z.type]||'rgba(56,189,248,.5)';
+      g.fillRect(rx+2,y1,barW-4,Math.max(2,y2-y1));
+    }
+    var prog=clamp(st.py/ROUTE,0,1);
+    var fillH=prog*trackH;
+    g.fillStyle=st.fever>0?'rgba(255,176,32,.62)':C.orange;
+    g.fillRect(rx+3.5*u,botY-fillH,barW-7*u,fillH);
+
+    /* Vạch caro đích ở đỉnh thanh */
+    var sq=3.5*u;
+    for(var ci=0;ci<4;ci++){
+      for(var cj=0;cj<2;cj++){
+        g.fillStyle=(ci+cj)%2===0?'#fff5e6':'#11181f';
+        g.fillRect(rx+ci*sq,topY+cj*sq,sq,sq);
+      }
+    }
+  }else{
+    /* Solo: Radar chiến thuật quét trước 2800 đơn vị (~2 km) */
+    var span=2800;
+    for(var szi=0;szi<zones.length;szi++){
+      var sz=zones[szi];
+      if(sz.b<st.py||sz.a>st.py+span)continue;
+      var sy1=botY-clamp((sz.b-st.py)/span,0,1)*trackH;
+      var sy2=botY-clamp((sz.a-st.py)/span,0,1)*trackH;
+      g.fillStyle=zoneCols[sz.type]||'rgba(56,189,248,.5)';
+      g.fillRect(rx+2,sy1,barW-4,Math.max(2,sy2-sy1));
+    }
+    /* Vạch chia cự ly tinh tế 1/4, 1/2, 3/4 */
+    g.fillStyle='rgba(255,245,230,.18)';
+    for(var ti=1;ti<=3;ti++){
+      var ty=botY-(ti/4)*trackH;
+      g.fillRect(rx+2,ty,barW-4,1);
+    }
+    /* Quét vật phẩm Khiên (xanh lá) & Cà phê (vàng) sắp tới */
+    for(var ii=0;ii<items.length;ii++){
+      var it=items[ii];
+      if(it.used||(it.type!=='banh'&&it.type!=='coffee'))continue;
+      var dy=it.y-st.py;
+      if(dy<20||dy>span)continue;
+      var iy=botY-(dy/span)*trackH;
+      g.fillStyle=it.type==='banh'?C.ledG:C.amber;
+      g.beginPath();
+      g.moveTo(rcx,iy-3.4*u);g.lineTo(rcx+3.4*u,iy);g.lineTo(rcx,iy+3.4*u);g.lineTo(rcx-3.4*u,iy);g.closePath();g.fill();
+    }
+  }
+  g.restore();
+
+  /* Các ngã tư đèn tín hiệu trực tiếp (Xanh / Vàng / Đỏ theo thời gian thực!) */
+  var maxLook=isSolo?2800:ROUTE;
+  var nextLightDist=null;
+  for(var li=0;li<lights.length;li++){
+    var l=lights[li];
+    var frac=isSolo?(l.y-st.py)/maxLook:l.y/ROUTE;
+    if(isSolo&&(l.y<=st.py||frac>1))continue;
+    if(!isSolo&&(frac<0||frac>1))continue;
+    if(isSolo&&nextLightDist===null)nextLightDist=l.y-st.py;
+    var ly=botY-frac*trackH;
+    var ls=lightState(l,st.t).s;
+    g.fillStyle='#05080b';g.beginPath();g.arc(rcx,ly,4.4*u,0,7);g.fill();
+    g.fillStyle=sigCols[ls]||C.ledG;g.beginPath();g.arc(rcx,ly,3.1*u,0,7);g.fill();
+  }
+
+  /* Điểm đánh dấu người chơi */
+  var pFrac=isSolo?0.05:clamp(st.py/ROUTE,0,1);
+  var pyMark=botY-pFrac*trackH;
+  g.fillStyle='#fff5e6';g.beginPath();g.arc(rcx,pyMark,5.8*u,0,7);g.fill();
+  g.fillStyle=st.fever>0?C.amber:C.orange;g.beginPath();g.arc(rcx,pyMark,3.4*u,0,7);g.fill();
+
+  /* Nhãn chân thanh Radar có nền tối sắc nét */
+  g.textAlign='center';g.textBaseline='middle';
+  g.font='800 '+(9*u)+'px "Be Vietnam Pro",sans-serif';
+  var botLab=isSolo?(nextLightDist!=null?(Math.round(nextLightDist*.7/10)*10+'m'):'2km'):(Math.round(clamp(st.py/ROUTE,0,1)*100)+'%');
+  var botW=g.measureText(botLab).width+8*u;
+  var botBx=Math.min(W-SAFE.r-botW-3*u,rcx-botW/2);
+  g.fillStyle='rgba(5,8,11,.84)';rr(g,botBx,botY+4*u,botW,14*u,4*u);g.fill();
+  g.fillStyle='#ffd2b0';g.fillText(botLab,botBx+botW/2,botY+11.2*u);
+  g.restore();
+}
+/* Hiệu ứng viền tốc độ ngoại vi khi Bứt tốc Deadline (giữ trung tâm lòng đường 100% thông thoáng) */
+function drawFeverFx(now){
+  if(!st||st.fever<=0||reduce)return;
+  var k=clamp(st.fever/.7,0,1);
+  var edgeW=Math.min(W*.22,190);
+  var lg=g.createLinearGradient(0,0,edgeW,0);
+  lg.addColorStop(0,'rgba(242,111,33,'+(0.24*k)+')');lg.addColorStop(1,'rgba(242,111,33,0)');
+  g.fillStyle=lg;g.fillRect(0,0,edgeW,H);
+  var rg=g.createLinearGradient(W,0,W-edgeW,0);
+  rg.addColorStop(0,'rgba(255,176,32,'+(0.24*k)+')');rg.addColorStop(1,'rgba(255,176,32,0)');
+  g.fillStyle=rg;g.fillRect(W-edgeW,0,edgeW,H);
+  var t=(now||performance.now())*.001;
+  g.save();g.strokeStyle='rgba(255,224,158,'+(0.38*k)+')';g.lineWidth=2;
+  for(var i=0;i<10;i++){
+    var side=i%2===0?0:1;
+    var rx=side===0?(10+((i*37)%Math.max(24,edgeW*.7))):(W-10-((i*41)%Math.max(24,edgeW*.7)));
+    var ry=((i*137+t*1180)%H);
+    g.beginPath();g.moveTo(rx,ry);g.lineTo(rx+(side===0?-10:10),ry+58);g.stroke();
+  }
+  g.restore();
+}
 
 function drawScene(dt,now){
   var py=st.py;
@@ -2266,18 +2763,7 @@ function drawScene(dt,now){
       var hg=g.createLinearGradient(0,0,0,H*.32);hg.addColorStop(0,'rgba(255,154,46,.22)');hg.addColorStop(1,'rgba(255,154,46,0)');
       g.fillStyle=hg;g.fillRect(0,0,W,H*.32);
     }
-    if(play==='contest'&&live){
-      [live.ah,live.bh].forEach(function(gh,idx){
-        if(!gh||gh.p==null)return;
-        var gy=gh.p*ROUTE;if(Math.abs(gy-py)>1100)return;
-        if(window.SCENE3D.project(idx===0?-58:58,gy,4.6,py,_projOut)){
-          g.save();g.font='700 '+(11*HUD.u)+'px "Be Vietnam Pro",sans-serif';g.textAlign='center';
-          var tw=g.measureText(gh.n).width+10;
-          g.fillStyle='rgba(5,8,11,.78)';rr(g,_projOut.x-tw/2,_projOut.y-14,tw,18,5);g.fill();
-          g.fillStyle=idx===0?'#ffb020':'#bfefff';g.fillText(gh.n,_projOut.x,_projOut.y-1);g.restore();
-        }
-      });
-    }
+    drawFeverFx(now);
     floats.forEach(function(fl){
       if(!window.SCENE3D.project(fl.x,fl.y,4.2,py,_projOut))return;
       g.save();g.globalAlpha=clamp(fl.a,0,1);g.font='italic 700 '+(16*HUD.u)+'px "Chakra Petch","Be Vietnam Pro",sans-serif';
@@ -2293,7 +2779,6 @@ function drawScene(dt,now){
   drawGate(py);
   items.forEach(function(it){drawItem(it,py)});
   if(st.speed>280&&!reduce){g.strokeStyle='rgba(255,255,255,'+Math.min(.4,(st.speed-280)/550)+')';g.lineWidth=1.6;for(var i=0;i<9;i++){var q=(i*137+Math.floor(py/3)*31)%(ROAD*2)-ROAD,yl=((i*211+py*1.2)%(H/S))*S;g.beginPath();g.moveTo(sx(q),yl);g.lineTo(sx(q),yl+36*S);g.stroke()}}
-  drawGhosts(py);
   vehicles.forEach(function(v){
     if(!v.active&&mode!=='menu'&&v.y-py>1050)return;
     var y=sy(v.y,py);if(y<-200*S||y>H+200*S)return;
@@ -2305,7 +2790,7 @@ function drawScene(dt,now){
   });
   var blink=st.inv>0&&Math.floor(st.t*12)%2===0;
   if(!blink){
-    if(st.boost>0&&!reduce){g.fillStyle='rgba(255,176,32,.85)';g.beginPath();g.arc(sx(st.x)+(Math.random()-.5)*6,PY+30*S,(5+Math.random()*5)*S,0,7);g.fill()}
+    if((st.boost>0||st.fever>0)&&!reduce){var fr=st.fever>0?1.45:1;g.fillStyle=st.fever>0?'rgba(255,154,32,.92)':'rgba(255,176,32,.85)';g.beginPath();g.arc(sx(st.x)+(Math.random()-.5)*6,PY+(30+4*fr)*S,(5+Math.random()*5)*fr*S,0,7);g.fill()}
     if(st.speed>5&&!reduce&&st.throttle>.5){g.fillStyle='rgba(235,235,235,.28)';g.beginPath();g.arc(sx(st.x)+Math.sin(st.t*30)*5,PY+36*S+Math.random()*10,(4+Math.random()*4)*S,0,7);g.fill()}
     drawBike(sx(st.x),PY,S*1.12,C.blue,{player:true,lean:st.lean,pack:false,shield:st.shield>0,flag:st.flagPhase||0,flagSpeed:st.speed,wind:st.windForce,helmet:C.green,shirt:C.orange});
   }
@@ -2317,6 +2802,7 @@ function drawScene(dt,now){
     var fx=sx(fl.x),fy=sy(fl.y,py);g.strokeText(fl.t,fx,fy);g.fillStyle=fl.c;g.fillText(fl.t,fx,fy);g.restore();
   });
   drawWeather();
+  drawFeverFx(now);
   g.restore();
 }
 
@@ -2462,7 +2948,7 @@ function initMapUI(){
 /* ===== Kết nối máy chủ ===== */
 function el(tag,cls,text){var n=document.createElement(tag);if(cls)n.className=cls;if(text!=null)n.textContent=text;return n}
 var SCREENS=['menu','entry','lobby','lb','soloOver','soloPause','scan','cboard'];
-function hideAll(){SCREENS.forEach(function(id){$(id).hidden=true});$('boss').hidden=true;$('mute').hidden=true;$('view3dBtn').hidden=true;$('pauseBtn').hidden=true;$('steerBtn').hidden=true;$('brakeBtn').hidden=true;$('gasBtn').hidden=true;$('kbBar').hidden=true;$('rules').hidden=true}
+function hideAll(){SCREENS.forEach(function(id){$(id).hidden=true});$('boss').hidden=true;$('mute').hidden=true;$('view3dBtn').hidden=true;$('pauseBtn').hidden=true;$('steerBtn').hidden=true;$('brakeBtn').hidden=true;$('gasBtn').hidden=true;$('kbBar').hidden=true;$('rules').hidden=true;$('cardModal').hidden=true}
 function show(id){hideAll();$(id).hidden=false;$(id).scrollTop=0}
 function setHash(h){try{if(location.hash!=='#'+h)history.replaceState(null,'','#'+h)}catch(e){}}
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
@@ -2494,12 +2980,14 @@ var firstHello=true;
 net.on('connect',function(){$('net').hidden=true;
   net.emit('hello',token,function(r){
     state=r.state;myEntry=r.entry;
+    if(state&&state.brand)applyBrand(state.brand);
     if(r.profile){myId=r.profile.id||myId;me.name=me.name||r.profile.name;me.team=me.team||r.profile.dept}
     if(firstHello){firstHello=false;bootRoute(r)}
     onState();
   })});
 net.on('disconnect',function(){$('net').hidden=false});
-net.on('state',function(s){state=s;onState()});
+net.on('state',function(s){state=s;if(s&&s.brand)applyBrand(s.brand);onState()});
+net.on('brand',applyBrand);
 net.on('count',function(c){if(state){state.count=c;renderCounts()}});
 net.on('cboard',function(b){if(!$('cboard').hidden&&!finalRes)renderBoard(b)});
 net.on('results',function(r){if(!r)return;showFinal(r)});
@@ -2748,6 +3236,7 @@ $('soLb').addEventListener('click',function(){openLb('solo')});
 $('soMenu').addEventListener('click',goHome);
 
 var resizeT=0;addEventListener('resize',function(){clearTimeout(resizeT);resizeT=setTimeout(function(){var r=app.getBoundingClientRect();if(r.width!==W||r.height!==H)resize()},120)});
+applyBrand(BRAND);
 initMapUI();resize();ledCanvas($('ledMenu'),fmt(DEADLINE),36,C.led);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(resize);
 requestAnimationFrame(frame);

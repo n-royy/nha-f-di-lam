@@ -205,6 +205,105 @@ function makeSignTexture(text, bgHex, fgHex = '#ffffff', accentBar = false, maxA
   }, { anisotropy: maxAniso });
 }
 
+const DEFAULT_BRAND_3D = {
+  eventName: 'Nhà F Đi Làm',
+  eventTag: '#NhaFDiLam',
+  slogan: 'Vượt giờ cao điểm · Chấm công đúng 08:15',
+  accentColor: '#f26f21',
+  billboards: [
+    'FPT · KIẾN TẠO HẠNH PHÚC',
+    'CHẤM CÔNG ĐÚNG 08:15',
+    'ONE FPT · BỨT TỐC DEADLINE',
+    'AN TOÀN · ĐÚNG GIỜ · VUI KHỎE',
+  ],
+};
+
+function makeBillboardTexture(headline, eventName, eventTag, accentHex, idx, maxAniso) {
+  const accent = accentHex || '#f26f21';
+  const subPalette = ['#0a6ebd', accent, '#37b34a', '#ffb020'];
+  const edgeGlow = subPalette[idx % subPalette.length];
+  return makeCanvasTex(512, 224, (c, w, h) => {
+    // Deep metallic LED cabinet background
+    const bg = c.createLinearGradient(0, 0, w, h);
+    bg.addColorStop(0, '#0d151f');
+    bg.addColorStop(0.55, '#152232');
+    bg.addColorStop(1, '#0c131c');
+    c.fillStyle = bg;
+    c.fillRect(0, 0, w, h);
+
+    // Subtle glowing accent corner bloom
+    const glow = c.createRadialGradient(w * 0.85, h * 0.25, 10, w * 0.85, h * 0.25, 220);
+    glow.addColorStop(0, edgeGlow + '44');
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = glow;
+    c.fillRect(0, 0, w, h);
+
+    // Subtle LED dot-matrix texture
+    c.fillStyle = 'rgba(255,255,255,0.035)';
+    for (let y = 18; y < h - 14; y += 10) {
+      for (let x = 14; x < w - 14; x += 10) c.fillRect(x, y, 3, 3);
+    }
+
+    // Top FPT tri-color + accent ribbon
+    c.fillStyle = '#0a6ebd'; c.fillRect(0, 0, w / 3, 12);
+    c.fillStyle = accent; c.fillRect(w / 3, 0, w / 3, 12);
+    c.fillStyle = '#37b34a'; c.fillRect((w * 2) / 3, 0, w / 3, 12);
+
+    // Crisp outer LED bezel border
+    c.strokeStyle = edgeGlow;
+    c.lineWidth = 5;
+    c.strokeRect(5, 14, w - 10, h - 19);
+
+    // Main bold uppercase billboard headline (wrapped up to 2 crisp lines)
+    const msg = String(headline || 'FPT · KIẾN TẠO HẠNH PHÚC').toUpperCase();
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    const maxW = w - 48;
+    c.font = 'italic 700 44px "Chakra Petch", "Be Vietnam Pro", sans-serif';
+    let lines = [msg];
+    if (c.measureText(msg).width > maxW && msg.indexOf(' ') >= 0) {
+      const words = msg.split(' ');
+      let bestSplit = 1;
+      let bestDiff = 1e9;
+      for (let s = 1; s < words.length; s++) {
+        const l1 = words.slice(0, s).join(' ');
+        const l2 = words.slice(s).join(' ');
+        const diff = Math.abs(c.measureText(l1).width - c.measureText(l2).width);
+        if (diff < bestDiff) { bestDiff = diff; bestSplit = s; }
+      }
+      lines = [words.slice(0, bestSplit).join(' '), words.slice(bestSplit).join(' ')];
+    }
+    const fs = lines.length > 1 ? 36 : 44;
+    c.font = 'italic 700 ' + fs + 'px "Chakra Petch", "Be Vietnam Pro", sans-serif';
+    c.fillStyle = 'rgba(0,0,0,0.65)';
+    lines.forEach((ln, li) => {
+      const ly = lines.length > 1 ? (74 + li * 42) : 96;
+      c.fillText(ln, w / 2 + 2, ly + 3, maxW);
+    });
+    c.fillStyle = '#fff6ea';
+    lines.forEach((ln, li) => {
+      const ly = lines.length > 1 ? (74 + li * 42) : 96;
+      c.fillText(ln, w / 2, ly, maxW);
+    });
+
+    // Bottom event strip: Event Name + Hashtag
+    c.fillStyle = 'rgba(6, 11, 16, 0.88)';
+    c.fillRect(10, h - 52, w - 20, 40);
+    c.fillStyle = accent;
+    c.fillRect(10, h - 52, 6, 40);
+
+    c.textAlign = 'left';
+    c.fillStyle = '#d4dde6';
+    c.font = '800 19px "Be Vietnam Pro", system-ui, sans-serif';
+    c.fillText(String(eventName || 'NHÀ F ĐI LÀM').toUpperCase(), 26, h - 31, w * 0.56);
+
+    c.textAlign = 'right';
+    c.fillStyle = '#ffb020';
+    c.font = 'italic 700 21px "Chakra Petch", "Be Vietnam Pro", sans-serif';
+    c.fillText(String(eventTag || '#NhaFDiLam'), w - 24, h - 31, w * 0.36);
+  }, { anisotropy: maxAniso });
+}
+
 function makeWoodPoleTexture(maxAniso) {
   return makeCanvasTex(64, 256, (c, w, h) => {
     const grad = c.createLinearGradient(0, 0, w, 0);
@@ -693,6 +792,9 @@ class Scene3DManager {
     this.signCache = {};
     this.ledCache = {};
     this.boostPadTex = null;
+    this.brand = { ...DEFAULT_BRAND_3D, billboards: [...DEFAULT_BRAND_3D.billboards] };
+    this.billboardMats = [];
+    this.billboardMeshes = [];
 
     // Actors & pools
     this.playerGroup = null;
@@ -705,7 +807,6 @@ class Scene3DManager {
 
     this.vehPools = {};
     this.itemPools = {};
-    this.ghostPool = [];
     this.lightPool = [];
     this.crossCarPool = [];
     this.finishGate = null;
@@ -1385,6 +1486,8 @@ class Scene3DManager {
     }
     this.chunks = [];
     this.palmRefs = [];
+    this.billboardMeshes = [];
+    if (this.billboardMats.length < 4) this._rebuildBillboardMats();
 
     for (let i = 0; i < CHUNK_COUNT; i++) {
       const chunk = new THREE.Group();
@@ -1394,10 +1497,91 @@ class Scene3DManager {
         : this._buildFptComplexBlock.bind(this);
       chunk.add(buildFn(-1, i));
       chunk.add(buildFn(1, i));
+      // Elevated angled 3D LED Street Billboards every 2 chunks (on left side only for Map 3 beach)
+      if (i % 2 === 0) {
+        const bbSide = mapId === 3 ? -1 : (i % 4 === 0 ? -1 : 1);
+        chunk.add(this._makeRoadsideBillboard(bbSide, (i / 2) | 0));
+      }
       chunk.position.z = 38 - i * CHUNK_LEN;
       this.mapGroup.add(chunk);
       this.chunks.push(chunk);
     }
+  }
+
+  _rebuildBillboardMats() {
+    for (let i = 0; i < this.billboardMats.length; i++) {
+      const old = this.billboardMats[i];
+      if (old && old.map) old.map.dispose();
+      if (old) old.dispose();
+    }
+    const b = this.brand || DEFAULT_BRAND_3D;
+    const list = Array.isArray(b.billboards) && b.billboards.length ? b.billboards : DEFAULT_BRAND_3D.billboards;
+    this.billboardMats = [0, 1, 2, 3].map((idx) => {
+      const txt = list[idx % list.length] || DEFAULT_BRAND_3D.billboards[idx];
+      const tex = makeBillboardTexture(txt, b.eventName, b.eventTag, b.accentColor, idx, this.maxAniso);
+      return new THREE.MeshBasicMaterial({ map: tex, toneMapped: false });
+    });
+  }
+
+  _makeRoadsideBillboard(side, slotIdx) {
+    const g = new THREE.Group();
+    const xPos = side * (ROAD_HALF + 4.4);
+    g.position.set(xPos, 0, 14);
+    // Angle inward toward approaching player camera for high readability while driving!
+    g.rotation.y = side < 0 ? 0.42 : -0.42;
+
+    // Twin heavy dark-steel support columns + concrete bases
+    [-3.4, 3.4].forEach((px) => {
+      const base = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.7, 0.95), this.mats.concrete);
+      base.position.set(px, 0.35, 0);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.28, 6.4, 8), this.mats.darkMetal);
+      pole.position.set(px, 3.7, 0);
+      g.add(base, pole);
+    });
+
+    // Illuminated steel truss cabinet housing
+    const cabinet = new THREE.Mesh(new THREE.BoxGeometry(10.8, 4.9, 0.62), this.mats.darkSeat);
+    cabinet.position.set(0, 7.9, 0);
+    g.add(cabinet);
+
+    // Top structural overhang + dual spotlights
+    const hood = new THREE.Mesh(new THREE.BoxGeometry(11.0, 0.22, 1.05), this.mats.darkMetal);
+    hood.position.set(0, 10.45, 0.25);
+    g.add(hood);
+    [-3.0, 3.0].forEach((lx) => {
+      const lamp = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.14, 0.24), this.mats.headlight);
+      lamp.position.set(lx, 10.32, 0.65);
+      g.add(lamp);
+    });
+
+    // Vivid unlit LED Billboard Screen
+    const mat = this.billboardMats[slotIdx % 4];
+    const screen = new THREE.Mesh(new THREE.PlaneGeometry(10.2, 4.46), mat);
+    screen.position.set(0, 7.9, 0.34);
+    screen.userData.slotIdx = slotIdx % 4;
+    this.billboardMeshes.push(screen);
+    g.add(screen);
+
+    return g;
+  }
+
+  setBrand(brandObj) {
+    if (!brandObj || typeof brandObj !== 'object') return;
+    const rawB = Array.isArray(brandObj.billboards) ? brandObj.billboards : DEFAULT_BRAND_3D.billboards;
+    this.brand = {
+      eventName: String(brandObj.eventName || DEFAULT_BRAND_3D.eventName),
+      eventTag: String(brandObj.eventTag || DEFAULT_BRAND_3D.eventTag),
+      slogan: String(brandObj.slogan || DEFAULT_BRAND_3D.slogan),
+      accentColor: String(brandObj.accentColor || DEFAULT_BRAND_3D.accentColor),
+      billboards: [0, 1, 2, 3].map((i) => String(rawB[i] || DEFAULT_BRAND_3D.billboards[i])),
+    };
+    if (!this.ready) return;
+    this._rebuildBillboardMats();
+    for (let i = 0; i < this.billboardMeshes.length; i++) {
+      const m = this.billboardMeshes[i];
+      m.material = this.billboardMats[(m.userData.slotIdx || 0) % 4];
+    }
+    this.finishGateMapId = -1;
   }
 
   // ---------- Composite 12-Part Hero Player Bike + Dynamic 3D Cloth FPT Flag ----------
@@ -1871,25 +2055,6 @@ class Scene3DManager {
     return g;
   }
 
-  _createGhostMesh(isAhead) {
-    const g = new THREE.Group();
-    const col = isAhead ? 0xffb020 : 0x5be2ff;
-    const mat = new THREE.MeshStandardMaterial({
-      color: col, emissive: col, emissiveIntensity: 0.45,
-      transparent: true, opacity: 0.56, roughness: 0.25,
-    });
-    const body = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.1, 3.6), mat);
-    body.position.set(0, 1.0, 0);
-    const rider = new THREE.Mesh(new THREE.BoxGeometry(1.15, 1.45, 0.85), mat);
-    rider.position.set(0, 2.35, 0.15);
-    const helm = new THREE.Mesh(new THREE.SphereGeometry(0.58, 10, 8), mat);
-    helm.position.set(0, 3.4, 0);
-    g.add(body, rider, helm);
-    g.visible = false;
-    this.scene.add(g);
-    return g;
-  }
-
   // ---------- High-Craft 3D Road Items & Obstacles Pool Builders ----------
   _createPickupMesh(kind) {
     const g = new THREE.Group();
@@ -2351,7 +2516,6 @@ class Scene3DManager {
       hole: Array.from({ length: 14 }, () => this._createHoleMesh()),
       boostpad: Array.from({ length: 8 }, () => this._createBoostPadMesh()),
     };
-    this.ghostPool = [this._createGhostMesh(true), this._createGhostMesh(false)];
     this.lightPool = Array.from({ length: 3 }, () => this._createIntersectionMesh());
   }
 
@@ -2479,7 +2643,8 @@ class Scene3DManager {
     const portrait = this.width / Math.max(1, this.height) < 0.85;
     const targetCamX = st.x * SC * (portrait ? 0.36 : 0.44);
     const speedRatio = THREE.MathUtils.clamp((st.speed || 0) / 360, 0, 1.35);
-    const targetFov = (portrait ? 49 : 44) + speedRatio * 4.5 + (st.boost > 0 ? 3.5 : 0);
+    const feverOn = (st.fever || 0) > 0;
+    const targetFov = (portrait ? 49 : 44) + speedRatio * 4.5 + (st.boost > 0 ? 3.5 : 0) + (feverOn ? 4.8 : 0);
     const targetRoll = reduce ? 0 : -(st.lean || 0) * 0.045;
 
     this.camX = THREE.MathUtils.damp(this.camX, targetCamX, 8.5, safeDt);
@@ -2511,9 +2676,14 @@ class Scene3DManager {
       const scS = 1 + Math.sin(now * 0.006) * 0.04;
       this.shieldMesh.scale.setScalar(scS);
     }
-    this.boostFlame.visible = st.boost > 0 && !reduce;
+    this.boostFlame.visible = (st.boost > 0 || feverOn) && !reduce;
     if (this.boostFlame.visible) {
-      this.boostFlame.scale.set(0.85 + Math.random() * 0.35, 0.8 + Math.random() * 0.6, 0.85 + Math.random() * 0.35);
+      const fMul = feverOn ? 1.48 : 1.0;
+      this.boostFlame.scale.set(
+        (0.85 + Math.random() * 0.35) * fMul,
+        (0.8 + Math.random() * 0.65) * (feverOn ? 1.65 : 1.0),
+        (0.85 + Math.random() * 0.35) * fMul
+      );
     }
 
     // Animate tall wooden flagpole elastic flex + dynamic 3D cloth FPT flag billowing in the wind
@@ -2706,36 +2876,16 @@ class Scene3DManager {
       this.finishGate.position.set(0, 0, gateZ);
       if (this.finishGateMapId !== campus) {
         this.finishGateMapId = campus;
-        this.finishSignMat.map = makeSignTexture('CỔNG ' + mapName, '#f26f21', '#ffffff', true, this.maxAniso);
+        if (this.finishSignMat.map) this.finishSignMat.map.dispose();
+        const gateCol = (this.brand && this.brand.accentColor) || '#f26f21';
+        this.finishSignMat.map = makeSignTexture('CỔNG ' + mapName, gateCol, '#ffffff', true, this.maxAniso);
         this.finishSignMat.needsUpdate = true;
       }
     } else {
       this.finishGate.visible = false;
     }
 
-    // 9. Sync Colleague Ghosts (Contest Mode)
-    let gCount = 0;
-    if (play === 'contest' && live) {
-      [live.ah, live.bh].forEach((gh, idx) => {
-        if (!gh || gh.p == null) return;
-        const gy = gh.p * route;
-        const z = -(gy - py) * SC;
-        if (z < -130 || z > 18) return;
-        const gm = this.ghostPool[idx];
-        gm.visible = true;
-        gm.position.set((idx === 0 ? -5.8 : 5.8), 0, z);
-        gCount++;
-      });
-    }
-    if (gCount === 0) {
-      this.ghostPool[0].visible = false;
-      this.ghostPool[1].visible = false;
-    } else {
-      if (!live || !live.ah || live.ah.p == null || Math.abs(live.ah.p * route - py) > 1300) this.ghostPool[0].visible = false;
-      if (!live || !live.bh || live.bh.p == null || Math.abs(live.bh.p * route - py) > 1300) this.ghostPool[1].visible = false;
-    }
-
-    // 10. Weather 3D Rain & Wind Lines + Instanced Particles
+    // 9. Weather 3D Rain & Wind Lines + Instanced Particles
     this.rainLines.visible = !!(st.inRain && !reduce);
     if (this.rainLines.visible) {
       this.rainLines.position.y = -((now * 0.045) % 8);

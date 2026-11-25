@@ -73,7 +73,7 @@ const clientConfig = {
   max: CFG.MAX_PLAYERS, departments: CFG.DEPARTMENTS, fineK: CFG.LATE_FINE_K,
   maps: MAPS.map(m => ({ id: m.id, code: m.code, name: m.name, place: m.place, subtitle: m.subtitle, summary: m.summary, tags: m.tags, speedMul: m.speedMul })),
 };
-app.get('/game-config.js', (_, res) => res.type('text/javascript').send('window.DCC=' + JSON.stringify(clientConfig)));
+app.get('/game-config.js', (_, res) => res.type('text/javascript').send('window.DCC=' + JSON.stringify({ ...clientConfig, brand })));
 
 // 2 API BXH tách biệt hoàn toàn: Solo vô tận & Thi đấu giải
 app.get('/api/bxh-solo', (req, res) => {
@@ -125,6 +125,37 @@ function fmtClock(s) {
   return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}:${x < 10 ? '0' : ''}${x}`;
 }
 
+// ---------- Tùy chỉnh thương hiệu sự kiện (White-label & Biển quảng cáo 3D) ----------
+const DEFAULT_BRAND = {
+  eventName: 'Nhà F Đi Làm',
+  eventTag: '#NhaFDiLam',
+  slogan: 'Vượt giờ cao điểm · Chấm công đúng 08:15',
+  accentColor: '#f26f21',
+  billboards: [
+    'FPT · KIẾN TẠO HẠNH PHÚC',
+    'CHẤM CÔNG ĐÚNG 08:15',
+    'ONE FPT · BỨT TỐC DEADLINE',
+    'AN TOÀN · ĐÚNG GIỜ · VUI KHỎE',
+  ],
+};
+const VALID_HEX = /^#[0-9a-fA-F]{6}$/;
+function sanitizeBrand(d) {
+  const src = d && typeof d === 'object' ? d : {};
+  const rawB = Array.isArray(src.billboards) ? src.billboards : DEFAULT_BRAND.billboards;
+  const billboards = DEFAULT_BRAND.billboards.map((def, i) => clean(rawB[i], 36) || def);
+  const rawTag = clean(src.eventTag, 24);
+  const eventTag = rawTag ? (rawTag.startsWith('#') ? rawTag : '#' + rawTag.replace(/\s+/g, '')) : DEFAULT_BRAND.eventTag;
+  const rawHex = String(src.accentColor || '').trim();
+  return {
+    eventName: clean(src.eventName, 32) || DEFAULT_BRAND.eventName,
+    eventTag,
+    slogan: clean(src.slogan, 72) || DEFAULT_BRAND.slogan,
+    accentColor: VALID_HEX.test(rawHex) ? rawHex.toLowerCase() : DEFAULT_BRAND.accentColor,
+    billboards,
+  };
+}
+let brand = sanitizeBrand(DEFAULT_BRAND);
+
 // ---------- Trạng thái ----------
 const profiles = new Map();    // token -> { id, token, name, dept }
 const profileById = new Map(); // id -> profile
@@ -140,6 +171,7 @@ function freshGame(phase, mapId) {
 function loadData() {
   try {
     const d = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    if (d.brand) brand = sanitizeBrand(d.brand);
     for (const p of d.profiles || []) {
       profiles.set(p.token, p);
       profileById.set(p.id, p);
@@ -160,7 +192,7 @@ function loadData() {
 let saveTimer = null;
 let saveBusy = false;
 function buildSavePayload() {
-  return JSON.stringify({ profiles: [...profiles.values()], soloRuns, lastContest, game: G, entries: [...entries.values()] });
+  return JSON.stringify({ profiles: [...profiles.values()], soloRuns, lastContest, game: G, entries: [...entries.values()], brand });
 }
 function saveSoon() {
   if (saveTimer) return;
@@ -226,6 +258,7 @@ function publicState() {
   return {
     phase: G.phase, gameId: G.id, mapId: G.mapId, seed: G.seed, count: entries.size, max: CFG.MAX_PLAYERS,
     startsInMs: G.phase === 'racing' ? G.startAt - Date.now() : 0,
+    brand,
   };
 }
 function entryView(e) {
@@ -433,6 +466,7 @@ function boardPayload() {
     online: io.of('/').adapter.rooms.get('players')?.size || 0,
     joinUrl: JOIN_URL, tilt: TILT_READY, soloTop: soloLeader(G.mapId) || soloLeader(null),
     depts: deptStandings(list),
+    brand,
     rows: list.map(e => ({ i: e.id, n: e.name, d: e.dept, s: e.status, p: Math.round(e.progress * 100), c: e.score, t: e.sec, b: e.bot ? 1 : 0 })),
   };
 }
@@ -612,11 +646,14 @@ io.on('connection', socket => {
     const passed = int(d.passed, maxPassed);
     const near = int(d.near, maxNear);
     const picks = int(d.picks, maxPicks);
-    const score = passed + near * 2 + picks * 3;
+    const maxComboBonus = Math.max(0, near - 1) * 3;
+    const comboBonus = int(d.comboBonus, maxComboBonus);
+    const score = passed + near * 2 + picks * 3 + comboBonus;
     const rejected = (+d.dist || 0) > maxDist * 1.25
       || (+d.passed || 0) > maxPassed + 3
       || (+d.near || 0) > maxNear + 3
       || (+d.picks || 0) > maxPicks + 3
+      || (+d.comboBonus || 0) > maxComboBonus + 3
       || (+d.score || 0) > score + 10;
 
     if (rejected) {
@@ -675,6 +712,13 @@ io.on('connection', socket => {
   hostOnly('host:bots', () => { addBots(50); countDirty = true; pushBoard(true); });
   hostOnly('host:clearBots', () => { clearBots(); countDirty = true; pushBoard(true); });
   hostOnly('host:clearSolo', () => { soloRuns = []; saveSoon(); io.to('board').emit('solo:changed'); });
+  hostOnly('host:setBrand', (data, cb) => {
+    brand = (data && data.reset) ? sanitizeBrand(DEFAULT_BRAND) : sanitizeBrand(data);
+    saveSoon();
+    io.emit('brand', brand);
+    pushBoard(true);
+    if (typeof cb === 'function') cb({ ok: true, brand });
+  });
 
   socket.on('disconnect', () => {
     const e = entries.get(socket.data.pid);
